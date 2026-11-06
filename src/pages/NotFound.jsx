@@ -1,0 +1,47 @@
+import React, { useCallback, useContext, useEffect } from 'react'
+import { Box } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { NotFoundModal } from './NotFoundModal.jsx'
+import { ModalData } from '../ui/Modal/ModalData.js'
+import { useLoading } from '../hooks/useLoading.js'
+
+/**
+ * Page Not Found component.
+ * @type {React.FC}
+ * @returns {React.ReactElement} The Page Not Found.
+ */
+export const NotFound = () => {
+  const { setModalData, closeModal } = useContext(ModalData)
+
+  const navigate = useNavigate()
+
+  const onSubmit = useCallback(
+    () => {
+      navigate('/')
+      closeModal()
+    }, [closeModal, navigate]
+  )
+
+  useEffect(
+    () => {
+      setModalData({
+        open: true,
+        title: 'что-то пошло не так...',
+        isActions: true,
+        titleSubmit: 'На главную',
+        onSubmit,
+        maxWidth: 'sm',
+        children: <NotFoundModal />,
+      })
+    },
+    [onSubmit, setModalData]
+  )
+
+  useLoading(false)
+
+  return (
+    <Box width='100rem' height='100vh'>
+      <Box position='absolute' top={0} left={0} width='100%' height='100%' />
+    </Box>
+  )
+}

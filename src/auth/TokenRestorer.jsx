@@ -1,0 +1,86 @@
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { authChecked, loginSelector, tokenReceived } from './loginSlice.js'
+import { handleLogout } from './handleLogout.js'
+import { getAuthHooks } from './runtimeHooks.js'
+
+/**
+ * Restores the admin session after a full reload using the httpOnly refresh cookie.
+ * Renders nothing; mount it once inside the router and the redux Provider.
+ * @type {React.FC}
+ * @returns {null}
+ */
+export const TokenRestorer = () => {
+  const { useGetCurrentUserQuery } = getAuthHooks()
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { accessToken: accessTokenFromStore } = useSelector(loginSelector)
+
+  const hasLocalSession =
+    typeof window !== 'undefined' && localStorage.getItem('hasSession') === 'true'
+  /**
+   * Only call /auth/me when the browser marks a persisted session but Redux has no token yet
+   * (full reload). If we already have an access token — e.g. just after login or 2FA — skip
+   * restore; a parallel /auth/me failure would otherwise log the user out and send them to /login.
+   */
+  const shouldRestoreSession = hasLocalSession && !accessTokenFromStore
+
+  const { data, isError, isLoading, isFetching } = useGetCurrentUserQuery(undefined, {
+    skip: !shouldRestoreSession,
+  })
+
+  useEffect(() => {
+    if (!shouldRestoreSession) {
+      dispatch(authChecked())
+      return
+    }
+
+    const isQueryPending = isLoading || isFetching
+
+    if (isQueryPending) {
+      return
+    }
+
+    if (isError) {
+      // User may have logged in while /auth/me was in flight — keep that session.
+      if (accessTokenFromStore) {
+        dispatch(authChecked())
+        return
+      }
+
+      dispatch(handleLogout())
+      navigate('/login')
+      return
+    }
+
+    if (data && data.accessToken) {
+      dispatch(
+        tokenReceived({
+          accessToken: data.accessToken,
+          email: data.email,
+          nickname: data.nickname,
+          avatar: data.avatar || '',
+          is2FARequired: data.is2FARequired,
+          id: data.id,
+          rememberMe: hasLocalSession,
+        }),
+      )
+    } else {
+      dispatch(authChecked())
+    }
+  }, [
+    data,
+    isError,
+    isFetching,
+    isLoading,
+    dispatch,
+    shouldRestoreSession,
+    hasLocalSession,
+    navigate,
+    accessTokenFromStore,
+  ])
+
+  return null
+}

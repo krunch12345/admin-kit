@@ -1,0 +1,85 @@
+{
+  "name": "admin-kit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared admin panel UI kit for other apps",
+  "author": "konstantin chukreev <krunch12345@gmail.com>",
+  "packageManager": "yarn@3.5.1",
+  "main": "./dist/admin-kit.js",
+  "module": "./dist/admin-kit.js",
+  "exports": {
+    ".": {
+      "import": "./dist/admin-kit.js",
+      "default": "./dist/admin-kit.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "lint": "eslint src --ext js,jsx --max-warnings 0",
+    "test": "node --test './src/**/*.test.js'"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.0",
+    "@mui/material": "^5.15.0",
+    "@mui/x-date-pickers": "^7.0.0",
+    "@reduxjs/toolkit": "^2.2.0",
+    "@rpldy/upload-button": "^1.10.0",
+    "@rpldy/upload-drop-zone": "^1.10.0",
+    "@rpldy/upload-paste": "^1.10.0",
+    "@rpldy/upload-preview": "^1.10.0",
+    "@rpldy/uploady": "^1.10.0",
+    "date-fns": "^2.29.0",
+    "lodash-es": "^4.17.21",
+    "prop-types": "^15.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.0.0",
+    "react-image-crop": "^11.0.10",
+    "react-redux": "^9.1.0",
+    "react-router": "^6.22.0",
+    "react-router-dom": "^6.22.0",
+    "react-scroll": "^1.9.0"
+  },
+  "devDependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.14",
+    "@mui/material": "^5.15.14",
+    "@mui/x-date-pickers": "^7.6.0",
+    "@reduxjs/toolkit": "^2.2.2",
+    "@rpldy/upload-button": "^1.10.0",
+    "@rpldy/upload-drop-zone": "^1.10.0",
+    "@rpldy/upload-paste": "^1.10.0",
+    "@rpldy/upload-preview": "^1.10.0",
+    "@rpldy/uploady": "^1.10.0",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@vitejs/plugin-react": "^4.6.0",
+    "async-mutex": "^0.5.0",
+    "date-fns": "^2.29.3",
+    "eslint": "8.22.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "lodash-es": "^4.17.21",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.0.1",
+    "react-image-crop": "^11.0.10",
+    "react-redux": "^9.1.0",
+    "react-router": "^6.22.3",
+    "react-router-dom": "^6.22.3",
+    "react-scroll": "^1.9.0",
+    "vite": "^7.1.7"
+  },
+  "dependencies": {
+    "async-mutex": "^0.5.0"
+  }
+}

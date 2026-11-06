@@ -1,0 +1,1 @@
+export const ADMIN_KIT_VERSION = __ADMIN_KIT_VERSION__
