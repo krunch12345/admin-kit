@@ -4,6 +4,7 @@ import { ContentCopy } from '@mui/icons-material'
 import { useDispatch } from 'react-redux'
 import { IconButton } from '../IconButton/IconButton.jsx'
 import { showAlert } from '../Alert/showAlertSlice.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -16,7 +17,8 @@ import { showAlert } from '../Alert/showAlertSlice.js'
  * Copies text to the clipboard with success/error feedback.
  * @type {React.FC<IProps>}
  */
-export const CopyButton = ({ text, title = 'Скопировать', icon = <ContentCopy /> }) => {
+export const CopyButton = ({ text, title, icon = <ContentCopy /> }) => {
+  const m = useAdminKitMessages()
   const [isCopied, setIsCopied] = useState(false)
   const dispatch = useDispatch()
 
@@ -27,21 +29,21 @@ export const CopyButton = ({ text, title = 'Скопировать', icon = <Con
       dispatch(showAlert({
         isShowAlert: true,
         severity: 'success',
-        message: 'Скопировано в буфер обмена',
+        message: m.copyButton.success,
       }))
       setTimeout(() => setIsCopied(false), 2000)
     } catch {
       dispatch(showAlert({
         isShowAlert: true,
         severity: 'error',
-        message: 'Не удалось скопировать',
+        message: m.copyButton.error,
       }))
     }
-  }, [dispatch, text])
+  }, [dispatch, m.copyButton.error, m.copyButton.success, text])
 
   return (
     <IconButton
-      title={isCopied ? 'Скопировано!' : title}
+      title={isCopied ? m.copyButton.copied : title ?? m.copyButton.title}
       onClick={handleCopy}
       icon={icon}
       sx={isCopied ? {

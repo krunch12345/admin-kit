@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import { Button, Stack } from '@mui/material'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
- * Shared Нет / Да actions: Нет = red text, Да = contained primary button.
+ * Shared No / Yes actions: No = red text, Yes = contained primary button.
  * @type {React.FC}
  */
 export const ConfirmYesNoActions = ({
@@ -10,23 +11,27 @@ export const ConfirmYesNoActions = ({
   onYes,
   size = 'small',
   yesDisabled = false,
-  noLabel = 'Нет',
-  yesLabel = 'Да',
-}) => (
-  <Stack direction='row' spacing={2} width='100%' justifyContent='flex-end' alignItems='center'>
-    <Button size={size} color='error' onClick={onNo}>
-      {noLabel}
-    </Button>
-    <Button
-      size={size}
-      variant='contained'
-      disabled={yesDisabled}
-      onClick={onYes}
-    >
-      {yesLabel}
-    </Button>
-  </Stack>
-)
+  noLabel,
+  yesLabel,
+}) => {
+  const m = useAdminKitMessages()
+
+  return (
+    <Stack direction='row' spacing={2} width='100%' justifyContent='flex-end' alignItems='center'>
+      <Button size={size} color='error' onClick={onNo}>
+        {noLabel ?? m.common.no}
+      </Button>
+      <Button
+        size={size}
+        variant='contained'
+        disabled={yesDisabled}
+        onClick={onYes}
+      >
+        {yesLabel ?? m.common.yes}
+      </Button>
+    </Stack>
+  )
+}
 
 ConfirmYesNoActions.propTypes = {
   onNo: PropTypes.func.isRequired,

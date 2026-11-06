@@ -4,6 +4,8 @@ import { Button, Checkbox, FormControlLabel, Stack, Typography } from '@mui/mate
 import { ConfirmYesNoActions } from '../ConfirmYesNo/ConfirmYesNoActions.jsx'
 import { ModalData } from '../Modal/ModalData.js'
 import { UnsavedChangesConfirmBody } from './UnsavedChangesConfirmBody.jsx'
+import { formatMessage } from '../../locale/formatMessage.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -40,16 +42,17 @@ export const EditControls = ({
   syncPointDeletes = false,
   onSyncPointDeletesChange,
 }) => {
+  const m = useAdminKitMessages()
   const { setModalData, closeModal } = useContext(ModalData)
 
   const getTitle = (action) => {
     switch (action) {
     case 'cancel':
-      return 'Отменить'
+      return m.editControls.actionCancel
     case 'remove':
-      return 'Удалить'
+      return m.editControls.actionDelete
     case 'save':
-      return 'Сохранить'
+      return m.editControls.actionSave
     }
   }
 
@@ -71,7 +74,7 @@ export const EditControls = ({
   const onClick = (action) => {
     setModalData({
       open: true,
-      title: `Вы уверены, что хотите ${getTitle(action)}?`,
+      title: formatMessage(m.editControls.confirmTitle, { action: getTitle(action) }),
       isActions: true,
       maxWidth: 'sm',
       children: action === 'cancel' || action === 'save'
@@ -82,14 +85,14 @@ export const EditControls = ({
             changedFieldLabels={changedFieldLabels}
             syncPointDeletesLabel={
               action === 'save' && showSyncPointDeletes
-                ? (syncPointDeletes ? 'Да' : 'Нет')
+                ? (syncPointDeletes ? m.common.yes : m.common.no)
                 : null
             }
           />
         )
         : (
           <Typography variant='overline' fontSize={14}>
-            {isAddNew ? 'Создание' : 'Редактирование'} &frasl;&frasl; {name}
+            {isAddNew ? m.common.creating : m.common.editing} &frasl;&frasl; {name}
           </Typography>
         ),
       additionalButtons: (
@@ -105,13 +108,13 @@ export const EditControls = ({
     <Stack spacing={1} width='100%'>
       {isNotRequiredFields && (
         <Typography color={theme => theme.palette.warning.main} alignSelf='center'>
-          &#9888; ВНИМАНИЕ! Чтобы &quot;Сохранить&quot; заполните все обязательные поля формы!
+          {m.editControls.warningRequiredFields}
         </Typography>
       )}
 
       {isNotEdited && (
         <Typography color={theme => theme.palette.warning.main} alignSelf='center'>
-          &#9888; ВНИМАНИЕ! Чтобы &quot;Сохранить&quot; при редактировании хотя бы одно поле должно быть изменено!
+          {m.editControls.warningNotEdited}
         </Typography>
       )}
 
@@ -121,13 +124,13 @@ export const EditControls = ({
           size='small'
           color='error'
         >
-          Отмена
+          {m.common.cancel}
         </Button>
 
         <Stack direction='row' spacing={2} alignItems='center'>
           {showSyncPointDeletes && (
             <FormControlLabel
-              label='Синхронизировать удаление точек с Общей картой'
+              label={m.editControls.syncPointDeletes}
               control={
                 <Checkbox
                   size='small'
@@ -145,7 +148,7 @@ export const EditControls = ({
               onClick={() => onClick('remove')}
               size='small'
             >
-              Удалить
+              {m.common.delete}
             </Button>
           )}
 
@@ -157,7 +160,7 @@ export const EditControls = ({
             sx={{ color: theme => theme.palette.grey.A100 }}
             disabled={disabledSave}
           >
-            Сохранить
+            {m.common.save}
           </Button>
         </Stack>
       </Stack>

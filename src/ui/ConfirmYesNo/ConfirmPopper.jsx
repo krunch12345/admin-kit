@@ -10,7 +10,7 @@ import {
 import { ConfirmYesNoActions } from './ConfirmYesNoActions.jsx'
 
 /**
- * Shared confirmation popper with message and Нет / Да actions.
+ * Shared confirmation popper with message and No / Yes actions.
  * @type {React.FC}
  */
 export const ConfirmPopper = ({

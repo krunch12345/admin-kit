@@ -8,6 +8,7 @@ import {
 } from '@mui/material'
 import { FaCropAlt } from 'react-icons/fa'
 import { DialogRemoveButton } from '../DialogRemoveButton/DialogRemoveButton.jsx'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 const FREE_ASPECT = 'free'
 const CROP_TOLERANCE = 2
@@ -90,6 +91,7 @@ const getCroppedImg = (image, crop) => {
  * @returns {React.ReactElement} The Crop controls component.
  */
 export const CropControls = ({ imageSrc, fileName, onCropped, onRemove }) => {
+  const m = useAdminKitMessages()
   const [isCroppingEnabled, setIsCroppingEnabled] = useState(false)
   const [aspect, setAspect] = useState(FREE_ASPECT)
   const [crop, setCrop] = useState(null)
@@ -175,7 +177,7 @@ export const CropControls = ({ imageSrc, fileName, onCropped, onRemove }) => {
 
       <Stack direction='row' spacing={2} alignItems='center'>
         <FormControlLabel
-          label='Обрезка'
+          label={m.crop.label}
           control={
             <Checkbox
               color='primary'
@@ -186,10 +188,10 @@ export const CropControls = ({ imageSrc, fileName, onCropped, onRemove }) => {
         />
 
         <FormControl size='small' sx={{ minWidth: 200 }} disabled={!isCroppingEnabled}>
-          <InputLabel>Соотношение сторон</InputLabel>
+          <InputLabel>{m.crop.aspectRatio}</InputLabel>
           <Select
             variant='outlined'
-            label='Соотношение сторон'
+            label={m.crop.aspectRatio}
             value={aspect}
             disabled={!isCroppingEnabled}
             onChange={(e) => setAspect(e.target.value === FREE_ASPECT ? FREE_ASPECT : Number(e.target.value))}
@@ -197,7 +199,7 @@ export const CropControls = ({ imageSrc, fileName, onCropped, onRemove }) => {
             <MenuItem value={1}>1:1</MenuItem>
             <MenuItem value={16 / 9}>16:9</MenuItem>
             <MenuItem value={4 / 3}>4:3</MenuItem>
-            <MenuItem value={FREE_ASPECT}>Свободное</MenuItem>
+            <MenuItem value={FREE_ASPECT}>{m.crop.free}</MenuItem>
           </Select>
         </FormControl>
 
@@ -208,13 +210,13 @@ export const CropControls = ({ imageSrc, fileName, onCropped, onRemove }) => {
           onClick={handleCrop}
           disabled={!canApplyCrop}
         >
-          Обрезать
+          {m.crop.applyCrop}
         </Button>
 
         {onRemove && (
           <DialogRemoveButton
             variant='text'
-            confirmMessage='Вы точно хотите удалить это изображение?'
+            confirmMessage={m.crop.confirmDeleteImage}
             onRemove={onRemove}
           />
         )}

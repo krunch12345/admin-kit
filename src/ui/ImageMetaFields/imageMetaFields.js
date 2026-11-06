@@ -1,17 +1,17 @@
 /**
- * Logical image meta fields; each one is stored as an RU value plus an EN value under `${key}EN`.
+ * Logical image meta fields; each one is stored as a primary value plus an EN value under `${key}EN`.
  */
 export const IMAGE_META_FIELDS = [
-  { key: 'name', label: 'Название', enLabel: 'Name EN' },
-  { key: 'description', label: 'Описание', enLabel: 'Description EN' },
-  { key: 'source', label: 'Источник', enLabel: 'Source EN' },
-  { key: 'comment', label: 'Дополнительный комментарий', enLabel: 'Comment EN' },
+  { key: 'name', label: 'Name', enLabel: 'Name EN' },
+  { key: 'description', label: 'Description', enLabel: 'Description EN' },
+  { key: 'source', label: 'Source', enLabel: 'Source EN' },
+  { key: 'comment', label: 'Additional comment', enLabel: 'Comment EN' },
 ]
 
 const toEnglishKey = (key) => `${key}EN`
 
 /**
- * Meta fields that are copied as RU+EN pairs between images (excludes the file name).
+ * Meta fields that are copied as primary+EN pairs between images (excludes the file name).
  */
 export const COPYABLE_META_FIELDS = IMAGE_META_FIELDS.map(({ key, label, enLabel }) => ({
   key,
@@ -32,7 +32,7 @@ export const DEFAULT_EMPTY_IMAGE_META = Object.fromEntries(
 /**
  * @typedef {object} ImageMetaTemplate
  * @property {string} label - Chip / checkbox label.
- * @property {string} ru - Russian value.
+ * @property {string} ru - Primary locale value.
  * @property {string} en - English value.
  */
 

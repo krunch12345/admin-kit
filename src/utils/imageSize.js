@@ -1,3 +1,5 @@
+import { formatMessage } from '../locale/formatMessage.js'
+import { getAdminKitMessages } from '../locale/runtime.js'
 import { getImageFetchAttempts } from './getProxiedImageFetchUrl.js'
 
 /** @type {Map<string, number|null>} */
@@ -38,7 +40,7 @@ export const clearImageByteSizeCache = (url) => {
 }
 
 /**
- * Formats byte count for compact UI (e.g. "245 КБ", "1.2 МБ").
+ * Formats byte count for compact UI (e.g. "245 KB", "1.2 MB").
  * @param {number|null|undefined} bytes
  * @returns {string}
  */
@@ -47,17 +49,21 @@ export const formatFileSize = (bytes) => {
     return ''
   }
 
+  const m = getAdminKitMessages().fileSize
+
   if (bytes < 1024) {
-    return `${bytes} Б`
+    return formatMessage(m.bytes, { value: String(bytes) })
   }
 
   if (bytes < 1024 * 1024) {
     const kb = bytes / 1024
-    return `${kb < 10 ? kb.toFixed(1) : Math.round(kb)} КБ`
+    const value = kb < 10 ? kb.toFixed(1) : String(Math.round(kb))
+    return formatMessage(m.kilobytes, { value })
   }
 
   const mb = bytes / (1024 * 1024)
-  return `${mb < 10 ? mb.toFixed(1) : Math.round(mb)} МБ`
+  const value = mb < 10 ? mb.toFixed(1) : String(Math.round(mb))
+  return formatMessage(m.megabytes, { value })
 }
 
 /**
@@ -75,7 +81,7 @@ export const formatImageDimensions = (width, height) => {
 }
 
 /**
- * Builds compact label: "1920×1080 · 245 КБ".
+ * Builds compact label: "1920×1080 · 245 KB".
  * @param {{ width?: number|null, height?: number|null, bytes?: number|null }} info
  * @returns {string}
  */

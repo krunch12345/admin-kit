@@ -1,6 +1,8 @@
 import { useRef } from 'react'
 import { Box, Pagination, Paper, Stack, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
+import { formatMessage } from '../../locale/formatMessage.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -17,6 +19,7 @@ import PropTypes from 'prop-types'
  * @returns {React.ReactElement} The custom List component.
  */
 export const List = ({ children, paginationData, page, setPage, actions = null }) => {
+  const m = useAdminKitMessages()
   const topRef = useRef(null)
 
   const handlePageChange = (_event, value) => {
@@ -34,7 +37,7 @@ export const List = ({ children, paginationData, page, setPage, actions = null }
     >
       {paginationData && (
         <Typography variant='overline' color={theme => theme.palette.grey[500]}>
-          Всего: {paginationData?.count || 0}
+          {formatMessage(m.list.total, { count: paginationData?.count || 0 })}
         </Typography>
       )}
 

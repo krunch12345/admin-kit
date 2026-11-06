@@ -1,9 +1,10 @@
-import React, { Children } from 'react'
+import { Children } from 'react'
 import PropTypes from 'prop-types'
 import { Typography } from '@mui/material'
 import { red, yellow } from '@mui/material/colors'
 import { FaCircle } from 'react-icons/fa'
 import { Update } from '@mui/icons-material'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -18,6 +19,8 @@ import { Update } from '@mui/icons-material'
  * @returns {React.ReactElement|null} The legend of colors component.
  */
 export const ColorLegend = ({ warning, error, showUpdatedAt = true }) => {
+  const m = useAdminKitMessages()
+
   if (!warning && !error && !showUpdatedAt) {
     return null
   }
@@ -52,7 +55,7 @@ export const ColorLegend = ({ warning, error, showUpdatedAt = true }) => {
               sx={{
                 color: red[500],
               }}
-            />&nbsp;—&nbsp;время обновления меньше 1 суток
+            />&nbsp;—&nbsp;{m.colorLegend.lessThan1Day}
           </span>
         ),
         showUpdatedAt && (
@@ -62,7 +65,7 @@ export const ColorLegend = ({ warning, error, showUpdatedAt = true }) => {
               sx={{
                 color: yellow[500],
               }}
-            />&nbsp;—&nbsp;время обновления меньше 3 суток
+            />&nbsp;—&nbsp;{m.colorLegend.lessThan3Days}
           </span>
         ),
       ])}

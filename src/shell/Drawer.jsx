@@ -14,6 +14,7 @@ import { useScreen } from '../hooks/useScreen.js'
 import { DRAWER_WIDTH } from './drawerWidth.js'
 import PropTypes from 'prop-types'
 import { MenuElement } from './MenuElement.jsx'
+import { useAdminKitMessages } from '../locale/useAdminKitMessages.js'
 
 const openedMixin = (theme) => ({
   width: DRAWER_WIDTH,
@@ -73,6 +74,7 @@ const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
  * @returns {React.ReactElement} The Drawer component.
  */
 export const Drawer = ({ drawerOpen, setDrawerOpen, isFetchingMenu, menu }) => {
+  const m = useAdminKitMessages()
   const { pathname } = useLocation()
   const isMain = pathname === '/'
 
@@ -83,10 +85,10 @@ export const Drawer = ({ drawerOpen, setDrawerOpen, isFetchingMenu, menu }) => {
       {drawerOpen && (
         <Stack direction='row' spacing={2} alignItems='center' width='100%' justifyContent='space-between' pl={2}>
           <Typography fontWeight={700}>
-            меню
+            {m.common.menu}
           </Typography>
 
-          <Tooltip title='Закрыть меню'>
+          <Tooltip title={m.shell.closeMenu}>
             <IconButton
               onClick={() => setDrawerOpen(false)}
               sx={{ '&:hover': {
@@ -99,7 +101,7 @@ export const Drawer = ({ drawerOpen, setDrawerOpen, isFetchingMenu, menu }) => {
         </Stack>
       )}
     </DrawerHeader>
-  ), [drawerOpen, setDrawerOpen])
+  ), [drawerOpen, m.common.menu, m.shell.closeMenu, setDrawerOpen])
 
   const navBar = useMemo(() => (
     <Stack height='100%' flex={1}>

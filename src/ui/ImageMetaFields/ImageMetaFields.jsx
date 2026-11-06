@@ -2,6 +2,7 @@ import { Children } from 'react'
 import PropTypes from 'prop-types'
 import { Chip, Stack } from '@mui/material'
 import { TextField } from '../TextField/TextField.jsx'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 const templateListPropType = PropTypes.arrayOf(PropTypes.shape({
   label: PropTypes.string.isRequired,
@@ -21,131 +22,135 @@ const templateListPropType = PropTypes.arrayOf(PropTypes.shape({
  * Bilingual image metadata fields.
  * @type {React.FC<ImageMetaFieldsProps>}
  */
-export const ImageMetaFields = ({ values, onChange, disabled = false, templates = {} }) => (
-  <Stack spacing={1} width='100%'>
-    <Stack direction='row' spacing={0} width='100%' flexWrap='wrap'>
-      <TextField
-        sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-        label='Название'
-        placeholder='Введите название'
-        value={values.name ?? ''}
-        onChange={(name) => onChange({ name })}
-        onClear={() => onChange({ name: '' })}
-        disabled={disabled}
-      />
-      <TextField
-        sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-        label='Name EN'
-        placeholder='Enter name'
-        value={values.nameEN ?? ''}
-        onChange={(nameEN) => onChange({ nameEN })}
-        onClear={() => onChange({ nameEN: '' })}
-        disabled={disabled}
-      />
-    </Stack>
+export const ImageMetaFields = ({ values, onChange, disabled = false, templates = {} }) => {
+  const m = useAdminKitMessages()
 
-    <Stack direction='row' spacing={0} width='100%' flexWrap='wrap' alignItems='flex-start'>
-      <Stack sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }} spacing={1}>
+  return (
+    <Stack spacing={1} width='100%'>
+      <Stack direction='row' spacing={0} width='100%' flexWrap='wrap'>
         <TextField
-          label='Описание'
-          placeholder='Введите описание'
-          value={values.description ?? ''}
-          onChange={(description) => onChange({ description })}
-          onClear={() => onChange({ description: '' })}
+          sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
+          label={m.imageMeta.name}
+          placeholder={m.imageMeta.namePlaceholder}
+          value={values.name ?? ''}
+          onChange={(name) => onChange({ name })}
+          onClear={() => onChange({ name: '' })}
+          disabled={disabled}
+        />
+        <TextField
+          sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
+          label={m.imageMeta.nameEN}
+          placeholder={m.imageMeta.nameENPlaceholder}
+          value={values.nameEN ?? ''}
+          onChange={(nameEN) => onChange({ nameEN })}
+          onClear={() => onChange({ nameEN: '' })}
+          disabled={disabled}
+        />
+      </Stack>
+
+      <Stack direction='row' spacing={0} width='100%' flexWrap='wrap' alignItems='flex-start'>
+        <Stack sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }} spacing={1}>
+          <TextField
+            label={m.imageMeta.description}
+            placeholder={m.imageMeta.descriptionPlaceholder}
+            value={values.description ?? ''}
+            onChange={(description) => onChange({ description })}
+            onClear={() => onChange({ description: '' })}
+            disabled={disabled}
+            multiline
+            minRows={4}
+          />
+          <Stack direction='row' spacing={1} flexWrap='wrap' useFlexGap>
+            {Children.toArray(
+              (templates.description || []).map(({ label, ru, en }) => (
+                <Chip
+                  label={label}
+                  size='small'
+                  variant='outlined'
+                  clickable
+                  disabled={disabled}
+                  onClick={() => onChange({ description: ru, descriptionEN: en })}
+                />
+              ))
+            )}
+          </Stack>
+        </Stack>
+        <TextField
+          sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
+          label={m.imageMeta.descriptionEN}
+          placeholder={m.imageMeta.descriptionENPlaceholder}
+          value={values.descriptionEN ?? ''}
+          onChange={(descriptionEN) => onChange({ descriptionEN })}
+          onClear={() => onChange({ descriptionEN: '' })}
           disabled={disabled}
           multiline
           minRows={4}
         />
-        <Stack direction='row' spacing={1} flexWrap='wrap' useFlexGap>
-          {Children.toArray(
-            (templates.description || []).map(({ label, ru, en }) => (
-              <Chip
-                label={label}
-                size='small'
-                variant='outlined'
-                clickable
-                disabled={disabled}
-                onClick={() => onChange({ description: ru, descriptionEN: en })}
-              />
-            ))
-          )}
-        </Stack>
       </Stack>
-      <TextField
-        sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-        label='Description EN'
-        placeholder='Enter description'
-        value={values.descriptionEN ?? ''}
-        onChange={(descriptionEN) => onChange({ descriptionEN })}
-        onClear={() => onChange({ descriptionEN: '' })}
-        disabled={disabled}
-        multiline
-        minRows={4}
-      />
-    </Stack>
 
-    <Stack direction='row' spacing={0} width='100%' flexWrap='wrap' alignItems='flex-start'>
-      <Stack sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }} spacing={1}>
+      <Stack direction='row' spacing={0} width='100%' flexWrap='wrap' alignItems='flex-start'>
+        <Stack sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }} spacing={1}>
+          <TextField
+            label={m.imageMeta.source}
+            placeholder={m.imageMeta.sourcePlaceholder}
+            value={values.source ?? ''}
+            onChange={(source) => onChange({ source })}
+            onClear={() => onChange({ source: '' })}
+            disabled={disabled}
+          />
+          <Stack direction='row' spacing={1} flexWrap='wrap' useFlexGap>
+            {Children.toArray(
+              (templates.source || []).map(({ label, ru, en }) => (
+                <Chip
+                  label={label}
+                  size='small'
+                  variant='outlined'
+                  clickable
+                  disabled={disabled}
+                  onClick={() => onChange({ source: ru, sourceEN: en })}
+                />
+              ))
+            )}
+          </Stack>
+        </Stack>
         <TextField
-          label='Источник'
-          placeholder='Введите источник'
-          value={values.source ?? ''}
-          onChange={(source) => onChange({ source })}
-          onClear={() => onChange({ source: '' })}
+          sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
+          label={m.imageMeta.sourceEN}
+          placeholder={m.imageMeta.sourceENPlaceholder}
+          value={values.sourceEN ?? ''}
+          onChange={(sourceEN) => onChange({ sourceEN })}
+          onClear={() => onChange({ sourceEN: '' })}
           disabled={disabled}
         />
-        <Stack direction='row' spacing={1} flexWrap='wrap' useFlexGap>
-          {Children.toArray(
-            (templates.source || []).map(({ label, ru, en }) => (
-              <Chip
-                label={label}
-                size='small'
-                variant='outlined'
-                clickable
-                disabled={disabled}
-                onClick={() => onChange({ source: ru, sourceEN: en })}
-              />
-            ))
-          )}
-        </Stack>
       </Stack>
-      <TextField
-        sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-        label='Source EN'
-        placeholder='Enter source'
-        value={values.sourceEN ?? ''}
-        onChange={(sourceEN) => onChange({ sourceEN })}
-        onClear={() => onChange({ sourceEN: '' })}
-        disabled={disabled}
-      />
-    </Stack>
 
-    <Stack direction='row' spacing={0} width='100%' flexWrap='wrap'>
-      <TextField
-        sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-        label='Дополнительный комментарий'
-        placeholder='Введите комментарий'
-        value={values.comment ?? ''}
-        onChange={(comment) => onChange({ comment })}
-        onClear={() => onChange({ comment: '' })}
-        disabled={disabled}
-        multiline
-        minRows={4}
-      />
-      <TextField
-        sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-        label='Comment EN'
-        placeholder='Enter comment'
-        value={values.commentEN ?? ''}
-        onChange={(commentEN) => onChange({ commentEN })}
-        onClear={() => onChange({ commentEN: '' })}
-        disabled={disabled}
-        multiline
-        minRows={4}
-      />
+      <Stack direction='row' spacing={0} width='100%' flexWrap='wrap'>
+        <TextField
+          sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
+          label={m.imageMeta.comment}
+          placeholder={m.imageMeta.commentPlaceholder}
+          value={values.comment ?? ''}
+          onChange={(comment) => onChange({ comment })}
+          onClear={() => onChange({ comment: '' })}
+          disabled={disabled}
+          multiline
+          minRows={4}
+        />
+        <TextField
+          sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
+          label={m.imageMeta.commentEN}
+          placeholder={m.imageMeta.commentENPlaceholder}
+          value={values.commentEN ?? ''}
+          onChange={(commentEN) => onChange({ commentEN })}
+          onClear={() => onChange({ commentEN: '' })}
+          disabled={disabled}
+          multiline
+          minRows={4}
+        />
+      </Stack>
     </Stack>
-  </Stack>
-)
+  )
+}
 
 ImageMetaFields.propTypes = {
   values: PropTypes.object.isRequired,

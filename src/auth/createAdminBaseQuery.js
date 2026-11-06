@@ -5,6 +5,7 @@ import { tokenReceived } from './loginSlice.js'
 import { handleLogout } from './handleLogout.js'
 import { deepTrimStrings } from './deepTrimStrings.js'
 import { extractMeta } from './extractMeta.js'
+import { getAdminKitMessages } from '../locale/runtime.js'
 
 /**
  * @description Handles session expiration: shows alert and logs out user
@@ -15,7 +16,7 @@ const handleSessionExpired = (api) => {
     showAlert({
       isShowAlert: true,
       severity: 'warning',
-      message: 'Сессия истекла. Пожалуйста, войдите снова.',
+      message: getAdminKitMessages().auth.sessionExpired,
     })
   )
   api.dispatch(handleLogout())
@@ -131,7 +132,7 @@ export const createAdminBaseQuery = ({ baseUrl = '/api' } = {}) => {
         error: {
           status: 401,
           data: {
-            message: 'Требуется авторизация',
+            message: getAdminKitMessages().auth.authorizationRequired,
           },
         },
       }

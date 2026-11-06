@@ -1,10 +1,12 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { IconButton } from '../IconButton/IconButton.jsx'
 import { MdDeleteForever } from 'react-icons/md'
 import { red } from '@mui/material/colors'
 import { filter } from 'lodash-es'
 import PropTypes from 'prop-types'
 import { ConfirmPopper } from '../ConfirmYesNo/ConfirmPopper.jsx'
+import { formatMessage } from '../../locale/formatMessage.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -29,6 +31,7 @@ export const RemoveButton = ({
   nameField = 'name',
   idField = 'id',
 }) => {
+  const m = useAdminKitMessages()
   const [anchorConfirmEl, setAnchorConfirmEl] = useState(null)
   const [openConfirm, setOpenConfirm] = useState(false)
 
@@ -53,7 +56,7 @@ export const RemoveButton = ({
   return (
     <>
       <IconButton
-        title={`Удалить ${displayName}`}
+        title={formatMessage(m.removeButton.title, { displayName })}
         onClick={handleOnClick}
         icon={<MdDeleteForever />}
         color={red.A400}
@@ -62,7 +65,7 @@ export const RemoveButton = ({
       <ConfirmPopper
         open={openConfirm}
         anchorEl={anchorConfirmEl}
-        message={`Вы уверены, что хотите удалить ${displayName}?`}
+        message={formatMessage(m.removeButton.confirmMessage, { displayName })}
         onClose={() => setOpenConfirm(false)}
         onConfirm={() => {
           if (typeof removeIndex === 'number') {

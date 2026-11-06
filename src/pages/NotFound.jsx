@@ -1,9 +1,10 @@
-import React, { useCallback, useContext, useEffect } from 'react'
+import { useCallback, useContext, useEffect } from 'react'
 import { Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { NotFoundModal } from './NotFoundModal.jsx'
 import { ModalData } from '../ui/Modal/ModalData.js'
 import { useLoading } from '../hooks/useLoading.js'
+import { useAdminKitMessages } from '../locale/useAdminKitMessages.js'
 
 /**
  * Page Not Found component.
@@ -11,6 +12,7 @@ import { useLoading } from '../hooks/useLoading.js'
  * @returns {React.ReactElement} The Page Not Found.
  */
 export const NotFound = () => {
+  const m = useAdminKitMessages()
   const { setModalData, closeModal } = useContext(ModalData)
 
   const navigate = useNavigate()
@@ -26,15 +28,15 @@ export const NotFound = () => {
     () => {
       setModalData({
         open: true,
-        title: 'что-то пошло не так...',
+        title: m.notFound.title,
         isActions: true,
-        titleSubmit: 'На главную',
+        titleSubmit: m.notFound.titleSubmit,
         onSubmit,
         maxWidth: 'sm',
         children: <NotFoundModal />,
       })
     },
-    [onSubmit, setModalData]
+    [m.notFound.title, m.notFound.titleSubmit, onSubmit, setModalData]
   )
 
   useLoading(false)

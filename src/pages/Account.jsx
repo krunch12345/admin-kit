@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Stack, Typography } from '@mui/material'
 import { loginSelector } from '../auth/loginSlice.js'
 import { Page } from '../layouts/Page.jsx'
+import { useAdminKitMessages } from '../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -14,7 +15,8 @@ import { Page } from '../layouts/Page.jsx'
  * @type {React.FC<IProps>}
  * @returns {React.ReactElement} The Account page.
  */
-export const Account = ({ title = 'Аккаунт' }) => {
+export const Account = ({ title }) => {
+  const m = useAdminKitMessages()
   const { nickname, email } = useSelector(loginSelector)
 
   const renderAttribute = (label, value) => (
@@ -30,10 +32,10 @@ export const Account = ({ title = 'Аккаунт' }) => {
   )
 
   return (
-    <Page title={title}>
+    <Page title={title ?? m.account.pageTitle}>
       <Stack>
-        {renderAttribute('Никнейм', nickname)}
-        {renderAttribute('Email', email)}
+        {renderAttribute(m.account.nicknameLabel, nickname)}
+        {renderAttribute(m.login.emailLabel, email)}
       </Stack>
     </Page>
   )

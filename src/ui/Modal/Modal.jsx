@@ -12,12 +12,14 @@ import {
 import { Close } from '@mui/icons-material'
 import { ConfirmPopper } from '../ConfirmYesNo/ConfirmPopper.jsx'
 import { ModalData } from './ModalData.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * Modal component.
  * @returns {React.ReactElement} The Modal component.
  */
 export const Modal = () => {
+  const m = useAdminKitMessages()
   const { states } = useContext(ModalData)
   const { modalData } = states
   const [closeConfirmAnchorEl, setCloseConfirmAnchorEl] = useState(null)
@@ -31,11 +33,11 @@ export const Modal = () => {
     onCancel,
     onSubmit,
     isRedSubmit,
-    titleSubmit = 'Применить',
+    titleSubmit,
     disabledSubmit,
     notCloseAfterSubmit,
     shouldConfirmClose = false,
-    closeConfirmMessage = 'Вы уверены, что хотите отменить?',
+    closeConfirmMessage,
     fullHeight = false,
     headerExtra = null,
     ...restModalData
@@ -129,7 +131,7 @@ export const Modal = () => {
                   size='small'
                   onClick={handleRequestClose}
                   color='error'
-                  title='Отменить и закрыть'
+                  title={m.modal.closeButtonTitle}
                 >
                   <Close />
                 </IconButton>
@@ -166,7 +168,7 @@ export const Modal = () => {
                   onClose && onClose()
                 }}
               >
-                Отменить
+                {m.modal.cancelButton}
               </Button>
             )}
 
@@ -180,7 +182,7 @@ export const Modal = () => {
                 }}
                 disabled={disabledSubmit}
               >
-                {titleSubmit}
+                {titleSubmit ?? m.modal.titleSubmit}
               </Button>
             )}
           </DialogActions>
@@ -191,7 +193,7 @@ export const Modal = () => {
         open={isCloseConfirmOpen}
         anchorEl={closeConfirmAnchorEl}
         placement='bottom-end'
-        message={closeConfirmMessage}
+        message={closeConfirmMessage ?? m.modal.closeConfirmMessage}
         onClose={handleCancelCloseConfirm}
         onConfirm={handleConfirmClose}
       />

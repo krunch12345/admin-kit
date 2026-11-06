@@ -21,6 +21,8 @@ import { useLoading } from '../hooks/useLoading.js'
 import { TextField } from '../ui/TextField/TextField.jsx'
 import { OtpCodeInputs } from '../ui/OtpCodeInputs/OtpCodeInputs.jsx'
 import { showAlert } from '../ui/Alert/showAlertSlice.js'
+import { formatMessage } from '../locale/formatMessage.js'
+import { useAdminKitMessages } from '../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -35,10 +37,11 @@ import { showAlert } from '../ui/Alert/showAlertSlice.js'
  * @returns {React.ReactElement} The Login page.
  */
 export const Login = ({
-  title = 'Авторизация',
+  title,
   redirectPath = '/',
   otpLength = 6,
 }) => {
+  const m = useAdminKitMessages()
   const { useLoginAdminMutation, useVerify2FAMutation } = getAuthHooks()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -121,7 +124,7 @@ export const Login = ({
           showAlert({
             isShowAlert: true,
             severity: 'info',
-            message: 'Требуется код аутентификации',
+            message: m.login.authCodeRequired,
           }),
         )
         setIs2FARequired(true)
@@ -148,7 +151,7 @@ export const Login = ({
         showAlert({
           isShowAlert: true,
           severity: 'success',
-          message: 'Успешная авторизация',
+          message: m.login.loginSuccess,
         }),
       )
 
@@ -161,6 +164,8 @@ export const Login = ({
     is2FARequired,
     isSuccessLogin,
     localRememberMe,
+    m.login.authCodeRequired,
+    m.login.loginSuccess,
     navigate,
     redirectPath,
   ])
@@ -171,7 +176,7 @@ export const Login = ({
         showAlert({
           isShowAlert: true,
           severity: 'success',
-          message: 'Успешная авторизация',
+          message: m.login.loginSuccess,
         }),
       )
 
@@ -218,6 +223,7 @@ export const Login = ({
     isErrorVerify2FA,
     isSuccessVerify2FA,
     localRememberMe,
+    m.login.loginSuccess,
     nickname,
     navigate,
     redirectPath,
@@ -303,8 +309,8 @@ export const Login = ({
         autoFocus
         fullWidth
         type='email'
-        placeholder='Введите почту'
-        label='Почта'
+        placeholder={m.login.emailPlaceholder}
+        label={m.login.emailLabel}
         required
         value={email}
         onChange={value => setEmail(value)}
@@ -315,8 +321,8 @@ export const Login = ({
           required
           type={showPassword ? 'text' : 'password'}
           value={password}
-          placeholder='Введите пароль'
-          label='Пароль'
+          placeholder={m.login.passwordPlaceholder}
+          label={m.login.passwordLabel}
           onChange={value => setPassword(value)}
           InputProps={{
             endAdornment: (
@@ -342,21 +348,23 @@ export const Login = ({
             color='primary'
           />
         }
-        label='Запомнить меня'
+        label={m.login.rememberMe}
         sx={{ alignSelf: 'flex-start' }}
       />
 
       {isErrorLogin && errorLogin && (
         <Stack alignSelf='flex-start'>
           <Typography color={theme => theme.palette.error.main}>
-            {errorLogin?.data?.message || 'Ошибка при попытке авторизации'}
+            {errorLogin?.data?.message || m.login.errorLoginFallback}
           </Typography>
 
           {errorLogin?.data?.remainingAttempts !== undefined && (
             <Typography color={theme => theme.palette.error.main}>
               {errorLogin.data.remainingAttempts > 0
-                ? `Осталось попыток: ${errorLogin.data.remainingAttempts}`
-                : 'Пользователь заблокирован'}
+                ? formatMessage(m.login.attemptsRemaining, {
+                  remainingAttempts: errorLogin.data.remainingAttempts,
+                })
+                : m.login.userBlocked}
             </Typography>
           )}
         </Stack>
@@ -368,7 +376,7 @@ export const Login = ({
         fullWidth
         disabled={!email || !password}
       >
-        Войти
+        {m.login.submit}
       </Button>
     </Stack>
   )
@@ -376,7 +384,7 @@ export const Login = ({
   const twoFactorStep = (
     <Stack width='100%' spacing={3} alignItems='center'>
       <Typography color='text.secondary' textAlign='center'>
-        Введите код из приложения
+        {m.login.totpPrompt}
       </Typography>
 
       <OtpCodeInputs
@@ -388,7 +396,7 @@ export const Login = ({
 
       {isErrorVerify2FA && (
         <Typography color={theme => theme.palette.error.main} alignSelf='stretch'>
-          {errorVerify2FA?.data?.message || 'Неверный код аутентификации'}
+          {errorVerify2FA?.data?.message || m.login.errorVerify2FAFallback}
         </Typography>
       )}
 
@@ -400,7 +408,7 @@ export const Login = ({
           onClick={handleBackFrom2FA}
           disabled={isCheckingVerify2FA}
         >
-          Назад
+          {m.common.back}
         </Button>
 
         <Button
@@ -409,7 +417,7 @@ export const Login = ({
           disabled={code2FA.replace(/\D/g, '').length < otpLength || isCheckingVerify2FA}
           onClick={() => onVerify2FA()}
         >
-          Войти
+          {m.login.submit}
         </Button>
       </Stack>
     </Stack>
@@ -431,7 +439,7 @@ export const Login = ({
           sx={{ textAlign: 'center' }}
           mx={10}
         >
-          {is2FARequired ? '2FA' : title}
+          {is2FARequired ? '2FA' : title ?? m.login.pageTitle}
         </Typography>
 
         {is2FARequired ? twoFactorStep : credentialsForm}

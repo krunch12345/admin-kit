@@ -1,6 +1,8 @@
 import { Children, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Box, Stack, TextField } from '@mui/material'
+import { formatMessage } from '../../locale/formatMessage.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 const digitsOnly = (value) => String(value || '').replace(/\D/g, '')
 
@@ -24,6 +26,7 @@ export const OtpCodeInputs = ({
   disabled = false,
   autoFocus = true,
 }) => {
+  const m = useAdminKitMessages()
   const inputsRef = useRef([])
   const digits = digitsOnly(value).slice(0, length).padEnd(length, ' ').split('').map((ch) => (
     ch === ' ' ? '' : ch
@@ -122,7 +125,7 @@ export const OtpCodeInputs = ({
                 inputMode: 'numeric',
                 autoComplete: index === 0 ? 'one-time-code' : 'off',
                 maxLength: length,
-                'aria-label': `Цифра ${index + 1}`,
+                'aria-label': formatMessage(m.otp.digitAriaLabel, { index: index + 1 }),
                 style: {
                   textAlign: 'center',
                   fontSize: '1.5rem',

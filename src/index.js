@@ -1,5 +1,30 @@
 export { ADMIN_KIT_VERSION } from './version.js'
 
+// locale
+export { AdminKitProvider } from './locale/AdminKitProvider.jsx'
+export {
+  ADMIN_KIT_LOCALES,
+  configureAdminKit,
+  getAdminKitLocale,
+  getAdminKitMessages,
+  resolveAdminKitMessages,
+} from './locale/runtime.js'
+export { enMessages } from './locale/messages/en.js'
+export { ruMessages } from './locale/messages/ru.js'
+export { formatMessage } from './locale/formatMessage.js'
+export { toMuiLocaleText } from './locale/toMuiLocaleText.js'
+export {
+  useAdminKitLocale,
+  useAdminKitLocaleText,
+  useAdminKitMessages,
+} from './locale/useAdminKitMessages.js'
+export {
+  getCopyableMetaFields,
+  getImageMetaFields,
+  useCopyableMetaFields,
+  useImageMetaFields,
+} from './locale/useImageMetaFields.js'
+
 // auth
 export { createAdminBaseQuery } from './auth/createAdminBaseQuery.js'
 export { createAuthEndpoints } from './auth/createAuthEndpoints.js'
@@ -147,4 +172,4 @@ export {
   chunkFilesByCountAndBytes,
   getUploadItemByteSize,
 } from './constants/imageBatch.js'
-export { LOCALE_TEXT } from './constants/localeText.js'
+export { LOCALE_TEXT, getLocaleText } from './constants/localeText.js'

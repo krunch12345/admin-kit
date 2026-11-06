@@ -1,6 +1,6 @@
-import React from 'react'
 import { TextField, Autocomplete as MuiAutocomplete } from '@mui/material'
 import PropTypes from 'prop-types'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -16,14 +16,18 @@ import PropTypes from 'prop-types'
  * @returns {React.ReactElement} Autocomplete component.
  */
 export const Autocomplete = ({ label, noOptionsText, onInputKeyDown, ...props }) => {
+  const m = useAdminKitMessages()
+
   return (
     <MuiAutocomplete
       size='small'
-      loadingText='Идет загрузка...'
-      noOptionsText={!props.inputValue ? noOptionsText || 'Введите название' : 'Ничего не найдено'}
-      clearText='Очистить'
-      closeText='Закрыть'
-      openText='Открыть'
+      loadingText={m.autocomplete.loadingText}
+      noOptionsText={!props.inputValue
+        ? noOptionsText || m.autocomplete.enterName
+        : m.autocomplete.nothingFound}
+      clearText={m.autocomplete.clearText}
+      closeText={m.autocomplete.closeText}
+      openText={m.autocomplete.openText}
       filterOptions={(options) => props.inputValue && options}
       renderInput={(params) => (
         <TextField

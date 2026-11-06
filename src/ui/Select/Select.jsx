@@ -1,7 +1,7 @@
-import React from 'react'
 import { FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select as MuiSelect } from '@mui/material'
 import { Clear } from '@mui/icons-material'
 import PropTypes from 'prop-types'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -21,40 +21,44 @@ import PropTypes from 'prop-types'
  * @type {React.FC<IProps>}
  * @returns {React.ReactElement} Custom Select component.
  */
-export const Select = ({ id, label, value, setValue, children, required, hideAllItem, disabled }) => (
-  <FormControl
-    sx={{ display: 'flex', flex: 1, m: 1, minWidth: '10rem' }}
-    required={required}
-  >
-    <InputLabel id={`select-${id}`} size='small'>
-      {label}
-    </InputLabel>
-    <MuiSelect
-      size='small'
-      value={value}
-      label={label}
-      labelId='select-periodsOfTimeId'
-      onChange={e => setValue(e.target.value)}
-      endAdornment={
-        !!value && (
-          <InputAdornment position='end'>
-            <IconButton
-              sx={{ maxHeight: 30, maxWidth: 30, mr: 2 }}
-              onClick={() => setValue('')}
-            >
-              <Clear fontSize='small' />
-            </IconButton>
-          </InputAdornment>
-        )
-      }
-      disabled={disabled}
-    >
-      {!hideAllItem && <MenuItem value={''} sx={{ fontStyle: 'italic' }}>Все</MenuItem>}
+export const Select = ({ id, label, value, setValue, children, required, hideAllItem, disabled }) => {
+  const m = useAdminKitMessages()
 
-      {children}
-    </MuiSelect>
-  </FormControl>
-)
+  return (
+    <FormControl
+      sx={{ display: 'flex', flex: 1, m: 1, minWidth: '10rem' }}
+      required={required}
+    >
+      <InputLabel id={`select-${id}`} size='small'>
+        {label}
+      </InputLabel>
+      <MuiSelect
+        size='small'
+        value={value}
+        label={label}
+        labelId='select-periodsOfTimeId'
+        onChange={e => setValue(e.target.value)}
+        endAdornment={
+          !!value && (
+            <InputAdornment position='end'>
+              <IconButton
+                sx={{ maxHeight: 30, maxWidth: 30, mr: 2 }}
+                onClick={() => setValue('')}
+              >
+                <Clear fontSize='small' />
+              </IconButton>
+            </InputAdornment>
+          )
+        }
+        disabled={disabled}
+      >
+        {!hideAllItem && <MenuItem value={''} sx={{ fontStyle: 'italic' }}>{m.select.all}</MenuItem>}
+
+        {children}
+      </MuiSelect>
+    </FormControl>
+  )
+}
 
 Select.propTypes = {
   id: PropTypes.string.isRequired,

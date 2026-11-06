@@ -1,7 +1,4 @@
-const PROXY_413_MESSAGE = (
-  'Обратный прокси отклонил тело запроса (HTTP 413). '
-  + 'Увеличьте nginx client_max_body_size (например, 256m).'
-)
+import { getAdminKitMessages } from '../locale/runtime.js'
 
 /**
  * @param {unknown} value
@@ -61,9 +58,10 @@ export const isAppFileTooLargePayload = (data) => {
 export const getAddImagesErrorMessage = (err) => {
   const status = err?.status ?? err?.originalStatus
   const data = err?.data
+  const messages = getAdminKitMessages()
 
   if (status === 413 && !isAppFileTooLargePayload(data)) {
-    return PROXY_413_MESSAGE
+    return messages.errors.proxy413
   }
 
   if (typeof data === 'string' && data.trim()) {
@@ -87,6 +85,6 @@ export const getAddImagesErrorMessage = (err) => {
   try {
     return JSON.stringify(err)
   } catch {
-    return 'Ошибка загрузки изображений'
+    return messages.errors.uploadFallback
   }
 }

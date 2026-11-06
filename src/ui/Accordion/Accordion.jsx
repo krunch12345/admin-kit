@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Accordion as MuiAccordion,
   AccordionDetails,
@@ -9,6 +9,8 @@ import {
 } from '@mui/material'
 import { ExpandMore } from '@mui/icons-material'
 import PropTypes from 'prop-types'
+import { formatMessage } from '../../locale/formatMessage.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -31,6 +33,7 @@ export const Accordion = ({
   count,
   isErrorBackground,
 }) => {
+  const m = useAdminKitMessages()
   const [expanded, setExpanded] = useState(true)
 
   useEffect(() => {
@@ -59,7 +62,7 @@ export const Accordion = ({
 
           {count >=0 && (
             <Typography variant='overline' color={theme => theme.palette.grey[500]}>
-              всего: {count}
+              {formatMessage(m.accordion.total, { count })}
             </Typography>
           )}
         </Stack>

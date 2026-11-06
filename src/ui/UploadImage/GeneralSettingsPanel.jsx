@@ -12,11 +12,10 @@ import {
 } from '@mui/material'
 import { ArrowBack } from '@mui/icons-material'
 import { IconButton } from '../IconButton/IconButton.jsx'
-import {
-  COPYABLE_META_FIELDS,
-  isCopyableFieldFilled,
-} from '../ImageMetaFields/imageMetaFields.js'
+import { isCopyableFieldFilled } from '../ImageMetaFields/imageMetaFields.js'
 import { SelectableImageThumb } from './SelectableImageThumb.jsx'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
+import { useCopyableMetaFields } from '../../locale/useImageMetaFields.js'
 
 const SCENARIO_COPY = 'copy'
 const SCENARIO_APPLY = 'apply'
@@ -56,6 +55,9 @@ export const GeneralSettingsPanel = ({
   hideSkipCompression = false,
   templates = {},
 }) => {
+  const m = useAdminKitMessages()
+  const copyableMetaFields = useCopyableMetaFields()
+
   const descriptionTemplates = useMemo(
     () => templates.description || [],
     [templates.description],
@@ -99,8 +101,8 @@ export const GeneralSettingsPanel = ({
   const isApplyScenario = scenario === SCENARIO_APPLY
 
   const selectedCopyFields = useMemo(
-    () => COPYABLE_META_FIELDS.filter((field) => copyFieldKeys.includes(field.key)),
-    [copyFieldKeys]
+    () => copyableMetaFields.filter((field) => copyFieldKeys.includes(field.key)),
+    [copyFieldKeys, copyableMetaFields],
   )
 
   const sourceCandidates = useMemo(() => {
@@ -351,12 +353,12 @@ export const GeneralSettingsPanel = ({
           <FormControlLabel
             value={SCENARIO_COPY}
             control={<Radio color='primary' />}
-            label='Скопировать любое поле любого изображения выбранным изображениям'
+            label={m.upload.copyAnyField}
           />
           <FormControlLabel
             value={SCENARIO_APPLY}
             control={<Radio color='primary' />}
-            label='Применить выбранную настройку для выбранных изображений'
+            label={m.upload.applySetting}
           />
         </RadioGroup>
       </FormControl>
@@ -371,7 +373,7 @@ export const GeneralSettingsPanel = ({
             sx={{ pl: 1.375 }}
           >
             {Children.toArray(
-              COPYABLE_META_FIELDS.map(({ key, label }) => (
+              copyableMetaFields.map(({ key, label }) => (
                 <FormControlLabel
                   label={label}
                   control={
@@ -389,7 +391,7 @@ export const GeneralSettingsPanel = ({
           {copyFieldKeys.length > 0 && !sourceId && (
             <Stack spacing={1} width='100%'>
               <Typography variant='body2' color='text.secondary'>
-                Выберете изображение с которого будем копировать.
+                {m.upload.pickSource}
               </Typography>
 
               <Stack
@@ -411,7 +413,7 @@ export const GeneralSettingsPanel = ({
 
               {!sourceCandidates.length && (
                 <Typography variant='body2' color='text.disabled'>
-                  Нет изображений с заполненными выбранными полями
+                  {m.upload.noFilledImages}
                 </Typography>
               )}
             </Stack>
@@ -421,7 +423,7 @@ export const GeneralSettingsPanel = ({
             <Stack spacing={2} width='100%'>
               <Stack direction='row' spacing={1} alignItems='center'>
                 <IconButton
-                  title='Изменить выбор'
+                  title={m.common.changeSelection}
                   onClick={handleBackFromSource}
                   icon={<ArrowBack />}
                 />
@@ -440,7 +442,7 @@ export const GeneralSettingsPanel = ({
                 useFlexGap
               >
                 <Typography variant='body2' color='text.secondary'>
-                  Выберете изображения куда будем копировать.
+                  {m.upload.pickTargets}
                 </Typography>
                 <Button
                   size='small'
@@ -448,7 +450,7 @@ export const GeneralSettingsPanel = ({
                   onClick={handleSelectAllTargets}
                   disabled={!targetCandidates.length}
                 >
-                  Выбрать все
+                  {m.common.selectAll}
                 </Button>
               </Stack>
 
@@ -478,7 +480,7 @@ export const GeneralSettingsPanel = ({
           <Stack spacing={1} width='100%'>
             {!hideSkipCompression && (
               <FormControlLabel
-                label='Без сжатия'
+                label={m.common.noCompression}
                 control={
                   <Checkbox
                     color='primary'
@@ -491,7 +493,7 @@ export const GeneralSettingsPanel = ({
 
             {descriptionTemplates.length > 0 && (
               <>
-                <Typography variant='subtitle2'>Описание</Typography>
+                <Typography variant='subtitle2'>{m.common.description}</Typography>
                 <Stack
                   direction='row'
                   spacing={1}
@@ -519,7 +521,7 @@ export const GeneralSettingsPanel = ({
 
             {sourceTemplates.length > 0 && (
               <>
-                <Typography variant='subtitle2'>Источник</Typography>
+                <Typography variant='subtitle2'>{m.common.source}</Typography>
                 <Stack
                   direction='row'
                   spacing={1}
@@ -556,7 +558,7 @@ export const GeneralSettingsPanel = ({
                 useFlexGap
               >
                 <Typography variant='body2' color='text.secondary'>
-                  Выберете изображения для применения настройки.
+                  {m.upload.pickImagesForSetting}
                 </Typography>
                 <Button
                   size='small'
@@ -564,7 +566,7 @@ export const GeneralSettingsPanel = ({
                   onClick={handleSelectAllImages}
                   disabled={!images.length}
                 >
-                  Выбрать все
+                  {m.common.selectAll}
                 </Button>
               </Stack>
 
@@ -597,7 +599,7 @@ export const GeneralSettingsPanel = ({
           onClick={handleSave}
           sx={{ alignSelf: 'flex-start' }}
         >
-          Сохранить
+          {m.common.save}
         </Button>
       )}
     </Stack>

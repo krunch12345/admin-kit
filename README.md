@@ -75,8 +75,92 @@ Auth uses `credentials: 'include'`, Bearer access tokens, and a `csrf-token` hea
 - Redux slice keys must be the kit defaults: `login`, `showAlert`, `showLoading` (via `loginSlice.name`, etc.).
 - Hardcoded paths: `/login`, `/`, `/404`, `/error404`.
 - `initAdminKitAuth` and `initAdminKitShell` must run once after `createApi`, before the first render that uses kit pages/shell.
-- Built-in UI copy is mostly Russian; there is no i18n layer yet.
+- Built-in UI copy defaults to **English**. Optional `AdminKitProvider` switches to Russian or custom overrides.
 - Theme must wrap `Content` (MUI portals for dialogs/popovers inherit from the nearest `ThemeProvider`).
+
+## Locale (`AdminKitProvider`)
+
+The kit ships two nested message dictionaries: **`en`** (default) and **`ru`**.
+
+`AdminKitProvider` is **optional**. Without it, all UI and runtime helpers silently use English.
+
+```jsx
+import { AdminKitProvider } from 'admin-kit'
+
+// English (same as omitting the provider)
+<AdminKitProvider>
+  <App />
+</AdminKitProvider>
+
+// Russian built-in dictionary
+<AdminKitProvider locale='ru'>
+  <App />
+</AdminKitProvider>
+
+// Deep-merge overrides on top of a locale (default locale is en)
+<AdminKitProvider
+  locale='en'
+  messages={{
+    login: { pageTitle: 'Admin sign-in' },
+    shell: { clearCache: 'Flush cache' },
+  }}
+>
+  <App />
+</AdminKitProvider>
+```
+
+Behavior:
+
+| Prop | Effect |
+| --- | --- |
+| *(none)* / no provider | English defaults |
+| `locale="en" \| "ru"` | Built-in dictionary for that locale |
+| `messages={...}` | Deep-merged onto the selected locale |
+| `includeModalProvider={false}` | Locale only; mount `ModalDataProvider` yourself |
+
+`AdminKitProvider` also mounts **`ModalDataProvider`** by default (recommended root kit wrapper). Component props still override dictionary values when passed (`title ?? messages.login.pageTitle`).
+
+### Non-React / early setup
+
+`createAdminBaseQuery`, `getAddImagesErrorMessage`, `formatFileSize`, and similar helpers read the active dictionary via `getAdminKitMessages()` at call time.
+
+`AdminKitProvider` keeps that module runtime in sync. If you need locale **before** the first React render (tests, store boot), call:
+
+```js
+import { configureAdminKit } from 'admin-kit'
+
+configureAdminKit({ locale: 'ru' })
+// or
+configureAdminKit({
+  locale: 'en',
+  messages: { errors: { uploadFallback: 'Upload failed' } },
+})
+```
+
+### Date pickers (`LOCALE_TEXT`)
+
+MUI X picker strings live under `messages.datePickers`. The kit does **not** mount `LocalizationProvider` — wire it in the app:
+
+```jsx
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { useAdminKitLocaleText } from 'admin-kit'
+
+const LocaleAwarePickers = ({ children }) => {
+  const localeText = useAdminKitLocaleText()
+  return (
+    <LocalizationProvider dateAdapter={AdapterDateFns} localeText={localeText}>
+      {children}
+    </LocalizationProvider>
+  )
+}
+```
+
+Static `LOCALE_TEXT` remains the English snapshot for backward compatibility; prefer `useAdminKitLocaleText()` / `getLocaleText()`.
+
+### Image meta labels
+
+Field **keys** (`name` / `nameEN`, …) stay structural. Display labels come from `messages.imageMeta`. Use `useImageMetaFields()` / `getImageMetaFields()` when you need localized catalog entries. The static `IMAGE_META_FIELDS` export keeps English labels.
 
 ## Wiring
 
@@ -150,10 +234,10 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import {
   Account,
+  AdminKitProvider,
   Content,
   Login,
   Main,
-  ModalDataProvider,
   NotFound,
   PrivateRoute,
   TokenRestorer,
@@ -162,7 +246,7 @@ import { store } from './store'
 import { theme } from './theme'
 
 const RootLayout = () => (
-  <ModalDataProvider>
+  <AdminKitProvider locale='en'>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <TokenRestorer />
@@ -171,7 +255,7 @@ const RootLayout = () => (
         footerProps={{ developer: 'Jane Doe', copyrightStartYear: 2026 }}
       />
     </ThemeProvider>
-  </ModalDataProvider>
+  </AdminKitProvider>
 )
 
 const App = () => (
@@ -241,11 +325,15 @@ Footer is omitted when `footerProps` is not passed.
 
 ### Portals / modals
 
-`Content` hosts shared `Modal`, `Alert`, and `Loading`. Drive the modal through `ModalData` (`setModalData`, `closeModal`) from `ModalDataProvider`. Keep `ThemeProvider` above `Content`.
+`Content` hosts shared `Modal`, `Alert`, and `Loading`. Drive the modal through `ModalData` (`setModalData`, `closeModal`) from the provider tree (`AdminKitProvider` includes `ModalDataProvider` by default). Keep `ThemeProvider` above `Content`.
 
 ## Public API (by area)
 
 Exports come from the package root. Names match `src/index.js`.
+
+### Locale
+
+`AdminKitProvider`, `configureAdminKit`, `getAdminKitMessages`, `getAdminKitLocale`, `resolveAdminKitMessages`, `ADMIN_KIT_LOCALES`, `enMessages`, `ruMessages`, `formatMessage`, `toMuiLocaleText`, `useAdminKitMessages`, `useAdminKitLocale`, `useAdminKitLocaleText`, `useImageMetaFields`, `useCopyableMetaFields`, `getImageMetaFields`, `getCopyableMetaFields`, `LOCALE_TEXT`, `getLocaleText`
 
 ### Auth
 
@@ -269,7 +357,7 @@ Exports come from the package root. Names match `src/index.js`.
 
 ### Utils / constants
 
-`checkRequiredFields`, `copyImageToClipboard`, `getAddImagesErrorMessage`, `isAppFileTooLargePayload`, `formatStringISODate`, `getChangedFieldLabels`, `configureImageProxy`, `getProxiedImageFetchUrl`, `getImageFetchAttempts`, `clearImageByteSizeCache`, `formatFileSize`, `formatImageDimensions`, `formatImageSizeLabel`, `loadImageDimensions`, `fetchImageByteSize`, list-position helpers (`getListItemDomId`, `readListPosition`, `writeListPosition`, `clearListScrollTarget`, `getListNeighborId`, `rememberListOpen`, `prepareListReturnAfterCreate`, `prepareListReturnAfterDelete`), image optimize helpers (`optimizeImageForUpload`, …), `showQueryAlerts`, `slugify`, `trimText`, batch image constants (`BATCH_IMAGE_*`, `chunkArray`, …), `LOCALE_TEXT`, `ADMIN_KIT_VERSION`
+`checkRequiredFields`, `copyImageToClipboard`, `getAddImagesErrorMessage`, `isAppFileTooLargePayload`, `formatStringISODate`, `getChangedFieldLabels`, `configureImageProxy`, `getProxiedImageFetchUrl`, `getImageFetchAttempts`, `clearImageByteSizeCache`, `formatFileSize`, `formatImageDimensions`, `formatImageSizeLabel`, `loadImageDimensions`, `fetchImageByteSize`, list-position helpers (`getListItemDomId`, `readListPosition`, `writeListPosition`, `clearListScrollTarget`, `getListNeighborId`, `rememberListOpen`, `prepareListReturnAfterCreate`, `prepareListReturnAfterDelete`), image optimize helpers (`optimizeImageForUpload`, …), `showQueryAlerts`, `slugify`, `trimText`, batch image constants (`BATCH_IMAGE_*`, `chunkArray`, …), `ADMIN_KIT_VERSION`
 
 ## Notable helpers
 

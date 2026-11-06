@@ -1,16 +1,16 @@
-import React from 'react'
 import { DatePicker } from '../DatePicker/DatePicker.jsx'
 import { endOfDay } from 'date-fns'
 import { onChangeEndDate } from './onChangeEndDate.js'
 import PropTypes from 'prop-types'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * DateRangePicker component
  * @param {object} props - Component props
  * @param {object} props.filters - Filters object with startDate and endDate properties
  * @param {function} props.setFilters - Function to update filters object
- * @param {string} [props.startLabel="Начало периода"] - Label for start date picker
- * @param {string} [props.endLabel="Конец периода"] - Label for end date picker
+ * @param {string} [props.startLabel="Start date"] - Label for start date picker
+ * @param {string} [props.endLabel="End date"] - Label for end date picker
  * @param {boolean} [props.fullWidth=true] - Whether to make date pickers full width
  * @param {boolean} [props.allowFuture=true] - Whether to allow selecting future dates
  * @param {boolean} [props.hideClearButton] - Whether to hide clear button for date pickers
@@ -19,16 +19,18 @@ import PropTypes from 'prop-types'
 export const DateRangePicker = ({
   filters,
   setFilters,
-  startLabel = 'Начало периода',
-  endLabel = 'Конец периода',
+  startLabel,
+  endLabel,
   fullWidth = true,
   allowFuture = true,
   hideClearButton,
 }) => {
+  const m = useAdminKitMessages()
+
   return (
     <>
       <DatePicker
-        label={startLabel}
+        label={startLabel ?? m.dateRangePicker.startLabel}
         value={filters?.startDate ?? null}
         onChange={(newDate, error) => {
           if (!error.validationError) {
@@ -47,7 +49,7 @@ export const DateRangePicker = ({
         sx={{ m: 1, flex: 1, minWidth: '15.5rem' }}
       />
       <DatePicker
-        label={endLabel}
+        label={endLabel ?? m.dateRangePicker.endLabel}
         value={filters?.endDate ?? null}
         onChange={(newDate, error) => {
           if (!error.validationError) {

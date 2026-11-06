@@ -2,6 +2,7 @@ import { Box, Divider, Stack } from '@mui/material'
 import PropTypes from 'prop-types'
 import { DialogRemoveButton } from '../DialogRemoveButton/DialogRemoveButton.jsx'
 import { CropControls } from '../CropControls/CropControls.jsx'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} PendingImageItemProps
@@ -24,8 +25,11 @@ export const PendingImageItem = ({
   showDivider,
   onFileChange,
   onRemove,
-}) => (
-  <>
+}) => {
+  const m = useAdminKitMessages()
+
+  return (
+    <>
     {showDivider && (
       <Divider flexItem sx={{ width: '100%', borderBottomWidth: 2, borderColor: 'grey.500' }} />
     )}
@@ -42,7 +46,7 @@ export const PendingImageItem = ({
         ) : (
           <DialogRemoveButton
             variant='text'
-            confirmMessage='Вы точно хотите удалить это изображение?'
+            confirmMessage={m.upload.confirmDeleteImage}
             onRemove={() => onRemove(item.id)}
           />
         )
@@ -59,14 +63,15 @@ export const PendingImageItem = ({
 
           <DialogRemoveButton
             variant='text'
-            confirmMessage='Вы точно хотите удалить это изображение?'
+            confirmMessage={m.upload.confirmDeleteImage}
             onRemove={() => onRemove(item.id)}
           />
         </>
       )}
     </Stack>
-  </>
-)
+    </>
+  )
+}
 
 PendingImageItem.propTypes = {
   item: PropTypes.shape({

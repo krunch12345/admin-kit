@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Badge, Box, IconButton, Stack, Tooltip } from '@mui/material'
 import { ExpandLess, ExpandMore, FilterAltOff, Refresh } from '@mui/icons-material'
 import { isEqual } from 'lodash-es'
 import { countNonEmptyFilters } from './countNonEmptyFilters.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -21,6 +22,7 @@ import { countNonEmptyFilters } from './countNonEmptyFilters.js'
  * @returns {React.ReactElement} The Filter bar component.
  */
 export const FilterBar = ({ children, setFilters, initFilters, filters, refetch, isDisabledRefetch }) => {
+  const m = useAdminKitMessages()
   const [extended, setExtended] = useState(false)
   const [isWrapped, setIsWrapped] = useState(false)
   const [hiddenElements, setHiddenElements] = useState(0)
@@ -30,8 +32,8 @@ export const FilterBar = ({ children, setFilters, initFilters, filters, refetch,
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
       for (let entry of entries) {
-        // Сравниваем высоту контейнера с высотой одной строки
-        const isContentWrapped = entry.contentRect.height > 56 // 56px - высота одной строки
+        // Compare container height with a single row height
+        const isContentWrapped = entry.contentRect.height > 56 // 56px — one row height
         setIsWrapped(isContentWrapped)
       }
     })
@@ -88,7 +90,7 @@ export const FilterBar = ({ children, setFilters, initFilters, filters, refetch,
       overflow={extended ? 'auto' : 'hidden'}
       flex={1}
     >
-      <Tooltip title='Обновить данные'>
+      <Tooltip title={m.filterBar.refreshData}>
         <div>
           <IconButton
             onClick={refetch}
@@ -101,7 +103,7 @@ export const FilterBar = ({ children, setFilters, initFilters, filters, refetch,
       </Tooltip>
 
       {showExpandButton && (
-        <Tooltip title={extended ? 'Свернуть фильтры' : 'Отобразить все фильтры'}>
+        <Tooltip title={extended ? m.filterBar.collapseFilters : m.filterBar.showAllFilters}>
           <IconButton
             onClick={() => setExtended(!extended)}
             color='primary'
@@ -112,7 +114,7 @@ export const FilterBar = ({ children, setFilters, initFilters, filters, refetch,
       )}
 
       <Box pr={2}>
-        <Tooltip title='Удалить фильтры'>
+        <Tooltip title={m.filterBar.clearFilters}>
           <Badge color='error' badgeContent={countFilters}>
             <div>
               <IconButton

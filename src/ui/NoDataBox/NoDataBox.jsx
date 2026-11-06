@@ -1,7 +1,8 @@
-import React from 'react'
 import { Box, Button, Skeleton, Stack, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { formatMessage } from '../../locale/formatMessage.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -22,7 +23,13 @@ export const NoDataBox = ({
   id,
   isListEmpty = false,
 }) => {
+  const m = useAdminKitMessages()
   const navigate = useNavigate()
+
+  const missingMessage = formatMessage(m.noDataBox.missingInDb, {
+    noDataObject,
+    idPart: id ? formatMessage(m.noDataBox.idPart, { id }) : '',
+  })
 
   return (
     <Box
@@ -45,13 +52,13 @@ export const NoDataBox = ({
             <Typography>
               {isListEmpty
                 ? noDataObject
-                : `${noDataObject} ${id ? `с ID ${id}` : ''} отсутствует в базе данных.`}
+                : missingMessage}
             </Typography>
           </Stack>
 
           {!isListEmpty && (
             <Button variant='contained' onClick={() => navigate('/')}>
-              На главную
+              {m.noDataBox.goHome}
             </Button>
           )}
         </Stack>

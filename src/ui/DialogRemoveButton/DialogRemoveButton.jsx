@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { IconButton } from '../IconButton/IconButton.jsx'
 import { MdDeleteForever } from 'react-icons/md'
 import PropTypes from 'prop-types'
 import { Button, MenuItem, Typography } from '@mui/material'
 import { ConfirmPopper } from '../ConfirmYesNo/ConfirmPopper.jsx'
+import { formatMessage } from '../../locale/formatMessage.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -33,16 +35,19 @@ export const DialogRemoveButton = ({
   onClick,
   confirmMessage,
   variant = 'icon',
-  label = 'Удалить',
+  label,
   showIcon = true,
   requireConfirm = true,
   disabled = false,
 }) => {
+  const m = useAdminKitMessages()
   const [anchorConfirmEl, setAnchorConfirmEl] = useState(null)
   const [openConfirm, setOpenConfirm] = useState(false)
 
+  const resolvedLabel = label ?? m.dialogRemove.label
+
   const confirmationText = confirmMessage
-    ?? `Вы уверены, что хотите удалить ${nameObject} ${name}?`.trim()
+    ?? formatMessage(m.dialogRemove.confirmMessage, { nameObject, name }).trim()
 
   const handleOnClick = (e) => {
     e.stopPropagation()
@@ -67,7 +72,7 @@ export const DialogRemoveButton = ({
       return (
         <MenuItem onClick={handleOnClick} disabled={disabled}>
           <Typography sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            {showIcon && <MdDeleteForever />} Удалить
+            {showIcon && <MdDeleteForever />} {resolvedLabel}
           </Typography>
         </MenuItem>
       )
@@ -82,7 +87,7 @@ export const DialogRemoveButton = ({
           onClick={handleOnClick}
           disabled={disabled}
         >
-          {label}
+          {resolvedLabel}
         </Button>
       )
     }
@@ -90,7 +95,7 @@ export const DialogRemoveButton = ({
     return (
       <IconButton
         icon={<MdDeleteForever />}
-        title={`Удалить ${nameObject} ${name}`.trim() || label}
+        title={formatMessage(m.dialogRemove.title, { nameObject, name }).trim() || resolvedLabel}
         onClick={handleOnClick}
         color='error'
         disabled={disabled}

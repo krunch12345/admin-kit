@@ -22,6 +22,7 @@ import { loginSelector } from '../auth/loginSlice.js'
 import { handleLogout } from '../auth/handleLogout.js'
 import { showAlert } from '../ui/Alert/showAlertSlice.js'
 import { getShellHooks } from './runtimeHooks.js'
+import { useAdminKitMessages } from '../locale/useAdminKitMessages.js'
 
 const StyledAppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -64,6 +65,7 @@ export const AppBar = ({
   showInvalidateCache = true,
   onInvalidateCache,
 }) => {
+  const m = useAdminKitMessages()
   const { useInvalidateAllCacheMutation } = getShellHooks()
   const [anchorElUser, setAnchorElUser] = useState(null)
   const [isInvalidatingCache, setIsInvalidatingCache] = useState(false)
@@ -98,7 +100,7 @@ export const AppBar = ({
         showAlert({
           isShowAlert: true,
           severity: 'success',
-          message: 'Кэш успешно очищен',
+          message: m.shell.cacheCleared,
         }),
       )
     } catch {
@@ -106,13 +108,13 @@ export const AppBar = ({
         showAlert({
           isShowAlert: true,
           severity: 'error',
-          message: 'Ошибка при сбросе кэша',
+          message: m.shell.cacheResetError,
         }),
       )
     } finally {
       setIsInvalidatingCache(false)
     }
-  }, [dispatch, invalidateAllCache, onInvalidateCache])
+  }, [dispatch, invalidateAllCache, m.shell.cacheCleared, m.shell.cacheResetError, onInvalidateCache])
 
   const handleOpenUserMenu = e => {
     setAnchorElUser(e.currentTarget)
@@ -137,9 +139,9 @@ export const AppBar = ({
       </Box>
     ) : (
       <IconButton
-        title='Открыть меню'
+        title={m.shell.openMenu}
         color='inherit'
-        aria-label='Открыть меню'
+        aria-label={m.shell.openMenu}
         onClick={() => setDrawerOpen(true)}
         edge='start'
         sx={{
@@ -153,7 +155,7 @@ export const AppBar = ({
         <Menu />
       </IconButton>
     )
-  ), [drawerOpen, isFetchingMenu, setDrawerOpen])
+  ), [drawerOpen, isFetchingMenu, m.shell.openMenu, setDrawerOpen])
 
   const userMenu = useMemo(() => (
     <Box>
@@ -192,7 +194,7 @@ export const AppBar = ({
           }}
         >
           <Typography>
-            Настройки
+            {m.common.settings}
           </Typography>
         </MenuItem>
 
@@ -204,12 +206,12 @@ export const AppBar = ({
           }}
         >
           <Typography>
-            Выход
+            {m.common.signOut}
           </Typography>
         </MenuItem>
       </UserMenu>
     </Box>
-  ), [anchorElUser, dispatch, navigate, nickname])
+  ), [anchorElUser, dispatch, m.common.settings, m.common.signOut, navigate, nickname])
 
   return (
     <StyledAppBar
@@ -253,7 +255,7 @@ export const AppBar = ({
                   onClick={handleInvalidateCache}
                   startIcon={<DeleteForever />}
                 >
-                  Очистить кэш
+                  {m.shell.clearCache}
                 </Button>
               )}
 

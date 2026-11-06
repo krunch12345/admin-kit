@@ -14,6 +14,8 @@ import UploadButton from '@rpldy/upload-button'
 import { TextField } from '../TextField/TextField.jsx'
 import { FileUpload } from './FileUpload.jsx'
 import { useScreen } from '../../hooks/useScreen.js'
+import { formatMessage } from '../../locale/formatMessage.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 const StyledTextField = styled(TextField)`
   width: 100%;
@@ -111,10 +113,11 @@ export const ImageUploadMethods = ({
   hideLabel = true,
   pasteParams = 'paste',
 }) => {
+  const m = useAdminKitMessages()
   const { isMaxWidth900 } = useScreen()
 
-  const selectLabel = multiple ? 'Выбрать файлы' : 'Выбрать файл'
-  const dropNoun = multiple ? 'файлы' : 'файл'
+  const selectLabel = multiple ? m.upload.selectFiles : m.upload.selectFile
+  const fileNoun = multiple ? m.upload.fileNounPlural : m.upload.fileNounSingular
 
   const handleFilesAdded = (files) => {
     if (onFilesAdded) {
@@ -151,18 +154,18 @@ export const ImageUploadMethods = ({
         <DragHighlightDropZone>
           <PasteUploadDropZone params={{ test: pasteParams }}>
             <Stack spacing={1} alignItems='center' color='gray' p={1}>
-              <Typography>{`Вы можете перенести ${dropNoun} сюда`}</Typography>
-              <Typography>ИЛИ</Typography>
-              <Typography>Кликнуть на поле рядом и вставить файл из буфера</Typography>
-              <Typography>ИЛИ</Typography>
-              <Typography>{`Выбрать ${dropNoun}, нажав на кнопку`}</Typography>
+              <Typography>{formatMessage(m.upload.dropHere, { fileNoun })}</Typography>
+              <Typography>{m.common.or}</Typography>
+              <Typography>{m.upload.pasteHint}</Typography>
+              <Typography>{m.common.or}</Typography>
+              <Typography>{formatMessage(m.upload.chooseViaButton, { fileNoun })}</Typography>
             </Stack>
           </PasteUploadDropZone>
         </DragHighlightDropZone>
 
         <Stack spacing={5} flex={1} alignItems='center' width='100%' justifyContent='space-evenly'>
           <PasteInput
-            extraProps={{ placeholder: 'Вставить файл из буфера' }}
+            extraProps={{ placeholder: m.upload.clipboardPlaceholder }}
             className='paste-input'
             onPasteUpload={handlePasteUpload}
           />

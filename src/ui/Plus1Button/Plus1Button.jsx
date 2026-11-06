@@ -1,7 +1,7 @@
-import React from 'react'
 import { Button, Fab } from '@mui/material'
 import { MdExposurePlus1 } from 'react-icons/md'
 import PropTypes from 'prop-types'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -16,6 +16,8 @@ import PropTypes from 'prop-types'
  * @returns {React.ReactElement} The Plus1 button component.
  */
 export const Plus1Button = ({ isFab, onClick, disabled }) => {
+  const m = useAdminKitMessages()
+
   return !isFab ? (
     <Button
       type='button'
@@ -24,7 +26,7 @@ export const Plus1Button = ({ isFab, onClick, disabled }) => {
       variant='contained'
       onClick={onClick}
       disabled={disabled}
-      title='Добавить'
+      title={m.plus1.title}
     >
       <MdExposurePlus1 size={25} />
     </Button>
@@ -34,7 +36,7 @@ export const Plus1Button = ({ isFab, onClick, disabled }) => {
       color='primary'
       sx={{ position: 'absolute', right: 25, top: 34 }}
       disabled={disabled}
-      title='Добавить'
+      title={m.plus1.title}
     >
       <MdExposurePlus1 size={25} onClick={onClick} />
     </Fab>

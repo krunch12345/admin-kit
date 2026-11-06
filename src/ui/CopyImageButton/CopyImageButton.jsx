@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { IconButton } from '../IconButton/IconButton.jsx'
 import { showAlert } from '../Alert/showAlertSlice.js'
 import { copyImageToClipboard } from '../../utils/copyImageToClipboard.js'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} CopyImageButtonProps
@@ -21,9 +22,10 @@ import { copyImageToClipboard } from '../../utils/copyImageToClipboard.js'
 export const CopyImageButton = ({
   url,
   imgRef,
-  title = 'Скопировать в буфер',
+  title,
   icon = <Image />,
 }) => {
+  const m = useAdminKitMessages()
   const [isCopied, setIsCopied] = useState(false)
   const dispatch = useDispatch()
 
@@ -39,7 +41,7 @@ export const CopyImageButton = ({
         dispatch(showAlert({
           isShowAlert: true,
           severity: 'success',
-          message: 'Изображение скопировано в буфер обмена',
+          message: m.copyImageButton.success,
         }))
         setTimeout(() => setIsCopied(false), 2000)
       })
@@ -47,14 +49,14 @@ export const CopyImageButton = ({
         dispatch(showAlert({
           isShowAlert: true,
           severity: 'error',
-          message: 'Не удалось скопировать изображение',
+          message: m.copyImageButton.error,
         }))
       })
-  }, [dispatch, imgRef, url])
+  }, [dispatch, imgRef, m.copyImageButton.error, m.copyImageButton.success, url])
 
   return (
     <IconButton
-      title={isCopied ? 'Скопировано!' : title}
+      title={isCopied ? m.copyImageButton.copied : title ?? m.copyImageButton.title}
       onClick={handleCopy}
       icon={icon}
       sx={isCopied ? {

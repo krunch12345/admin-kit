@@ -1,6 +1,7 @@
 import { Stack, Typography } from '@mui/material'
 import { useBatchAddListener } from '@rpldy/uploady'
 import PropTypes from 'prop-types'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -16,6 +17,8 @@ import PropTypes from 'prop-types'
  * @returns {React.ReactElement} The FileUpload component.
  */
 export const FileUpload = ({ onFilesAdded, hideLabel = false }) => {
+  const m = useAdminKitMessages()
+
   useBatchAddListener((batch) => {
     const files = batch.items
       .map((item) => item.file)
@@ -30,7 +33,7 @@ export const FileUpload = ({ onFilesAdded, hideLabel = false }) => {
 
   return (
     <Stack spacing={1} alignItems='center' sx={hideLabel ? { display: 'none' } : undefined}>
-      <Typography>Предпросмотр:</Typography>
+      <Typography>{m.upload.preview}</Typography>
     </Stack>
   )
 }

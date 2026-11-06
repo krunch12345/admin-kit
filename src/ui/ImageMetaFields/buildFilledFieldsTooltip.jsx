@@ -5,6 +5,7 @@ import {
   COPYABLE_META_FIELDS,
   isMetaValueFilled,
 } from './imageMetaFields.js'
+import { getAdminKitMessages } from '../../locale/runtime.js'
 
 /**
  * @param {string} label
@@ -55,7 +56,7 @@ export const buildFilledFieldsTooltip = (image) => {
     .filter(Boolean)
 
   if (!rows.length) {
-    return 'Нет заполненных полей'
+    return getAdminKitMessages().imageMeta.emptyFilledFields
   }
 
   return (

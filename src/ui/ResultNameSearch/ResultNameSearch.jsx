@@ -1,7 +1,7 @@
-import React from 'react'
 import { Accordion } from '../Accordion/Accordion.jsx'
 import PropTypes from 'prop-types'
 import { Typography } from '@mui/material'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
 
 /**
  * @typedef {object} IProps
@@ -20,15 +20,17 @@ export const ResultNameSearch = ({
   children,
   count,
   isErrorBackground,
-  summaryTitle = 'Результат поиска по имени/названию'
+  summaryTitle,
 }) => {
+  const m = useAdminKitMessages()
+
   return (
     <Accordion
-      summaryTitle={summaryTitle}
+      summaryTitle={summaryTitle ?? m.resultNameSearch.summaryTitle}
       count={count}
       isErrorBackground={isErrorBackground}
     >
-      {count > 0 ? children : <Typography>Совпадений не найдено</Typography>}
+      {count > 0 ? children : <Typography>{m.resultNameSearch.noMatches}</Typography>}
     </Accordion>
   )
 }
