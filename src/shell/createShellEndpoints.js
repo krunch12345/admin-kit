@@ -1,5 +1,5 @@
 /**
- * Endpoints required by Header/AppBar: admin menu and Redis cache invalidation.
+ * Endpoints required by Header/AppBar: admin menu and cache invalidation.
  * Spread into createApi endpoints: `...createShellEndpoints(builder)`.
  * @param {object} builder - RTK Query endpoint builder.
  */
@@ -20,7 +20,7 @@ export const createShellEndpoints = (builder) => ({
   }),
 
   /**
-   * Removes all cached entries in Redis. Used to force data refresh.
+   * Invalidates server-side cache. Used to force data refresh.
    * @returns {Promise<Object>} - A Promise that resolves with the response data.
    */
   invalidateAllCache: builder.mutation({

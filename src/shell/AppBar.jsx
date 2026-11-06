@@ -106,7 +106,7 @@ export const AppBar = ({
         showAlert({
           isShowAlert: true,
           severity: 'error',
-          message: 'Ошибка при сбросе Redis',
+          message: 'Ошибка при сбросе кэша',
         }),
       )
     } finally {
@@ -253,7 +253,7 @@ export const AppBar = ({
                   onClick={handleInvalidateCache}
                   startIcon={<DeleteForever />}
                 >
-                  Очистить Redis-кэш
+                  Очистить кэш
                 </Button>
               )}
 
