@@ -3,7 +3,7 @@
 Shared admin panel kit for React apps: auth, layout, shell, pages, and reusable MUI UI.
 Built for apps that use React Router, Redux Toolkit / RTK Query, and Material UI.
 
-The package is private and ships as a built ESM bundle (`dist/admin-kit.js`).
+Ships as built ESM (`dist/admin-kit.js`) with TypeScript declarations and optional subpath exports (`admin-kit/auth`, `admin-kit/ui`, …). See [CHANGELOG.md](./CHANGELOG.md) for notable changes.
 
 ## Requirements
 
@@ -25,33 +25,34 @@ Install the same major ranges as in `package.json`:
 
 ### Regular dependency
 
-`async-mutex` is bundled as a normal dependency (used by `createAdminBaseQuery`).
+`async-mutex` is a normal dependency (externalized in the build; consumers resolve it from `node_modules`).
+
+### Optional peers
+
+Upload (`@rpldy/*`, `react-image-crop`), date pickers (`@mui/x-date-pickers`, `date-fns`), and `react-scroll` are marked optional via `peerDependenciesMeta`. Install them when you use those features.
 
 ## Install
 
-The package is `"private": true`. Consume it from a monorepo workspace, a local path, or a private registry.
-
 ```sh
-# after linking / adding the package
+yarn add admin-kit
+# or link from a monorepo / path
 yarn && yarn build
 ```
 
-Consumers import the built entry:
-
 ```js
 import { Content, createAdminBaseQuery } from 'admin-kit'
+import { TextField } from 'admin-kit/ui'
 ```
-
-Rebuild the kit whenever its source changes (`yarn build` or `yarn dev` for watch mode).
 
 ## Scripts
 
 | Script | Description |
 | --- | --- |
-| `yarn build` | Production library build into `dist/` |
+| `yarn build` | Production library build into `dist/` (+ `.d.ts`) |
 | `yarn dev` | Watch mode rebuild |
-| `yarn lint` | ESLint on `src` |
-| `yarn test` | Node test runner on `src/**/*.test.js` |
+| `yarn lint` | ESLint |
+| `yarn typecheck` | TypeScript `tsc --noEmit` |
+| `yarn test` | Vitest |
 
 ## Backend contract
 
@@ -76,16 +77,17 @@ Session restore uses `hasSession` in **localStorage** only when Remember me is c
 ## Assumptions
 
 - Redux slice keys must be the kit defaults: `login`, `showAlert`, `showLoading` (via `loginSlice.name`, etc.).
-- Hardcoded paths: `/login`, `/`, `/404`, `/error404`.
-- `initAdminKitAuth` and `initAdminKitShell` must run once after `createApi`, before the first render that uses kit pages/shell.
-- Built-in UI copy defaults to **English**. Optional `AdminKitProvider` switches to Russian or custom overrides.
+- Mount `<AdminKitProvider api={api}>` (and `createAuthListenerMiddleware`) before kit pages/shell.
+- Default routes: `/login`, `/`, `/account`, `/404`, `/error404` — override via `config.routes`.
+- Session flag key defaults to `admin-kit:hasSession` — override via `config.storageKeys`.
+- Built-in UI copy defaults to **English**. Pass `locale="ru"` and/or `messages` overrides.
 - Theme must wrap `Content` (MUI portals for dialogs/popovers inherit from the nearest `ThemeProvider`).
 
 ## Locale (`AdminKitProvider`)
 
 The kit ships two nested message dictionaries: **`en`** (default) and **`ru`**.
 
-`AdminKitProvider` is **optional**. Without it, all UI and runtime helpers silently use English.
+`AdminKitProvider` is required for auth/shell hooks (`api` prop). Locale alone still defaults to English when `locale`/`messages` are omitted.
 
 ```jsx
 import { AdminKitProvider } from 'admin-kit'
@@ -167,7 +169,7 @@ Field **keys** (`name` / `nameEN`, …) stay structural. Display labels come fro
 
 ## Wiring
 
-### 1. API, store, and kit init
+### 1. API and store
 
 ```js
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
@@ -175,9 +177,8 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import {
   createAdminBaseQuery,
   createAuthEndpoints,
+  createAuthListenerMiddleware,
   createShellEndpoints,
-  initAdminKitAuth,
-  initAdminKitShell,
   loginSlice,
   showAlertSlice,
   showLoadingSlice,
@@ -192,15 +193,7 @@ export const api = createApi({
   }),
 })
 
-export const {
-  useLoginAdminMutation,
-  useVerify2FAMutation,
-  useEnable2FAMutation,
-  useGetCurrentUserQuery,
-  useLogoutAdminMutation,
-  useGetAdminMenuQuery,
-  useInvalidateAllCacheMutation,
-} = api
+const authListener = createAuthListenerMiddleware()
 
 const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
@@ -212,27 +205,11 @@ const rootReducer = combineReducers({
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
-})
-
-initAdminKitAuth({
-  useLoginAdminMutation,
-  useVerify2FAMutation,
-  useEnable2FAMutation,
-  useGetCurrentUserQuery,
-  // Recommended: revoke refresh cookie on Sign out / session expiry cleanup
-  requestLogout: () => store.dispatch(
-    api.endpoints.logoutAdmin.initiate(undefined, { track: false }),
-  ).unwrap(),
-})
-
-initAdminKitShell({
-  useGetAdminMenuQuery,
-  useInvalidateAllCacheMutation,
+    getDefaultMiddleware().concat(api.middleware, authListener.middleware),
 })
 ```
 
-Getters throw if the kit is not initialized. `requestLogout` is optional for backward compatibility; without it, logout only clears client state.
+Custom endpoints that need unauthenticated access must set `extraOptions: { requiresAuth: false }` (not `__meta` on the query args).
 
 ### 2. Layout, providers, and routes
 
@@ -250,11 +227,20 @@ import {
   PrivateRoute,
   TokenRestorer,
 } from 'admin-kit'
-import { store } from './store'
+import { api, store } from './store'
 import { theme } from './theme'
 
 const RootLayout = () => (
-  <AdminKitProvider locale='en'>
+  <AdminKitProvider
+    api={api}
+    locale='en'
+    requestLogout={() => store.dispatch(
+      api.endpoints.logoutAdmin.initiate(undefined, { track: false }),
+    ).unwrap()}
+    resetApiState={() => {
+      store.dispatch(api.util.resetApiState())
+    }}
+  >
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <TokenRestorer />
