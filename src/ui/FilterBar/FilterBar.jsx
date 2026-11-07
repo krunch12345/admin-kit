@@ -85,10 +85,10 @@ export const FilterBar = ({ children, setFilters, initFilters, filters, refetch,
       spacing={0}
       width='100%'
       alignItems='center'
+      alignContent='flex-start'
       flexWrap='wrap'
       maxHeight={extended ? 'fit-content' : '3.5rem'}
       overflow={extended ? 'auto' : 'hidden'}
-      flex={1}
     >
       <Tooltip title={m.filterBar.refreshData}>
         <div>
