@@ -1,5 +1,6 @@
-import React, { Children, useMemo } from 'react'
+import React, { Children, useEffect, useMemo } from 'react'
 import {
+  Backdrop,
   Divider,
   Drawer as MuiDrawer,
   IconButton,
@@ -80,6 +81,21 @@ export const Drawer = ({ drawerOpen, setDrawerOpen, isFetchingMenu, menu }) => {
 
   const { isMaxWidth600 } = useScreen()
 
+  useEffect(() => {
+    if (!drawerOpen) {
+      return undefined
+    }
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setDrawerOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [drawerOpen, setDrawerOpen])
+
   const drawerHeader = useMemo(() => (
     <DrawerHeader sx={{ py: drawerOpen ? 1.5 : 4 }}>
       {drawerOpen && (
@@ -112,23 +128,31 @@ export const Drawer = ({ drawerOpen, setDrawerOpen, isFetchingMenu, menu }) => {
   ), [drawerOpen, menu, setDrawerOpen])
 
   return (
-    <StyledDrawer
-      variant='permanent'
-      open={drawerOpen}
-      PaperProps={{
-        style: {
-          backgroundColor: (isMain && !drawerOpen) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.9)',
-        },
-      }}
-      sx={{
-        display: isMaxWidth600 && !drawerOpen ? 'none' : 'block',
-        zIndex: 10000
-      }}
-    >
-      {drawerHeader}
-      <Divider />
-      {!isFetchingMenu && navBar}
-    </StyledDrawer>
+    <>
+      <Backdrop
+        open={drawerOpen}
+        onClick={() => setDrawerOpen(false)}
+        sx={{ zIndex: 9999 }}
+      />
+
+      <StyledDrawer
+        variant='permanent'
+        open={drawerOpen}
+        PaperProps={{
+          style: {
+            backgroundColor: (isMain && !drawerOpen) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.9)',
+          },
+        }}
+        sx={{
+          display: isMaxWidth600 && !drawerOpen ? 'none' : 'block',
+          zIndex: 10000
+        }}
+      >
+        {drawerHeader}
+        <Divider />
+        {!isFetchingMenu && navBar}
+      </StyledDrawer>
+    </>
   )
 }
 
