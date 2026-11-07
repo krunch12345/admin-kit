@@ -70,6 +70,10 @@ export const ruMessages = {
     closeMenu: 'Закрыть меню',
   },
 
+  main: {
+    searchLabel: 'Поиск по сайту',
+  },
+
   autocomplete: {
     loadingText: 'Идет загрузка...',
     enterName: 'Введите название',

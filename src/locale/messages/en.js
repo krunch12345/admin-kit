@@ -70,6 +70,10 @@ export const enMessages = {
     closeMenu: 'Close menu',
   },
 
+  main: {
+    searchLabel: 'Site search',
+  },
+
   autocomplete: {
     loadingText: 'Loading...',
     enterName: 'Enter a name',
