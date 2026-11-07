@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -24,6 +24,14 @@ export const Modal = () => {
   const { modalData } = states
   const [closeConfirmAnchorEl, setCloseConfirmAnchorEl] = useState(null)
   const [isCloseConfirmOpen, setIsCloseConfirmOpen] = useState(false)
+  const isDialogOpen = Boolean(modalData?.open)
+
+  useEffect(() => {
+    if (isDialogOpen) return
+
+    setIsCloseConfirmOpen(false)
+    setCloseConfirmAnchorEl(null)
+  }, [isDialogOpen])
 
   const {
     children,
@@ -40,6 +48,7 @@ export const Modal = () => {
     closeConfirmMessage,
     fullHeight = false,
     headerExtra = null,
+    ownerId: _ownerId,
     ...restModalData
   } = modalData
 
@@ -190,7 +199,7 @@ export const Modal = () => {
       </Dialog>
 
       <ConfirmPopper
-        open={isCloseConfirmOpen}
+        open={isCloseConfirmOpen && isDialogOpen}
         anchorEl={closeConfirmAnchorEl}
         placement='bottom-end'
         message={closeConfirmMessage ?? messages.modal.closeConfirmMessage}

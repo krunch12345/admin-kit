@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -6,7 +6,6 @@ import { Box, Stack } from '@mui/material'
 import { Header } from '../shell/Header.jsx'
 import { Footer } from '../shell/Footer.jsx'
 import { Modal } from '../ui/Modal/Modal.jsx'
-import { ModalData } from '../ui/Modal/ModalData.js'
 import { Alert } from '../ui/Alert/Alert.jsx'
 import { Loading } from '../ui/Loading/Loading.jsx'
 import { showAlertSelector } from '../ui/Alert/showAlertSlice.js'
@@ -43,8 +42,6 @@ export const Content = ({
 }) => {
   const { pathname } = useLocation()
   const { accessToken } = useSelector(loginSelector)
-  const { states } = useContext(ModalData)
-  const { modalData } = states
 
   const { isShowLoading } = useSelector(showLoadingSelector)
   const { isShowAlert } = useSelector(showAlertSelector)
@@ -86,7 +83,7 @@ export const Content = ({
 
       {hasChrome && footerProps && <Footer {...footerProps} />}
 
-      {modalData.open && <Modal />}
+      <Modal />
       {isShowAlert && <Alert />}
       {isShowLoading && <Loading />}
     </Stack>

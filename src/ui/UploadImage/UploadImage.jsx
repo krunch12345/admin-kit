@@ -1,4 +1,6 @@
-import { Children, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  Children, useCallback, useContext, useEffect, useId, useMemo, useRef, useState,
+} from 'react'
 import PropTypes from 'prop-types'
 import { BiSolidImageAdd } from 'react-icons/bi'
 import {
@@ -170,6 +172,7 @@ export const UploadImage = ({
   optimizeImageForUpload = defaultOptimizeImageForUpload,
 }) => {
   const messages = useAdminKitMessages()
+  const modalOwnerId = useId()
 
   /** @type {[PendingImage[], Function]} */
   const [pendingImages, setPendingImages] = useState([])
@@ -210,8 +213,8 @@ export const UploadImage = ({
   const handleClose = useCallback(() => {
     resetForm()
     setIsModalOpen(false)
-    closeModal()
-  }, [closeModal, resetForm])
+    closeModal(modalOwnerId)
+  }, [closeModal, modalOwnerId, resetForm])
 
   const handleOpen = useCallback(() => {
     resetForm()
@@ -782,6 +785,7 @@ export const UploadImage = ({
 
     setModalData({
       open: true,
+      ownerId: modalOwnerId,
       title,
       maxWidth: 'xl',
       fullHeight: true,
@@ -803,12 +807,17 @@ export const UploadImage = ({
     isModalOpen,
     messages.upload.modalCloseConfirm,
     messages.upload.modalTitleSubmit,
+    modalOwnerId,
     pendingImages.length,
     renderContentUploadImageModal,
     renderGeneralSettingsHeader,
     setModalData,
     title,
   ])
+
+  useEffect(() => () => {
+    closeModal(modalOwnerId)
+  }, [closeModal, modalOwnerId])
 
   const isButtonDisabled = !type || (!isOnlyType && !folder)
   const tooltipTitle = isOnlyType

@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useId } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Checkbox, FormControlLabel, Stack, Typography } from '@mui/material'
 import { ConfirmYesNoActions } from '../ConfirmYesNo/ConfirmYesNoActions.jsx'
@@ -43,6 +43,7 @@ export const EditControls = ({
   onSyncPointDeletesChange,
 }) => {
   const messages = useAdminKitMessages()
+  const modalOwnerId = useId()
   const { setModalData, closeModal } = useContext(ModalData)
 
   const getTitle = (action) => {
@@ -68,12 +69,13 @@ export const EditControls = ({
       saveOnClick()
       break
     }
-    closeModal()
+    closeModal(modalOwnerId)
   }
 
   const onClick = (action) => {
     setModalData({
       open: true,
+      ownerId: modalOwnerId,
       title: formatMessage(messages.editControls.confirmTitle, { action: getTitle(action) }),
       isActions: true,
       maxWidth: 'sm',
@@ -97,7 +99,7 @@ export const EditControls = ({
         ),
       additionalButtons: (
         <ConfirmYesNoActions
-          onNo={closeModal}
+          onNo={() => closeModal(modalOwnerId)}
           onYes={() => onSubmit(action)}
         />
       ),

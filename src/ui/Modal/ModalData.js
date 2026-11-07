@@ -10,6 +10,7 @@ import React from 'react'
  * @property {function} [onSubmit] - Callback for submit button.
  * @property {boolean} [isRedSubmit] - Red background for submit button.
  * @property {string} [titleSubmit] - Text for submit button.
+ * @property {string|number} [ownerId] - Owner token for close/replace guards in ModalDataProvider.
  */
 
 /**
@@ -22,7 +23,8 @@ import React from 'react'
  *   modalData: ModalDataState
  * }} states - all states for modal.
  * @property {Function} setModalData - Func for set ModalData.
- * @property {Function} closeModal - Func for close modal.
+ * @property {function(string|number=): void} closeModal - Closes the modal.
+ *   Pass `ownerId` to close only if that owner currently holds the modal; omit to force-close.
  */
 
 /**
