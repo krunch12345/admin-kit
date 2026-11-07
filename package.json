@@ -7,12 +7,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/code-injection/admin-kit.git"
+    "url": "git+https://github.com/krunch12345/admin-kit.git"
   },
   "bugs": {
-    "url": "https://github.com/code-injection/admin-kit/issues"
+    "url": "https://github.com/krunch12345/admin-kit/issues"
   },
-  "homepage": "https://github.com/code-injection/admin-kit#readme",
+  "homepage": "https://krunch12345.github.io/admin-kit/",
   "keywords": [
     "react",
     "admin",
@@ -78,10 +78,12 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "lint": "eslint src vite.config.ts eslint.config.js",
+    "lint": "eslint src vite.config.ts eslint.config.js .storybook",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "STORYBOOK_BASE_PATH=/admin-kit/ storybook build -o storybook-static",
     "prepublishOnly": "yarn lint && yarn typecheck && yarn test && yarn build"
   },
   "peerDependencies": {
@@ -149,6 +151,13 @@
     "@rpldy/upload-paste": "^1.10.0",
     "@rpldy/upload-preview": "^1.10.0",
     "@rpldy/uploady": "^1.10.0",
+    "@storybook/addon-a11y": "8.6.14",
+    "@storybook/addon-essentials": "8.6.14",
+    "@storybook/addon-interactions": "8.6.14",
+    "@storybook/blocks": "8.6.14",
+    "@storybook/react": "8.6.14",
+    "@storybook/react-vite": "8.6.14",
+    "@storybook/test": "8.6.14",
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
@@ -176,6 +185,7 @@
     "react-router": "^6.22.3",
     "react-router-dom": "^6.22.3",
     "react-scroll": "^1.9.0",
+    "storybook": "8.6.14",
     "typescript": "^5.8.0",
     "typescript-eslint": "^8.72.1",
     "vite": "^7.1.7",

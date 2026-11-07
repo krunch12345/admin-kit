@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- Storybook 8 catalog with GitHub Pages deploy workflow (`/admin-kit/` base path)
+- npm publish workflow on GitHub Release
 - Full TypeScript source (`src/` is `.ts`/`.tsx` only) with emitted `.d.ts`
 - Vitest, ESLint 9 flat config, TypeScript toolchain, CI workflow, LICENSE (MIT)
 - `AdminKitProvider` accepts `api` / `hooks` / `config` / `requestLogout` / `resetApiState`
@@ -21,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Changed
 
+- **Breaking:** removed `AppBar`; the top bar is now `Header` (`drawerOpen` / `setDrawerOpen` required). Former composite `Header` (bar + drawer) moved into `Content`
 - **Breaking:** removed `initAdminKitAuth`, `initAdminKitShell`, `getAuthHooks`, `getShellHooks`, `extractMeta`, `useId`
 - **Breaking:** endpoint auth flags via `extraOptions` (not `__meta` on query args)
 - **Breaking:** default session key `admin-kit:hasSession`

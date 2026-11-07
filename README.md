@@ -1,9 +1,14 @@
 # admin-kit
 
+[![CI](https://github.com/krunch12345/admin-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/krunch12345/admin-kit/actions/workflows/ci.yml)
+[![Storybook](https://img.shields.io/badge/Storybook-live-ff4785?logo=storybook&logoColor=white)](https://krunch12345.github.io/admin-kit/)
+
 Shared admin panel kit for React apps: auth, layout, shell, pages, and reusable MUI UI.
 Built for apps that use React Router, Redux Toolkit / RTK Query, and Material UI.
 
 Ships as built ESM (`dist/admin-kit.js`) with TypeScript declarations and optional subpath exports (`admin-kit/auth`, `admin-kit/ui`, …). See [CHANGELOG.md](./CHANGELOG.md) for notable changes.
+
+Component catalog (Storybook): https://krunch12345.github.io/admin-kit/
 
 ## Requirements
 
@@ -35,9 +40,9 @@ Upload (`@rpldy/*`, `react-image-crop`), date pickers (`@mui/x-date-pickers`, `d
 
 ```sh
 yarn add admin-kit
-# or link from a monorepo / path
-yarn && yarn build
 ```
+
+Install the peer dependencies listed below (same majors as in `package.json`).
 
 ```js
 import { Content, createAdminBaseQuery } from 'admin-kit'
@@ -53,6 +58,8 @@ import { TextField } from 'admin-kit/ui'
 | `yarn lint` | ESLint |
 | `yarn typecheck` | TypeScript `tsc --noEmit` |
 | `yarn test` | Vitest |
+| `yarn storybook` | Local Storybook on port 6006 |
+| `yarn build-storybook` | Static Storybook build into `storybook-static/` |
 
 ## Backend contract
 
@@ -286,15 +293,19 @@ const App = () => (
 `Content` renders `<Outlet />` — mount it as a layout route element.
 Header and footer show only for authenticated users outside `/login`, `/error404`, and `/404`.
 
-### Header / AppBar props (via `Content`)
+### Header / Drawer props (via `Content`)
+
+`Content` composes `Header` (top bar) + `Drawer` (side menu). Pass these on `Content`:
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `appTitle` | `string` | required | Title in the app bar |
+| `appTitle` | `string` | required | Title in the header bar |
 | `showInvalidateCache` | `boolean` | `true` | Show the cache invalidation button |
 | `onInvalidateCache` | `() => void \| Promise<void>` | shell mutation | Overrides default cache invalidation |
 | `menu` | `Array<{ name, path }>` | fetched via shell hook | Overrides the fetched menu |
 | `isFetchingMenu` | `boolean` | — | Menu loading state when `menu` is provided |
+
+Standalone `Header` also needs `drawerOpen` / `setDrawerOpen` (controlled). Pair it with `Drawer` when not using `Content`.
 
 ### Footer props (`footerProps` on `Content`)
 
@@ -335,7 +346,7 @@ Exports come from the package root. Names match `src/index.js`.
 
 ### Shell / layout
 
-`createShellEndpoints`, `initAdminKitShell`, `getShellHooks`, `Content`, `Page`, `Header`, `AppBar`, `Drawer`, `Footer`, `MenuElement`, `DRAWER_WIDTH`
+`createShellEndpoints`, `initAdminKitShell`, `getShellHooks`, `Content`, `Page`, `Header`, `Drawer`, `Footer`, `MenuElement`, `DRAWER_WIDTH`
 
 ### Pages
 
@@ -343,7 +354,7 @@ Exports come from the package root. Names match `src/index.js`.
 
 ### UI
 
-`Accordion`, `Alert`, `showAlertSlice`, `showAlertSelector`, `showAlert`, `hideAlert`, `Autocomplete`, `ColorLegend`, `ConfirmPopper`, `ConfirmYesNoActions`, `CopyButton`, `CopyImageButton`, `Counter`, `CropControls`, `DatePicker`, `DateRangePicker`, `onChangeEndDate`, `DateTimePicker`, `DialogRemoveButton`, `EditControls`, `UnsavedChangesConfirmBody`, `FilterBar`, `countNonEmptyFilters`, `IconButton`, `IconLink`, `ImageMetaFields`, `buildFilledFieldsTooltip`, `COPYABLE_META_FIELDS`, `DEFAULT_EMPTY_IMAGE_META`, `IMAGE_META_FIELDS`, `isCopyableFieldFilled`, `isMetaValueFilled`, `ImageSizeLabel`, `IsBooleanSelect`, `List`, `ListItem`, `Loading`, `showLoadingSlice`, `showLoadingSelector`, `showLoading`, `hideLoading`, `Modal`, `ModalData`, `ModalDataProvider`, `NoDataBox`, `OtpCodeInputs`, `Plus1Button`, `RemoveButton`, `ResultNameSearch`, `Select`, `StatusIndicators`, `DEFAULT_STATUS_PLATFORMS`, `StepByStepForm`, `STEPS`, `TextField`, `UpdatedAtInfo`, `UploadImage`, `GeneralSettingsPanel`, `ImageUploadMethods`, `SelectableImageThumb`
+`Accordion`, `Alert`, `showAlertSlice`, `showAlertSelector`, `showAlert`, `hideAlert`, `Autocomplete`, `ColorLegend`, `ConfirmPopper`, `ConfirmYesNoActions`, `CopyButton`, `CopyImageButton`, `Counter`, `CropControls`, `DatePicker`, `DateRangePicker`, `onChangeEndDate`, `DateTimePicker`, `DialogRemoveButton`, `EditControls`, `UnsavedChangesConfirmBody`, `FilterBar`, `countNonEmptyFilters`, `IconButton`, `IconLink`, `ImageMetaFields`, `buildFilledFieldsTooltip`, `COPYABLE_META_FIELDS`, `DEFAULT_EMPTY_IMAGE_META`, `IMAGE_META_FIELDS`, `isCopyableFieldFilled`, `isMetaValueFilled`, `ImageSizeLabel`, `IsBooleanSelect`, `List`, `ListItem`, `Loading`, `showLoadingSlice`, `showLoadingSelector`, `showLoading`, `hideLoading`, `Modal`, `ModalData`, `ModalDataProvider`, `NoDataBox`, `OtpCodeInputs`, `Plus1Button`, `RemoveButton`, `ResultNameSearch`, `Select`, `StatusIndicators`, `DEFAULT_STATUS_PLATFORMS`, `StepByStepForm`, `StepByStepFormStep`, `TextField`, `UpdatedAtInfo`, `UploadImage`, `GeneralSettingsPanel`, `ImageUploadMethods`, `SelectableImageThumb`
 
 ### Hooks
 

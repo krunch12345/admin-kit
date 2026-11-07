@@ -9,7 +9,7 @@ const indentUnit = 2
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**', '.yarn/**'],
+    ignores: ['dist/**', 'node_modules/**', 'coverage/**', '.yarn/**', 'storybook-static/**'],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

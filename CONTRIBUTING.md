@@ -15,8 +15,10 @@ yarn build
 | `yarn typecheck` | `tsc --noEmit` |
 | `yarn test` | Vitest |
 | `yarn build` | Library build + `.d.ts` |
+| `yarn storybook` | Local component catalog |
+| `yarn build-storybook` | Static Storybook for GitHub Pages |
 
-Run all four before opening a PR.
+Run lint, typecheck, test, and build before opening a PR. Add or update stories when changing UI.
 
 ## Conventions
 

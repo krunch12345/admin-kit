@@ -26,5 +26,14 @@
     "types": ["vite/client", "vitest/globals"]
   },
   "include": ["src"],
-  "exclude": ["src/**/*.test.js", "src/**/*.test.ts", "src/**/*.test.tsx", "dist", "node_modules"]
+  "exclude": [
+    "src/**/*.test.js",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.stories.ts",
+    "src/**/*.stories.tsx",
+    "dist",
+    "node_modules",
+    "storybook-static"
+  ]
 }
