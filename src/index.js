@@ -123,8 +123,10 @@ export { UploadImage } from './ui/UploadImage/UploadImage.jsx'
 
 // hooks
 export { useFields } from './hooks/useFields.js'
+export { useFormDraft } from './hooks/useFormDraft.jsx'
 export { useId } from './hooks/useId.js'
 export { useImageSizeInfo } from './hooks/useImageSizeInfo.js'
+export { useLeavePageConfirm } from './hooks/useLeavePageConfirm.jsx'
 export { useListPosition, useListPositionSync } from './hooks/useListPosition.js'
 export { useLoading } from './hooks/useLoading.js'
 export { useNameDouble } from './hooks/useNameDouble.js'
@@ -134,9 +136,14 @@ export { useScreen } from './hooks/useScreen.js'
 // utils
 export { checkRequiredFields } from './utils/checkRequiredFields.js'
 export { copyImageToClipboard } from './utils/copyImageToClipboard.js'
+export {
+  createFormDraftStorage,
+  FORM_DRAFT_DEFAULT_TTL_MS,
+} from './utils/formDraftStorage.js'
 export { getAddImagesErrorMessage, isAppFileTooLargePayload } from './utils/getAddImagesErrorMessage.js'
 export { formatStringISODate } from './utils/formatStringISODate.js'
 export { getChangedFieldLabels } from './utils/getChangedFieldLabels.js'
+export { reviveDateField } from './utils/reviveDateField.js'
 export { configureImageProxy, getProxiedImageFetchUrl, getImageFetchAttempts } from './utils/getProxiedImageFetchUrl.js'
 export {
   clearImageByteSizeCache,

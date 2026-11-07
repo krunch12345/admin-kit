@@ -155,6 +155,11 @@ export const enMessages = {
     syncPointDeletesLine: 'Sync point deletion with the Shared map: ${syncPointDeletesLabel}',
   },
 
+  formDraft: {
+    restoreTitle: 'Restore unsaved changes?',
+    restoreMessage: 'A local draft was found. Restore it?',
+  },
+
   filterBar: {
     refreshData: 'Refresh data',
     collapseFilters: 'Collapse filters',

@@ -155,6 +155,11 @@ export const ruMessages = {
     syncPointDeletesLine: 'Синхронизация удаления точек с Общей карты: ${syncPointDeletesLabel}',
   },
 
+  formDraft: {
+    restoreTitle: 'Восстановить несохранённые изменения?',
+    restoreMessage: 'Найден локальный черновик. Восстановить его?',
+  },
+
   filterBar: {
     refreshData: 'Обновить данные',
     collapseFilters: 'Свернуть фильтры',
