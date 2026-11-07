@@ -216,7 +216,7 @@ export const AppBar = ({
   return (
     <StyledAppBar
       open={drawerOpen}
-      sx={{ boxShadow: 'none', width: '100vw', zIndex: theme => drawerOpen && theme.zIndex.drawer - 1 }}
+      sx={{ boxShadow: 'none', width: '100%', zIndex: theme => drawerOpen && theme.zIndex.drawer - 1 }}
       className={!isMain ? 'headerBg' : ''}
       position='fixed'
     >

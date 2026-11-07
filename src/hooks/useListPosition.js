@@ -7,6 +7,23 @@ import {
 } from '../utils/listPosition.js'
 
 /**
+ * Centers an element in the viewport without scrolling past document bounds.
+ * Native scrollIntoView({ block: 'center' }) can leave empty space below the footer.
+ * @param {Element} element
+ */
+const scrollElementToCenter = (element) => {
+  const rect = element.getBoundingClientRect()
+  const absoluteTop = window.scrollY + rect.top
+  const target = absoluteTop - (window.innerHeight / 2) + (rect.height / 2)
+  const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight)
+
+  window.scrollTo({
+    top: Math.min(Math.max(0, target), maxScroll),
+    behavior: 'smooth',
+  })
+}
+
+/**
  * Persists list page in sessionStorage across create/edit navigation.
  * @param {string} storageKey
  * @param {string | number} [resetKey] - When this changes (after first render), page resets to 1.
@@ -84,11 +101,15 @@ export const useListPositionSync = (storageKey, page, setPageSilent, options = {
     const timeoutId = window.setTimeout(() => {
       if (position.focusId) {
         const element = document.getElementById(getListItemDomId(position.focusId))
-        element?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+        if (element) {
+          scrollElementToCenter(element)
+        }
       } else if (position.scrollToEnd) {
         const items = document.querySelectorAll('[data-list-item]')
         const last = items[items.length - 1]
-        last?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+        if (last) {
+          scrollElementToCenter(last)
+        }
       }
 
       clearListScrollTarget(storageKey)

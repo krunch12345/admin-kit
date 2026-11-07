@@ -33,6 +33,7 @@ export const List = ({ children, paginationData, page, setPage, actions = null }
       spacing={2}
       width='100%'
       alignItems='center'
+      position='relative'
       sx={{ scrollMarginTop: 80 }}
     >
       {paginationData && (

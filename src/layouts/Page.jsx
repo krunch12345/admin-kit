@@ -20,9 +20,15 @@ export const Page = ({ children, title }) => {
   const id = hash.slice(1) // remove symbol '#'
 
   useEffect(() => {
-    setTimeout(() => {
+    if (!id) {
+      return undefined
+    }
+
+    const timeoutId = setTimeout(() => {
       scroller.scrollTo(id, { smooth: true, offset: -80 })
     }, 500)
+
+    return () => clearTimeout(timeoutId)
   }, [id])
 
   return (

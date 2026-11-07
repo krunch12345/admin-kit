@@ -80,6 +80,7 @@ export const ListItem = ({
       disabled={disabled}
       sx={{
         py: 2,
+        scrollMarginTop: 80,
         '&.Mui-disabled': {
           backgroundColor: 'transparent',
           opacity: 1,

@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useLayoutEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -54,8 +54,12 @@ export const Content = ({
   const isMain = pathname === '/'
   const hasChrome = Boolean(accessToken) && !isLogin && !isNotFound
 
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
   return (
-    <Stack width='100vw' minHeight='100vh' sx={{ overflowX: 'hidden' }}>
+    <Stack width='100%' minHeight='100vh' sx={{ overflowX: 'hidden' }}>
       {hasChrome && (
         <Header
           appTitle={appTitle}
