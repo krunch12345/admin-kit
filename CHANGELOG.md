@@ -9,13 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ### Added
 
+- Published npm package name: `@krunch12345/admin-kit` (unscoped `admin-kit` is blocked as too similar to `adminkit`)
 - Storybook 8 catalog with GitHub Pages deploy workflow (`/admin-kit/` base path)
 - npm publish workflow on GitHub Release
 - Full TypeScript source (`src/` is `.ts`/`.tsx` only) with emitted `.d.ts`
 - Vitest, ESLint 9 flat config, TypeScript toolchain, CI workflow, LICENSE (MIT)
 - `AdminKitProvider` accepts `api` / `hooks` / `config` / `requestLogout` / `resetApiState`
 - `createAuthListenerMiddleware` for pure login reducers + session storage side effects
-- Subpath exports: `admin-kit/auth`, `admin-kit/shell`, `admin-kit/ui`, `admin-kit/locale`, `admin-kit/hooks`, `admin-kit/utils`
+- Subpath exports: `@krunch12345/admin-kit/auth`, `…/shell`, `…/ui`, `…/locale`, `…/hooks`, `…/utils`
 - `useRouteId`, `useNotify`, `useAdminKitHooks`, `useAdminKitConfig`
 - Configurable `routes` and namespaced `storageKeys` (`admin-kit:hasSession`)
 - UploadImage / Login split into focused modules; `cropImage` utils; shared `fieldSx`

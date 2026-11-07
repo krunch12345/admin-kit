@@ -72,7 +72,7 @@ export { Main } from './pages/Main'
 export { NotFound } from './pages/NotFound'
 export { NotFoundModal } from './pages/NotFoundModal'
 
-// ui (prefer `admin-kit/ui` to avoid collisions with MUI names)
+// ui (prefer `@krunch12345/admin-kit/ui` to avoid collisions with MUI names)
 export * from './ui/index'
 
 // hooks

@@ -1,5 +1,5 @@
 {
-  "name": "admin-kit",
+  "name": "@krunch12345/admin-kit",
   "version": "1.0.0",
   "type": "module",
   "description": "Shared admin panel UI kit for React apps (auth, shell, MUI UI, locale)",
@@ -13,6 +13,9 @@
     "url": "https://github.com/krunch12345/admin-kit/issues"
   },
   "homepage": "https://krunch12345.github.io/admin-kit/",
+  "publishConfig": {
+    "access": "public"
+  },
   "keywords": [
     "react",
     "admin",

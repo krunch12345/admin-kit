@@ -6,7 +6,7 @@
 Shared admin panel kit for React apps: auth, layout, shell, pages, and reusable MUI UI.
 Built for apps that use React Router, Redux Toolkit / RTK Query, and Material UI.
 
-Ships as built ESM (`dist/admin-kit.js`) with TypeScript declarations and optional subpath exports (`admin-kit/auth`, `admin-kit/ui`, …). See [CHANGELOG.md](./CHANGELOG.md) for notable changes.
+Ships as built ESM (`dist/admin-kit.js`) with TypeScript declarations and optional subpath exports (`@krunch12345/admin-kit/auth`, `@krunch12345/admin-kit/ui`, …). See [CHANGELOG.md](./CHANGELOG.md) for notable changes.
 
 Component catalog (Storybook): https://krunch12345.github.io/admin-kit/
 
@@ -39,14 +39,14 @@ Upload (`@rpldy/*`, `react-image-crop`), date pickers (`@mui/x-date-pickers`, `d
 ## Install
 
 ```sh
-yarn add admin-kit
+yarn add @krunch12345/admin-kit
 ```
 
 Install the peer dependencies listed below (same majors as in `package.json`).
 
 ```js
-import { Content, createAdminBaseQuery } from 'admin-kit'
-import { TextField } from 'admin-kit/ui'
+import { Content, createAdminBaseQuery } from '@krunch12345/admin-kit'
+import { TextField } from '@krunch12345/admin-kit/ui'
 ```
 
 ## Scripts
@@ -97,7 +97,7 @@ The kit ships two nested message dictionaries: **`en`** (default) and **`ru`**.
 `AdminKitProvider` is required for auth/shell hooks (`api` prop). Locale alone still defaults to English when `locale`/`messages` are omitted.
 
 ```jsx
-import { AdminKitProvider } from 'admin-kit'
+import { AdminKitProvider } from '@krunch12345/admin-kit'
 
 // English (same as omitting the provider)
 <AdminKitProvider>
@@ -139,7 +139,7 @@ Behavior:
 `AdminKitProvider` keeps that module runtime in sync. If you need locale **before** the first React render (tests, store boot), call:
 
 ```js
-import { configureAdminKit } from 'admin-kit'
+import { configureAdminKit } from '@krunch12345/admin-kit'
 
 configureAdminKit({ locale: 'ru' })
 // or
@@ -156,7 +156,7 @@ MUI X picker strings live under `messages.datePickers`. The kit does **not** mou
 ```jsx
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import { useAdminKitLocaleText } from 'admin-kit'
+import { useAdminKitLocaleText } from '@krunch12345/admin-kit'
 
 const LocaleAwarePickers = ({ children }) => {
   const localeText = useAdminKitLocaleText()
@@ -189,7 +189,7 @@ import {
   loginSlice,
   showAlertSlice,
   showLoadingSlice,
-} from 'admin-kit'
+} from '@krunch12345/admin-kit'
 
 export const api = createApi({
   baseQuery: createAdminBaseQuery({ baseUrl: '/api' }),
@@ -233,7 +233,7 @@ import {
   NotFound,
   PrivateRoute,
   TokenRestorer,
-} from 'admin-kit'
+} from '@krunch12345/admin-kit'
 import { api, store } from './store'
 import { theme } from './theme'
 
