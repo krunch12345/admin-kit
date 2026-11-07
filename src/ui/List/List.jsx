@@ -19,7 +19,7 @@ import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
  * @returns {React.ReactElement} The custom List component.
  */
 export const List = ({ children, paginationData, page, setPage, actions = null }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const topRef = useRef(null)
 
   const handlePageChange = (_event, value) => {
@@ -37,7 +37,7 @@ export const List = ({ children, paginationData, page, setPage, actions = null }
     >
       {paginationData && (
         <Typography variant='overline' color={theme => theme.palette.grey[500]}>
-          {formatMessage(m.list.total, { count: paginationData?.count || 0 })}
+          {formatMessage(messages.list.total, { count: paginationData?.count || 0 })}
         </Typography>
       )}
 

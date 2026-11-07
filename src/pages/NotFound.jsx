@@ -12,7 +12,7 @@ import { useAdminKitMessages } from '../locale/useAdminKitMessages.js'
  * @returns {React.ReactElement} The Page Not Found.
  */
 export const NotFound = () => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const { setModalData, closeModal } = useContext(ModalData)
 
   const navigate = useNavigate()
@@ -28,15 +28,15 @@ export const NotFound = () => {
     () => {
       setModalData({
         open: true,
-        title: m.notFound.title,
+        title: messages.notFound.title,
         isActions: true,
-        titleSubmit: m.notFound.titleSubmit,
+        titleSubmit: messages.notFound.titleSubmit,
         onSubmit,
         maxWidth: 'sm',
         children: <NotFoundModal />,
       })
     },
-    [m.notFound.title, m.notFound.titleSubmit, onSubmit, setModalData]
+    [messages.notFound.title, messages.notFound.titleSubmit, onSubmit, setModalData]
   )
 
   useLoading(false)

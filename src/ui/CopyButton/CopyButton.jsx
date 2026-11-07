@@ -18,7 +18,7 @@ import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
  * @type {React.FC<IProps>}
  */
 export const CopyButton = ({ text, title, icon = <ContentCopy /> }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const [isCopied, setIsCopied] = useState(false)
   const dispatch = useDispatch()
 
@@ -29,21 +29,21 @@ export const CopyButton = ({ text, title, icon = <ContentCopy /> }) => {
       dispatch(showAlert({
         isShowAlert: true,
         severity: 'success',
-        message: m.copyButton.success,
+        message: messages.copyButton.success,
       }))
       setTimeout(() => setIsCopied(false), 2000)
     } catch {
       dispatch(showAlert({
         isShowAlert: true,
         severity: 'error',
-        message: m.copyButton.error,
+        message: messages.copyButton.error,
       }))
     }
-  }, [dispatch, m.copyButton.error, m.copyButton.success, text])
+  }, [dispatch, messages.copyButton.error, messages.copyButton.success, text])
 
   return (
     <IconButton
-      title={isCopied ? m.copyButton.copied : title ?? m.copyButton.title}
+      title={isCopied ? messages.copyButton.copied : title ?? messages.copyButton.title}
       onClick={handleCopy}
       icon={icon}
       sx={isCopied ? {

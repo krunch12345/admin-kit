@@ -14,12 +14,12 @@ export const ConfirmYesNoActions = ({
   noLabel,
   yesLabel,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   return (
     <Stack direction='row' spacing={2} width='100%' justifyContent='flex-end' alignItems='center'>
       <Button size={size} color='error' onClick={onNo}>
-        {noLabel ?? m.common.no}
+        {noLabel ?? messages.common.no}
       </Button>
       <Button
         size={size}
@@ -27,7 +27,7 @@ export const ConfirmYesNoActions = ({
         disabled={yesDisabled}
         onClick={onYes}
       >
-        {yesLabel ?? m.common.yes}
+        {yesLabel ?? messages.common.yes}
       </Button>
     </Stack>
   )

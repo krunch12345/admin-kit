@@ -19,7 +19,7 @@ import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
  * @returns {React.ReactElement} The Modal component.
  */
 export const Modal = () => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const { states } = useContext(ModalData)
   const { modalData } = states
   const [closeConfirmAnchorEl, setCloseConfirmAnchorEl] = useState(null)
@@ -131,7 +131,7 @@ export const Modal = () => {
                   size='small'
                   onClick={handleRequestClose}
                   color='error'
-                  title={m.modal.closeButtonTitle}
+                  title={messages.modal.closeButtonTitle}
                 >
                   <Close />
                 </IconButton>
@@ -168,7 +168,7 @@ export const Modal = () => {
                   onClose && onClose()
                 }}
               >
-                {m.modal.cancelButton}
+                {messages.modal.cancelButton}
               </Button>
             )}
 
@@ -182,7 +182,7 @@ export const Modal = () => {
                 }}
                 disabled={disabledSubmit}
               >
-                {titleSubmit ?? m.modal.titleSubmit}
+                {titleSubmit ?? messages.modal.titleSubmit}
               </Button>
             )}
           </DialogActions>
@@ -193,7 +193,7 @@ export const Modal = () => {
         open={isCloseConfirmOpen}
         anchorEl={closeConfirmAnchorEl}
         placement='bottom-end'
-        message={closeConfirmMessage ?? m.modal.closeConfirmMessage}
+        message={closeConfirmMessage ?? messages.modal.closeConfirmMessage}
         onClose={handleCancelCloseConfirm}
         onConfirm={handleConfirmClose}
       />

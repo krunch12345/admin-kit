@@ -25,12 +25,12 @@ export const DateRangePicker = ({
   allowFuture = true,
   hideClearButton,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   return (
     <>
       <DatePicker
-        label={startLabel ?? m.dateRangePicker.startLabel}
+        label={startLabel ?? messages.dateRangePicker.startLabel}
         value={filters?.startDate ?? null}
         onChange={(newDate, error) => {
           if (!error.validationError) {
@@ -49,7 +49,7 @@ export const DateRangePicker = ({
         sx={{ m: 1, flex: 1, minWidth: '15.5rem' }}
       />
       <DatePicker
-        label={endLabel ?? m.dateRangePicker.endLabel}
+        label={endLabel ?? messages.dateRangePicker.endLabel}
         value={filters?.endDate ?? null}
         onChange={(newDate, error) => {
           if (!error.validationError) {

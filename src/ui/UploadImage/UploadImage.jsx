@@ -169,7 +169,7 @@ export const UploadImage = ({
   limits,
   optimizeImageForUpload = defaultOptimizeImageForUpload,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   /** @type {[PendingImage[], Function]} */
   const [pendingImages, setPendingImages] = useState([])
@@ -306,7 +306,7 @@ export const UploadImage = ({
       dispatch(showAlert({
         isShowAlert: true,
         severity: 'warning',
-        message: m.upload.unsupportedImageType,
+        message: messages.upload.unsupportedImageType,
       }))
       return
     }
@@ -315,7 +315,7 @@ export const UploadImage = ({
       dispatch(showAlert({
         isShowAlert: true,
         severity: 'warning',
-        message: formatMessage(m.upload.skippedUnsafeImages, {
+        message: formatMessage(messages.upload.skippedUnsafeImages, {
           count: blockedUnsafeCount,
         }),
       }))
@@ -335,7 +335,7 @@ export const UploadImage = ({
       dispatch(showAlert({
         isShowAlert: true,
         severity: 'warning',
-        message: formatMessage(m.upload.pendingLimitReached, { pendingLimit }),
+        message: formatMessage(messages.upload.pendingLimitReached, { pendingLimit }),
       }))
       return
     }
@@ -347,7 +347,7 @@ export const UploadImage = ({
       dispatch(showAlert({
         isShowAlert: true,
         severity: 'warning',
-        message: formatMessage(m.upload.partialAddDueToLimit, {
+        message: formatMessage(messages.upload.partialAddDueToLimit, {
           acceptedCount: acceptedFiles.length,
           totalSelected: imageFiles.length,
           pendingLimit,
@@ -362,10 +362,10 @@ export const UploadImage = ({
   }, [
     createPendingItems,
     dispatch,
-    m.upload.partialAddDueToLimit,
-    m.upload.pendingLimitReached,
-    m.upload.skippedUnsafeImages,
-    m.upload.unsupportedImageType,
+    messages.upload.partialAddDueToLimit,
+    messages.upload.pendingLimitReached,
+    messages.upload.skippedUnsafeImages,
+    messages.upload.unsupportedImageType,
     multiple,
     pendingLimit,
   ])
@@ -425,7 +425,7 @@ export const UploadImage = ({
           dispatch(showAlert({
             isShowAlert: true,
             severity: 'info',
-            message: formatMessage(m.upload.chunkUploadProgress, {
+            message: formatMessage(messages.upload.chunkUploadProgress, {
               chunkIndex: chunkIndex + 1,
               chunkTotal: chunks.length,
             }),
@@ -507,8 +507,8 @@ export const UploadImage = ({
         isShowAlert: true,
         severity: 'success',
         message: totalCount === 1
-          ? m.upload.singleUploadSuccess
-          : formatMessage(m.upload.multiUploadSuccess, { totalCount }),
+          ? messages.upload.singleUploadSuccess
+          : formatMessage(messages.upload.multiUploadSuccess, { totalCount }),
       }))
       handleClose()
       return
@@ -520,7 +520,7 @@ export const UploadImage = ({
       dispatch(showAlert({
         isShowAlert: true,
         severity: 'warning',
-        message: formatMessage(m.upload.partialUploadSuccess, {
+        message: formatMessage(messages.upload.partialUploadSuccess, {
           successCount,
           totalCount,
         }),
@@ -536,10 +536,10 @@ export const UploadImage = ({
     hardLimit,
     isUploading,
     maxBytes,
-    m.upload.chunkUploadProgress,
-    m.upload.multiUploadSuccess,
-    m.upload.partialUploadSuccess,
-    m.upload.singleUploadSuccess,
+    messages.upload.chunkUploadProgress,
+    messages.upload.multiUploadSuccess,
+    messages.upload.partialUploadSuccess,
+    messages.upload.singleUploadSuccess,
     multiple,
     optimizeImageForUpload,
     pendingImages,
@@ -574,16 +574,16 @@ export const UploadImage = ({
           onClick={handleOpenGeneralSettings}
           disabled={isGeneralSettingsOpen}
         >
-          {m.upload.generalSettings}
+          {messages.upload.generalSettings}
         </MuiButton>
 
         {isGeneralSettingsOpen && (
           <DialogRemoveButton
             variant='text'
-            label={m.common.cancel}
+            label={messages.common.cancel}
             showIcon={false}
             requireConfirm={isGeneralSettingsDirty}
-            confirmMessage={m.upload.cancelConfirm}
+            confirmMessage={messages.upload.cancelConfirm}
             onRemove={handleCancelGeneralSettings}
           />
         )}
@@ -594,9 +594,9 @@ export const UploadImage = ({
     handleOpenGeneralSettings,
     isGeneralSettingsDirty,
     isGeneralSettingsOpen,
-    m.common.cancel,
-    m.upload.cancelConfirm,
-    m.upload.generalSettings,
+    messages.common.cancel,
+    messages.upload.cancelConfirm,
+    messages.upload.generalSettings,
     pendingImages.length,
     showGeneralSettings,
   ])
@@ -627,7 +627,7 @@ export const UploadImage = ({
 
         {isCompressionEnabled && (
           <FormControlLabel
-            label={m.common.noCompression}
+            label={messages.common.noCompression}
             control={
               <Checkbox
                 color='primary'
@@ -641,15 +641,15 @@ export const UploadImage = ({
         {compression === COMPRESSION_SERVER && (
           <Select
             id={`compressionMode-${item.id}`}
-            label={m.common.compressionMode}
+            label={messages.common.compressionMode}
             value={item.compressionMode}
             setValue={(value) => value && updatePendingImage(item.id, { compressionMode: value })}
             hideAllItem
             disabled={item.skipCompression}
           >
             {Children.toArray([
-              <MenuItem key='gentle' value='gentle'>{m.upload.compressionGentle}</MenuItem>,
-              <MenuItem key='aggressive' value='aggressive'>{m.upload.compressionAggressive}</MenuItem>,
+              <MenuItem key='gentle' value='gentle'>{messages.upload.compressionGentle}</MenuItem>,
+              <MenuItem key='aggressive' value='aggressive'>{messages.upload.compressionAggressive}</MenuItem>,
             ])}
           </Select>
         )}
@@ -658,8 +658,8 @@ export const UploadImage = ({
       {showFileNameField && (
         <TextField
           sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem', width: '100%' }}
-          label={m.upload.fileName}
-          placeholder={m.upload.fileNamePlaceholder}
+          label={messages.upload.fileName}
+          placeholder={messages.upload.fileNamePlaceholder}
           value={item.fileName || ''}
           onChange={(fileName) => updatePendingImage(item.id, { fileName })}
           onClear={() => updatePendingImage(item.id, { fileName: '' })}
@@ -680,12 +680,12 @@ export const UploadImage = ({
     handlePendingImageFileChange,
     handleRemovePendingImage,
     isCompressionEnabled,
-    m.common.compressionMode,
-    m.common.noCompression,
-    m.upload.compressionAggressive,
-    m.upload.compressionGentle,
-    m.upload.fileName,
-    m.upload.fileNamePlaceholder,
+    messages.common.compressionMode,
+    messages.common.noCompression,
+    messages.upload.compressionAggressive,
+    messages.upload.compressionGentle,
+    messages.upload.fileName,
+    messages.upload.fileNamePlaceholder,
     metaTemplates,
     showFileNameField,
     updatePendingImage,
@@ -734,7 +734,7 @@ export const UploadImage = ({
                 >
                   <NoDataBox
                     isListEmpty
-                    noDataObject={m.upload.noImagesYet}
+                    noDataObject={messages.upload.noImagesYet}
                   />
                 </Stack>
               ) : (
@@ -745,7 +745,7 @@ export const UploadImage = ({
 
                   {multiple && (
                     <Typography color='text.secondary'>
-                      {formatMessage(m.upload.pendingCount, {
+                      {formatMessage(messages.upload.pendingCount, {
                         current: pendingImages.length,
                         limit: pendingLimit,
                       })}
@@ -767,8 +767,8 @@ export const UploadImage = ({
     handleGeneralSettingsSaved,
     isCompressionEnabled,
     isGeneralSettingsOpen,
-    m.upload.noImagesYet,
-    m.upload.pendingCount,
+    messages.upload.noImagesYet,
+    messages.upload.pendingCount,
     metaTemplates,
     multiple,
     pendingImages,
@@ -789,9 +789,9 @@ export const UploadImage = ({
       children: renderContentUploadImageModal(),
       onClose: handleClose,
       shouldConfirmClose: pendingImages.length > 0,
-      closeConfirmMessage: m.upload.modalCloseConfirm,
+      closeConfirmMessage: messages.upload.modalCloseConfirm,
       isActions: true,
-      titleSubmit: m.upload.modalTitleSubmit,
+      titleSubmit: messages.upload.modalTitleSubmit,
       notCloseAfterSubmit: true,
       disabledSubmit,
       onSubmit: handleOnSubmit,
@@ -801,8 +801,8 @@ export const UploadImage = ({
     handleClose,
     handleOnSubmit,
     isModalOpen,
-    m.upload.modalCloseConfirm,
-    m.upload.modalTitleSubmit,
+    messages.upload.modalCloseConfirm,
+    messages.upload.modalTitleSubmit,
     pendingImages.length,
     renderContentUploadImageModal,
     renderGeneralSettingsHeader,
@@ -812,8 +812,8 @@ export const UploadImage = ({
 
   const isButtonDisabled = !type || (!isOnlyType && !folder)
   const tooltipTitle = isOnlyType
-    ? formatMessage(m.upload.attachTitle, { title })
-    : formatMessage(m.upload.attachTitleFolderRequired, { title })
+    ? formatMessage(messages.upload.attachTitle, { title })
+    : formatMessage(messages.upload.attachTitleFolderRequired, { title })
 
   return (
     <Tooltip title={tooltipTitle}>

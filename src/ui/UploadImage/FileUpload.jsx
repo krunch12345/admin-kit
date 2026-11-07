@@ -17,7 +17,7 @@ import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
  * @returns {React.ReactElement} The FileUpload component.
  */
 export const FileUpload = ({ onFilesAdded, hideLabel = false }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   useBatchAddListener((batch) => {
     const files = batch.items
@@ -33,7 +33,7 @@ export const FileUpload = ({ onFilesAdded, hideLabel = false }) => {
 
   return (
     <Stack spacing={1} alignItems='center' sx={hideLabel ? { display: 'none' } : undefined}>
-      <Typography>{m.upload.preview}</Typography>
+      <Typography>{messages.upload.preview}</Typography>
     </Stack>
   )
 }

@@ -55,7 +55,7 @@ export const GeneralSettingsPanel = ({
   hideSkipCompression = false,
   templates = {},
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const copyableMetaFields = useCopyableMetaFields()
 
   const descriptionTemplates = useMemo(
@@ -353,12 +353,12 @@ export const GeneralSettingsPanel = ({
           <FormControlLabel
             value={SCENARIO_COPY}
             control={<Radio color='primary' />}
-            label={m.upload.copyAnyField}
+            label={messages.upload.copyAnyField}
           />
           <FormControlLabel
             value={SCENARIO_APPLY}
             control={<Radio color='primary' />}
-            label={m.upload.applySetting}
+            label={messages.upload.applySetting}
           />
         </RadioGroup>
       </FormControl>
@@ -391,7 +391,7 @@ export const GeneralSettingsPanel = ({
           {copyFieldKeys.length > 0 && !sourceId && (
             <Stack spacing={1} width='100%'>
               <Typography variant='body2' color='text.secondary'>
-                {m.upload.pickSource}
+                {messages.upload.pickSource}
               </Typography>
 
               <Stack
@@ -413,7 +413,7 @@ export const GeneralSettingsPanel = ({
 
               {!sourceCandidates.length && (
                 <Typography variant='body2' color='text.disabled'>
-                  {m.upload.noFilledImages}
+                  {messages.upload.noFilledImages}
                 </Typography>
               )}
             </Stack>
@@ -423,7 +423,7 @@ export const GeneralSettingsPanel = ({
             <Stack spacing={2} width='100%'>
               <Stack direction='row' spacing={1} alignItems='center'>
                 <IconButton
-                  title={m.common.changeSelection}
+                  title={messages.common.changeSelection}
                   onClick={handleBackFromSource}
                   icon={<ArrowBack />}
                 />
@@ -442,7 +442,7 @@ export const GeneralSettingsPanel = ({
                 useFlexGap
               >
                 <Typography variant='body2' color='text.secondary'>
-                  {m.upload.pickTargets}
+                  {messages.upload.pickTargets}
                 </Typography>
                 <Button
                   size='small'
@@ -450,7 +450,7 @@ export const GeneralSettingsPanel = ({
                   onClick={handleSelectAllTargets}
                   disabled={!targetCandidates.length}
                 >
-                  {m.common.selectAll}
+                  {messages.common.selectAll}
                 </Button>
               </Stack>
 
@@ -480,7 +480,7 @@ export const GeneralSettingsPanel = ({
           <Stack spacing={1} width='100%'>
             {!hideSkipCompression && (
               <FormControlLabel
-                label={m.common.noCompression}
+                label={messages.common.noCompression}
                 control={
                   <Checkbox
                     color='primary'
@@ -493,7 +493,7 @@ export const GeneralSettingsPanel = ({
 
             {descriptionTemplates.length > 0 && (
               <>
-                <Typography variant='subtitle2'>{m.common.description}</Typography>
+                <Typography variant='subtitle2'>{messages.common.description}</Typography>
                 <Stack
                   direction='row'
                   spacing={1}
@@ -521,7 +521,7 @@ export const GeneralSettingsPanel = ({
 
             {sourceTemplates.length > 0 && (
               <>
-                <Typography variant='subtitle2'>{m.common.source}</Typography>
+                <Typography variant='subtitle2'>{messages.common.source}</Typography>
                 <Stack
                   direction='row'
                   spacing={1}
@@ -558,7 +558,7 @@ export const GeneralSettingsPanel = ({
                 useFlexGap
               >
                 <Typography variant='body2' color='text.secondary'>
-                  {m.upload.pickImagesForSetting}
+                  {messages.upload.pickImagesForSetting}
                 </Typography>
                 <Button
                   size='small'
@@ -566,7 +566,7 @@ export const GeneralSettingsPanel = ({
                   onClick={handleSelectAllImages}
                   disabled={!images.length}
                 >
-                  {m.common.selectAll}
+                  {messages.common.selectAll}
                 </Button>
               </Stack>
 
@@ -599,7 +599,7 @@ export const GeneralSettingsPanel = ({
           onClick={handleSave}
           sx={{ alignSelf: 'flex-start' }}
         >
-          {m.common.save}
+          {messages.common.save}
         </Button>
       )}
     </Stack>

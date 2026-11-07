@@ -22,7 +22,7 @@ import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
  * @returns {React.ReactElement} Custom Select component.
  */
 export const Select = ({ id, label, value, setValue, children, required, hideAllItem, disabled }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   return (
     <FormControl
@@ -52,7 +52,7 @@ export const Select = ({ id, label, value, setValue, children, required, hideAll
         }
         disabled={disabled}
       >
-        {!hideAllItem && <MenuItem value={''} sx={{ fontStyle: 'italic' }}>{m.select.all}</MenuItem>}
+        {!hideAllItem && <MenuItem value={''} sx={{ fontStyle: 'italic' }}>{messages.select.all}</MenuItem>}
 
         {children}
       </MuiSelect>

@@ -22,15 +22,15 @@ export const ResultNameSearch = ({
   isErrorBackground,
   summaryTitle,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   return (
     <Accordion
-      summaryTitle={summaryTitle ?? m.resultNameSearch.summaryTitle}
+      summaryTitle={summaryTitle ?? messages.resultNameSearch.summaryTitle}
       count={count}
       isErrorBackground={isErrorBackground}
     >
-      {count > 0 ? children : <Typography>{m.resultNameSearch.noMatches}</Typography>}
+      {count > 0 ? children : <Typography>{messages.resultNameSearch.noMatches}</Typography>}
     </Accordion>
   )
 }

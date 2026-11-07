@@ -40,14 +40,14 @@ export const DialogRemoveButton = ({
   requireConfirm = true,
   disabled = false,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const [anchorConfirmEl, setAnchorConfirmEl] = useState(null)
   const [openConfirm, setOpenConfirm] = useState(false)
 
-  const resolvedLabel = label ?? m.dialogRemove.label
+  const resolvedLabel = label ?? messages.dialogRemove.label
 
   const confirmationText = confirmMessage
-    ?? formatMessage(m.dialogRemove.confirmMessage, { nameObject, name }).trim()
+    ?? formatMessage(messages.dialogRemove.confirmMessage, { nameObject, name }).trim()
 
   const handleOnClick = (e) => {
     e.stopPropagation()
@@ -95,7 +95,7 @@ export const DialogRemoveButton = ({
     return (
       <IconButton
         icon={<MdDeleteForever />}
-        title={formatMessage(m.dialogRemove.title, { nameObject, name }).trim() || resolvedLabel}
+        title={formatMessage(messages.dialogRemove.title, { nameObject, name }).trim() || resolvedLabel}
         onClick={handleOnClick}
         color='error'
         disabled={disabled}

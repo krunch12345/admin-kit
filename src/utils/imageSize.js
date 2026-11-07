@@ -49,21 +49,21 @@ export const formatFileSize = (bytes) => {
     return ''
   }
 
-  const m = getAdminKitMessages().fileSize
+  const messages = getAdminKitMessages().fileSize
 
   if (bytes < 1024) {
-    return formatMessage(m.bytes, { value: String(bytes) })
+    return formatMessage(messages.bytes, { value: String(bytes) })
   }
 
   if (bytes < 1024 * 1024) {
     const kb = bytes / 1024
     const value = kb < 10 ? kb.toFixed(1) : String(Math.round(kb))
-    return formatMessage(m.kilobytes, { value })
+    return formatMessage(messages.kilobytes, { value })
   }
 
   const mb = bytes / (1024 * 1024)
   const value = mb < 10 ? mb.toFixed(1) : String(Math.round(mb))
-  return formatMessage(m.megabytes, { value })
+  return formatMessage(messages.megabytes, { value })
 }
 
 /**

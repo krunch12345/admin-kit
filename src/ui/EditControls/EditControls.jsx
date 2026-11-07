@@ -42,17 +42,17 @@ export const EditControls = ({
   syncPointDeletes = false,
   onSyncPointDeletesChange,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const { setModalData, closeModal } = useContext(ModalData)
 
   const getTitle = (action) => {
     switch (action) {
     case 'cancel':
-      return m.editControls.actionCancel
+      return messages.editControls.actionCancel
     case 'remove':
-      return m.editControls.actionDelete
+      return messages.editControls.actionDelete
     case 'save':
-      return m.editControls.actionSave
+      return messages.editControls.actionSave
     }
   }
 
@@ -74,7 +74,7 @@ export const EditControls = ({
   const onClick = (action) => {
     setModalData({
       open: true,
-      title: formatMessage(m.editControls.confirmTitle, { action: getTitle(action) }),
+      title: formatMessage(messages.editControls.confirmTitle, { action: getTitle(action) }),
       isActions: true,
       maxWidth: 'sm',
       children: action === 'cancel' || action === 'save'
@@ -85,14 +85,14 @@ export const EditControls = ({
             changedFieldLabels={changedFieldLabels}
             syncPointDeletesLabel={
               action === 'save' && showSyncPointDeletes
-                ? (syncPointDeletes ? m.common.yes : m.common.no)
+                ? (syncPointDeletes ? messages.common.yes : messages.common.no)
                 : null
             }
           />
         )
         : (
           <Typography variant='overline' fontSize={14}>
-            {isAddNew ? m.common.creating : m.common.editing} &frasl;&frasl; {name}
+            {isAddNew ? messages.common.creating : messages.common.editing} &frasl;&frasl; {name}
           </Typography>
         ),
       additionalButtons: (
@@ -108,13 +108,13 @@ export const EditControls = ({
     <Stack spacing={1} width='100%'>
       {isNotRequiredFields && (
         <Typography color={theme => theme.palette.warning.main} alignSelf='center'>
-          {m.editControls.warningRequiredFields}
+          {messages.editControls.warningRequiredFields}
         </Typography>
       )}
 
       {isNotEdited && (
         <Typography color={theme => theme.palette.warning.main} alignSelf='center'>
-          {m.editControls.warningNotEdited}
+          {messages.editControls.warningNotEdited}
         </Typography>
       )}
 
@@ -124,13 +124,13 @@ export const EditControls = ({
           size='small'
           color='error'
         >
-          {m.common.cancel}
+          {messages.common.cancel}
         </Button>
 
         <Stack direction='row' spacing={2} alignItems='center'>
           {showSyncPointDeletes && (
             <FormControlLabel
-              label={m.editControls.syncPointDeletes}
+              label={messages.editControls.syncPointDeletes}
               control={
                 <Checkbox
                   size='small'
@@ -148,7 +148,7 @@ export const EditControls = ({
               onClick={() => onClick('remove')}
               size='small'
             >
-              {m.common.delete}
+              {messages.common.delete}
             </Button>
           )}
 
@@ -160,7 +160,7 @@ export const EditControls = ({
             sx={{ color: theme => theme.palette.grey.A100 }}
             disabled={disabledSave}
           >
-            {m.common.save}
+            {messages.common.save}
           </Button>
         </Stack>
       </Stack>

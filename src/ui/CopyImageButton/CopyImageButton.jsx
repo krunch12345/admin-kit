@@ -25,7 +25,7 @@ export const CopyImageButton = ({
   title,
   icon = <Image />,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const [isCopied, setIsCopied] = useState(false)
   const dispatch = useDispatch()
 
@@ -41,7 +41,7 @@ export const CopyImageButton = ({
         dispatch(showAlert({
           isShowAlert: true,
           severity: 'success',
-          message: m.copyImageButton.success,
+          message: messages.copyImageButton.success,
         }))
         setTimeout(() => setIsCopied(false), 2000)
       })
@@ -49,14 +49,14 @@ export const CopyImageButton = ({
         dispatch(showAlert({
           isShowAlert: true,
           severity: 'error',
-          message: m.copyImageButton.error,
+          message: messages.copyImageButton.error,
         }))
       })
-  }, [dispatch, imgRef, m.copyImageButton.error, m.copyImageButton.success, url])
+  }, [dispatch, imgRef, messages.copyImageButton.error, messages.copyImageButton.success, url])
 
   return (
     <IconButton
-      title={isCopied ? m.copyImageButton.copied : title ?? m.copyImageButton.title}
+      title={isCopied ? messages.copyImageButton.copied : title ?? messages.copyImageButton.title}
       onClick={handleCopy}
       icon={icon}
       sx={isCopied ? {

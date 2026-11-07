@@ -26,7 +26,7 @@ export const PendingImageItem = ({
   onFileChange,
   onRemove,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   return (
     <>
@@ -46,7 +46,7 @@ export const PendingImageItem = ({
         ) : (
           <DialogRemoveButton
             variant='text'
-            confirmMessage={m.upload.confirmDeleteImage}
+            confirmMessage={messages.upload.confirmDeleteImage}
             onRemove={() => onRemove(item.id)}
           />
         )
@@ -63,7 +63,7 @@ export const PendingImageItem = ({
 
           <DialogRemoveButton
             variant='text'
-            confirmMessage={m.upload.confirmDeleteImage}
+            confirmMessage={messages.upload.confirmDeleteImage}
             onRemove={() => onRemove(item.id)}
           />
         </>

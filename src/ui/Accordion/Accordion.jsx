@@ -33,7 +33,7 @@ export const Accordion = ({
   count,
   isErrorBackground,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const [expanded, setExpanded] = useState(true)
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export const Accordion = ({
 
           {count >=0 && (
             <Typography variant='overline' color={theme => theme.palette.grey[500]}>
-              {formatMessage(m.accordion.total, { count })}
+              {formatMessage(messages.accordion.total, { count })}
             </Typography>
           )}
         </Stack>

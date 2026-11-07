@@ -23,12 +23,12 @@ export const NoDataBox = ({
   id,
   isListEmpty = false,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const navigate = useNavigate()
 
-  const missingMessage = formatMessage(m.noDataBox.missingInDb, {
+  const missingMessage = formatMessage(messages.noDataBox.missingInDb, {
     noDataObject,
-    idPart: id ? formatMessage(m.noDataBox.idPart, { id }) : '',
+    idPart: id ? formatMessage(messages.noDataBox.idPart, { id }) : '',
   })
 
   return (
@@ -58,7 +58,7 @@ export const NoDataBox = ({
 
           {!isListEmpty && (
             <Button variant='contained' onClick={() => navigate('/')}>
-              {m.noDataBox.goHome}
+              {messages.noDataBox.goHome}
             </Button>
           )}
         </Stack>

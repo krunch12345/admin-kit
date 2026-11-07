@@ -16,7 +16,7 @@ import { useAdminKitMessages } from '../locale/useAdminKitMessages.js'
  * @returns {React.ReactElement} The Account page.
  */
 export const Account = ({ title }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const { nickname, email } = useSelector(loginSelector)
 
   const renderAttribute = (label, value) => (
@@ -32,10 +32,10 @@ export const Account = ({ title }) => {
   )
 
   return (
-    <Page title={title ?? m.account.pageTitle}>
+    <Page title={title ?? messages.account.pageTitle}>
       <Stack>
-        {renderAttribute(m.account.nicknameLabel, nickname)}
-        {renderAttribute(m.login.emailLabel, email)}
+        {renderAttribute(messages.account.nicknameLabel, nickname)}
+        {renderAttribute(messages.login.emailLabel, email)}
       </Stack>
     </Page>
   )

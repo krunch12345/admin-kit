@@ -16,18 +16,18 @@ import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
  * @returns {React.ReactElement} Autocomplete component.
  */
 export const Autocomplete = ({ label, noOptionsText, onInputKeyDown, ...props }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   return (
     <MuiAutocomplete
       size='small'
-      loadingText={m.autocomplete.loadingText}
+      loadingText={messages.autocomplete.loadingText}
       noOptionsText={!props.inputValue
-        ? noOptionsText || m.autocomplete.enterName
-        : m.autocomplete.nothingFound}
-      clearText={m.autocomplete.clearText}
-      closeText={m.autocomplete.closeText}
-      openText={m.autocomplete.openText}
+        ? noOptionsText || messages.autocomplete.enterName
+        : messages.autocomplete.nothingFound}
+      clearText={messages.autocomplete.clearText}
+      closeText={messages.autocomplete.closeText}
+      openText={messages.autocomplete.openText}
       filterOptions={(options) => props.inputValue && options}
       renderInput={(params) => (
         <TextField

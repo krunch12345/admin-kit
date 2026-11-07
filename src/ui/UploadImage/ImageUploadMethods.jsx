@@ -113,11 +113,11 @@ export const ImageUploadMethods = ({
   hideLabel = true,
   pasteParams = 'paste',
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const { isMaxWidth900 } = useScreen()
 
-  const selectLabel = multiple ? m.upload.selectFiles : m.upload.selectFile
-  const fileNoun = multiple ? m.upload.fileNounPlural : m.upload.fileNounSingular
+  const selectLabel = multiple ? messages.upload.selectFiles : messages.upload.selectFile
+  const fileNoun = multiple ? messages.upload.fileNounPlural : messages.upload.fileNounSingular
 
   const handleFilesAdded = (files) => {
     if (onFilesAdded) {
@@ -154,18 +154,18 @@ export const ImageUploadMethods = ({
         <DragHighlightDropZone>
           <PasteUploadDropZone params={{ test: pasteParams }}>
             <Stack spacing={1} alignItems='center' color='gray' p={1}>
-              <Typography>{formatMessage(m.upload.dropHere, { fileNoun })}</Typography>
-              <Typography>{m.common.or}</Typography>
-              <Typography>{m.upload.pasteHint}</Typography>
-              <Typography>{m.common.or}</Typography>
-              <Typography>{formatMessage(m.upload.chooseViaButton, { fileNoun })}</Typography>
+              <Typography>{formatMessage(messages.upload.dropHere, { fileNoun })}</Typography>
+              <Typography>{messages.common.or}</Typography>
+              <Typography>{messages.upload.pasteHint}</Typography>
+              <Typography>{messages.common.or}</Typography>
+              <Typography>{formatMessage(messages.upload.chooseViaButton, { fileNoun })}</Typography>
             </Stack>
           </PasteUploadDropZone>
         </DragHighlightDropZone>
 
         <Stack spacing={5} flex={1} alignItems='center' width='100%' justifyContent='space-evenly'>
           <PasteInput
-            extraProps={{ placeholder: m.upload.clipboardPlaceholder }}
+            extraProps={{ placeholder: messages.upload.clipboardPlaceholder }}
             className='paste-input'
             onPasteUpload={handlePasteUpload}
           />

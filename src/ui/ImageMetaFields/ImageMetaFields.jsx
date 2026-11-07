@@ -23,15 +23,15 @@ const templateListPropType = PropTypes.arrayOf(PropTypes.shape({
  * @type {React.FC<ImageMetaFieldsProps>}
  */
 export const ImageMetaFields = ({ values, onChange, disabled = false, templates = {} }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   return (
     <Stack spacing={1} width='100%'>
       <Stack direction='row' spacing={0} width='100%' flexWrap='wrap'>
         <TextField
           sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-          label={m.imageMeta.name}
-          placeholder={m.imageMeta.namePlaceholder}
+          label={messages.imageMeta.name}
+          placeholder={messages.imageMeta.namePlaceholder}
           value={values.name ?? ''}
           onChange={(name) => onChange({ name })}
           onClear={() => onChange({ name: '' })}
@@ -39,8 +39,8 @@ export const ImageMetaFields = ({ values, onChange, disabled = false, templates 
         />
         <TextField
           sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-          label={m.imageMeta.nameEN}
-          placeholder={m.imageMeta.nameENPlaceholder}
+          label={messages.imageMeta.nameEN}
+          placeholder={messages.imageMeta.nameENPlaceholder}
           value={values.nameEN ?? ''}
           onChange={(nameEN) => onChange({ nameEN })}
           onClear={() => onChange({ nameEN: '' })}
@@ -51,8 +51,8 @@ export const ImageMetaFields = ({ values, onChange, disabled = false, templates 
       <Stack direction='row' spacing={0} width='100%' flexWrap='wrap' alignItems='flex-start'>
         <Stack sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }} spacing={1}>
           <TextField
-            label={m.imageMeta.description}
-            placeholder={m.imageMeta.descriptionPlaceholder}
+            label={messages.imageMeta.description}
+            placeholder={messages.imageMeta.descriptionPlaceholder}
             value={values.description ?? ''}
             onChange={(description) => onChange({ description })}
             onClear={() => onChange({ description: '' })}
@@ -77,8 +77,8 @@ export const ImageMetaFields = ({ values, onChange, disabled = false, templates 
         </Stack>
         <TextField
           sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-          label={m.imageMeta.descriptionEN}
-          placeholder={m.imageMeta.descriptionENPlaceholder}
+          label={messages.imageMeta.descriptionEN}
+          placeholder={messages.imageMeta.descriptionENPlaceholder}
           value={values.descriptionEN ?? ''}
           onChange={(descriptionEN) => onChange({ descriptionEN })}
           onClear={() => onChange({ descriptionEN: '' })}
@@ -91,8 +91,8 @@ export const ImageMetaFields = ({ values, onChange, disabled = false, templates 
       <Stack direction='row' spacing={0} width='100%' flexWrap='wrap' alignItems='flex-start'>
         <Stack sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }} spacing={1}>
           <TextField
-            label={m.imageMeta.source}
-            placeholder={m.imageMeta.sourcePlaceholder}
+            label={messages.imageMeta.source}
+            placeholder={messages.imageMeta.sourcePlaceholder}
             value={values.source ?? ''}
             onChange={(source) => onChange({ source })}
             onClear={() => onChange({ source: '' })}
@@ -115,8 +115,8 @@ export const ImageMetaFields = ({ values, onChange, disabled = false, templates 
         </Stack>
         <TextField
           sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-          label={m.imageMeta.sourceEN}
-          placeholder={m.imageMeta.sourceENPlaceholder}
+          label={messages.imageMeta.sourceEN}
+          placeholder={messages.imageMeta.sourceENPlaceholder}
           value={values.sourceEN ?? ''}
           onChange={(sourceEN) => onChange({ sourceEN })}
           onClear={() => onChange({ sourceEN: '' })}
@@ -127,8 +127,8 @@ export const ImageMetaFields = ({ values, onChange, disabled = false, templates 
       <Stack direction='row' spacing={0} width='100%' flexWrap='wrap'>
         <TextField
           sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-          label={m.imageMeta.comment}
-          placeholder={m.imageMeta.commentPlaceholder}
+          label={messages.imageMeta.comment}
+          placeholder={messages.imageMeta.commentPlaceholder}
           value={values.comment ?? ''}
           onChange={(comment) => onChange({ comment })}
           onClear={() => onChange({ comment: '' })}
@@ -138,8 +138,8 @@ export const ImageMetaFields = ({ values, onChange, disabled = false, templates 
         />
         <TextField
           sx={{ display: 'flex', flex: 1, m: 1, minWidth: '15.5rem' }}
-          label={m.imageMeta.commentEN}
-          placeholder={m.imageMeta.commentENPlaceholder}
+          label={messages.imageMeta.commentEN}
+          placeholder={messages.imageMeta.commentENPlaceholder}
           value={values.commentEN ?? ''}
           onChange={(commentEN) => onChange({ commentEN })}
           onClear={() => onChange({ commentEN: '' })}

@@ -31,7 +31,7 @@ export const RemoveButton = ({
   nameField = 'name',
   idField = 'id',
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const [anchorConfirmEl, setAnchorConfirmEl] = useState(null)
   const [openConfirm, setOpenConfirm] = useState(false)
 
@@ -56,7 +56,7 @@ export const RemoveButton = ({
   return (
     <>
       <IconButton
-        title={formatMessage(m.removeButton.title, { displayName })}
+        title={formatMessage(messages.removeButton.title, { displayName })}
         onClick={handleOnClick}
         icon={<MdDeleteForever />}
         color={red.A400}
@@ -65,7 +65,7 @@ export const RemoveButton = ({
       <ConfirmPopper
         open={openConfirm}
         anchorEl={anchorConfirmEl}
-        message={formatMessage(m.removeButton.confirmMessage, { displayName })}
+        message={formatMessage(messages.removeButton.confirmMessage, { displayName })}
         onClose={() => setOpenConfirm(false)}
         onConfirm={() => {
           if (typeof removeIndex === 'number') {

@@ -16,7 +16,7 @@ import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
  * @returns {React.ReactElement} The Plus1 button component.
  */
 export const Plus1Button = ({ isFab, onClick, disabled }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   return !isFab ? (
     <Button
@@ -26,7 +26,7 @@ export const Plus1Button = ({ isFab, onClick, disabled }) => {
       variant='contained'
       onClick={onClick}
       disabled={disabled}
-      title={m.plus1.title}
+      title={messages.plus1.title}
     >
       <MdExposurePlus1 size={25} />
     </Button>
@@ -36,7 +36,7 @@ export const Plus1Button = ({ isFab, onClick, disabled }) => {
       color='primary'
       sx={{ position: 'absolute', right: 25, top: 34 }}
       disabled={disabled}
-      title={m.plus1.title}
+      title={messages.plus1.title}
     >
       <MdExposurePlus1 size={25} onClick={onClick} />
     </Fab>

@@ -19,7 +19,7 @@ import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
  * @returns {React.ReactElement|null} The legend of colors component.
  */
 export const ColorLegend = ({ warning, error, showUpdatedAt = true }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   if (!warning && !error && !showUpdatedAt) {
     return null
@@ -55,7 +55,7 @@ export const ColorLegend = ({ warning, error, showUpdatedAt = true }) => {
               sx={{
                 color: red[500],
               }}
-            />&nbsp;—&nbsp;{m.colorLegend.lessThan1Day}
+            />&nbsp;—&nbsp;{messages.colorLegend.lessThan1Day}
           </span>
         ),
         showUpdatedAt && (
@@ -65,7 +65,7 @@ export const ColorLegend = ({ warning, error, showUpdatedAt = true }) => {
               sx={{
                 color: yellow[500],
               }}
-            />&nbsp;—&nbsp;{m.colorLegend.lessThan3Days}
+            />&nbsp;—&nbsp;{messages.colorLegend.lessThan3Days}
           </span>
         ),
       ])}

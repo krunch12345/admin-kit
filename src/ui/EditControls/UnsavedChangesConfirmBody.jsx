@@ -18,18 +18,18 @@ export const UnsavedChangesConfirmBody = ({
   changedFieldLabels = [],
   syncPointDeletesLabel = null,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
 
   return (
     <Stack spacing={1.5}>
       <Typography variant='overline' fontSize={14}>
-        {isAddNew ? m.common.creating : m.common.editing} &frasl;&frasl; {name}
+        {isAddNew ? messages.common.creating : messages.common.editing} &frasl;&frasl; {name}
       </Typography>
 
       {changedFieldLabels.length > 0 && (
         <Stack spacing={0.5}>
           <Typography variant='body2' color='text.secondary'>
-            {m.unsavedChanges.changedFields}
+            {messages.unsavedChanges.changedFields}
           </Typography>
           <Stack component='ul' spacing={0.25} sx={{ m: 0, pl: 2.5 }}>
             {Children.toArray(
@@ -45,7 +45,7 @@ export const UnsavedChangesConfirmBody = ({
 
       {syncPointDeletesLabel !== null && (
         <Typography variant='body2' color='error.main'>
-          {formatMessage(m.unsavedChanges.syncPointDeletesLine, { syncPointDeletesLabel })}
+          {formatMessage(messages.unsavedChanges.syncPointDeletesLine, { syncPointDeletesLabel })}
         </Typography>
       )}
     </Stack>

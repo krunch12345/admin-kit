@@ -75,7 +75,7 @@ const StyledDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== '
  * @returns {React.ReactElement} The Drawer component.
  */
 export const Drawer = ({ drawerOpen, setDrawerOpen, isFetchingMenu, menu }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const { pathname } = useLocation()
   const isMain = pathname === '/'
 
@@ -101,10 +101,10 @@ export const Drawer = ({ drawerOpen, setDrawerOpen, isFetchingMenu, menu }) => {
       {drawerOpen && (
         <Stack direction='row' spacing={2} alignItems='center' width='100%' justifyContent='space-between' pl={2}>
           <Typography fontWeight={700}>
-            {m.common.menu}
+            {messages.common.menu}
           </Typography>
 
-          <Tooltip title={m.shell.closeMenu}>
+          <Tooltip title={messages.shell.closeMenu}>
             <IconButton
               onClick={() => setDrawerOpen(false)}
               sx={{ '&:hover': {
@@ -117,7 +117,7 @@ export const Drawer = ({ drawerOpen, setDrawerOpen, isFetchingMenu, menu }) => {
         </Stack>
       )}
     </DrawerHeader>
-  ), [drawerOpen, m.common.menu, m.shell.closeMenu, setDrawerOpen])
+  ), [drawerOpen, messages.common.menu, messages.shell.closeMenu, setDrawerOpen])
 
   const navBar = useMemo(() => (
     <Stack height='100%' flex={1}>

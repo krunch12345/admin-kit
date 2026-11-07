@@ -22,7 +22,7 @@ import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
  * @returns {React.ReactElement} The Filter bar component.
  */
 export const FilterBar = ({ children, setFilters, initFilters, filters, refetch, isDisabledRefetch }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const [extended, setExtended] = useState(false)
   const [isWrapped, setIsWrapped] = useState(false)
   const [hiddenElements, setHiddenElements] = useState(0)
@@ -90,7 +90,7 @@ export const FilterBar = ({ children, setFilters, initFilters, filters, refetch,
       maxHeight={extended ? 'fit-content' : '3.5rem'}
       overflow={extended ? 'auto' : 'hidden'}
     >
-      <Tooltip title={m.filterBar.refreshData}>
+      <Tooltip title={messages.filterBar.refreshData}>
         <div>
           <IconButton
             onClick={refetch}
@@ -103,7 +103,7 @@ export const FilterBar = ({ children, setFilters, initFilters, filters, refetch,
       </Tooltip>
 
       {showExpandButton && (
-        <Tooltip title={extended ? m.filterBar.collapseFilters : m.filterBar.showAllFilters}>
+        <Tooltip title={extended ? messages.filterBar.collapseFilters : messages.filterBar.showAllFilters}>
           <IconButton
             onClick={() => setExtended(!extended)}
             color='primary'
@@ -114,7 +114,7 @@ export const FilterBar = ({ children, setFilters, initFilters, filters, refetch,
       )}
 
       <Box pr={2}>
-        <Tooltip title={m.filterBar.clearFilters}>
+        <Tooltip title={messages.filterBar.clearFilters}>
           <Badge color='error' badgeContent={countFilters}>
             <div>
               <IconButton

@@ -65,7 +65,7 @@ export const AppBar = ({
   showInvalidateCache = true,
   onInvalidateCache,
 }) => {
-  const m = useAdminKitMessages()
+  const messages = useAdminKitMessages()
   const { useInvalidateAllCacheMutation } = getShellHooks()
   const [anchorElUser, setAnchorElUser] = useState(null)
   const [isInvalidatingCache, setIsInvalidatingCache] = useState(false)
@@ -100,7 +100,7 @@ export const AppBar = ({
         showAlert({
           isShowAlert: true,
           severity: 'success',
-          message: m.shell.cacheCleared,
+          message: messages.shell.cacheCleared,
         }),
       )
     } catch {
@@ -108,13 +108,13 @@ export const AppBar = ({
         showAlert({
           isShowAlert: true,
           severity: 'error',
-          message: m.shell.cacheResetError,
+          message: messages.shell.cacheResetError,
         }),
       )
     } finally {
       setIsInvalidatingCache(false)
     }
-  }, [dispatch, invalidateAllCache, m.shell.cacheCleared, m.shell.cacheResetError, onInvalidateCache])
+  }, [dispatch, invalidateAllCache, messages.shell.cacheCleared, messages.shell.cacheResetError, onInvalidateCache])
 
   const handleOpenUserMenu = e => {
     setAnchorElUser(e.currentTarget)
@@ -139,9 +139,9 @@ export const AppBar = ({
       </Box>
     ) : (
       <IconButton
-        title={m.shell.openMenu}
+        title={messages.shell.openMenu}
         color='inherit'
-        aria-label={m.shell.openMenu}
+        aria-label={messages.shell.openMenu}
         onClick={() => setDrawerOpen(true)}
         edge='start'
         sx={{
@@ -155,7 +155,7 @@ export const AppBar = ({
         <Menu />
       </IconButton>
     )
-  ), [drawerOpen, isFetchingMenu, m.shell.openMenu, setDrawerOpen])
+  ), [drawerOpen, isFetchingMenu, messages.shell.openMenu, setDrawerOpen])
 
   const userMenu = useMemo(() => (
     <Box>
@@ -194,7 +194,7 @@ export const AppBar = ({
           }}
         >
           <Typography>
-            {m.common.settings}
+            {messages.common.settings}
           </Typography>
         </MenuItem>
 
@@ -206,12 +206,12 @@ export const AppBar = ({
           }}
         >
           <Typography>
-            {m.common.signOut}
+            {messages.common.signOut}
           </Typography>
         </MenuItem>
       </UserMenu>
     </Box>
-  ), [anchorElUser, dispatch, m.common.settings, m.common.signOut, navigate, nickname])
+  ), [anchorElUser, dispatch, messages.common.settings, messages.common.signOut, navigate, nickname])
 
   return (
     <StyledAppBar
@@ -255,7 +255,7 @@ export const AppBar = ({
                   onClick={handleInvalidateCache}
                   startIcon={<DeleteForever />}
                 >
-                  {m.shell.clearCache}
+                  {messages.shell.clearCache}
                 </Button>
               )}
 
