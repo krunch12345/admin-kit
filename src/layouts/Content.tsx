@@ -1,18 +1,18 @@
-import { useLayoutEffect } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Box, Stack } from '@mui/material'
 import { Header } from '../shell/Header'
+import { Drawer } from '../shell/Drawer'
 import { Footer } from '../shell/Footer'
 import type { FooterProps } from '../shell/Footer'
 import type { AdminKitMenuItem } from '../shell/MenuElement'
 import { Modal } from '../ui/Modal/Modal'
 import { Alert } from '../ui/Alert/Alert'
 import { Loading } from '../ui/Loading/Loading'
-import { showAlertSelector } from '../ui/Alert/showAlertSlice'
 import { showLoadingSelector } from '../ui/Loading/showLoadingSlice'
 import { loginSelector } from '../auth/loginSlice'
-import { useAdminKitConfig } from '../config/useAdminKitRuntime'
+import { useAdminKitConfig, useAdminKitHooks } from '../config/useAdminKitRuntime'
 
 export interface ContentProps {
   /** Title shown in the app bar. */
@@ -30,29 +30,39 @@ export interface ContentProps {
 }
 
 /**
- * Main layout component. Renders the chrome (header, footer) for authenticated users
+ * Main layout component. Renders the chrome (header, drawer, footer) for authenticated users
  * outside of the login and not-found pages, and always hosts Modal, Alert and Loading.
  */
 export const Content = ({
   appTitle,
   showInvalidateCache,
   onInvalidateCache,
-  menu,
-  isFetchingMenu,
+  menu: menuOverride,
+  isFetchingMenu: isFetchingMenuOverride,
   footerProps,
 }: ContentProps) => {
   const { pathname } = useLocation()
   const { accessToken } = useSelector(loginSelector)
   const { routes } = useAdminKitConfig()
+  const { useGetAdminMenuQuery } = useAdminKitHooks()
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   const { isShowLoading } = useSelector(showLoadingSelector)
-  const { isShowAlert } = useSelector(showAlertSelector)
 
   const notFoundPaths = [routes.error404, routes.notFound]
   const isLogin = pathname === routes.login
   const isNotFound = notFoundPaths.includes(pathname)
   const isMain = pathname === routes.home
   const hasChrome = Boolean(accessToken) && !isLogin && !isNotFound
+
+  const hasMenuOverride = menuOverride !== undefined
+  const {
+    data: fetchedMenu,
+    isFetching: isFetchingFetchedMenu,
+  } = useGetAdminMenuQuery(undefined, { skip: !hasChrome || hasMenuOverride })
+
+  const menu = hasMenuOverride ? menuOverride : ((fetchedMenu as AdminKitMenuItem[] | undefined) ?? [])
+  const isFetchingMenu = hasMenuOverride ? Boolean(isFetchingMenuOverride) : isFetchingFetchedMenu
 
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
@@ -61,13 +71,22 @@ export const Content = ({
   return (
     <Stack width='100%' minHeight='100vh' sx={{ overflowX: 'hidden' }}>
       {hasChrome && (
-        <Header
-          appTitle={appTitle}
-          showInvalidateCache={showInvalidateCache}
-          onInvalidateCache={onInvalidateCache}
-          menu={menu}
-          isFetchingMenu={isFetchingMenu}
-        />
+        <>
+          <Header
+            appTitle={appTitle}
+            showInvalidateCache={showInvalidateCache}
+            onInvalidateCache={onInvalidateCache}
+            drawerOpen={drawerOpen}
+            setDrawerOpen={setDrawerOpen}
+            isFetchingMenu={isFetchingMenu}
+          />
+          <Drawer
+            drawerOpen={drawerOpen}
+            setDrawerOpen={setDrawerOpen}
+            isFetchingMenu={isFetchingMenu}
+            menu={menu}
+          />
+        </>
       )}
 
       <Box
@@ -87,7 +106,7 @@ export const Content = ({
       {hasChrome && footerProps && <Footer {...footerProps} />}
 
       <Modal />
-      {isShowAlert && <Alert />}
+      <Alert />
       {isShowLoading && <Loading />}
     </Stack>
   )

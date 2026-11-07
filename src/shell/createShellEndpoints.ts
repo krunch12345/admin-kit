@@ -2,7 +2,7 @@ import type { EndpointBuilder } from '@reduxjs/toolkit/query/react'
 import type { AdminBaseQueryFn } from '../auth/createAdminBaseQuery'
 
 /**
- * Endpoints required by Header/AppBar: admin menu and cache invalidation.
+ * Endpoints required by Header / Content shell: admin menu and cache invalidation.
  * Spread into createApi endpoints: `...createShellEndpoints(builder)`.
  */
 export const createShellEndpoints = <TagTypes extends string, ReducerPath extends string>(

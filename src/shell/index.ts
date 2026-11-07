@@ -1,4 +1,3 @@
-export { AppBar } from './AppBar'
 export { createShellEndpoints } from './createShellEndpoints'
 export { Drawer } from './Drawer'
 export { DRAWER_WIDTH } from './drawerWidth'

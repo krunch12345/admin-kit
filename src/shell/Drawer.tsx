@@ -6,6 +6,7 @@ import {
   Divider,
   Drawer as MuiDrawer,
   IconButton,
+  List,
   Stack,
   styled,
   Tooltip,
@@ -123,11 +124,11 @@ export const Drawer = ({ drawerOpen, setDrawerOpen, isFetchingMenu, menu }: Draw
   ), [drawerOpen, messages.common.menu, messages.shell.closeMenu, setDrawerOpen])
 
   const navBar = useMemo(() => (
-    <Stack height='100%' flex={1}>
+    <List disablePadding sx={{ height: '100%', flex: 1 }}>
       {Children.toArray(
         menu?.map(element => <MenuElement drawerOpen={drawerOpen} element={element} setDrawerOpen={setDrawerOpen} />)
       )}
-    </Stack>
+    </List>
   ), [drawerOpen, menu, setDrawerOpen])
 
   return (
@@ -135,20 +136,23 @@ export const Drawer = ({ drawerOpen, setDrawerOpen, isFetchingMenu, menu }: Draw
       <Backdrop
         open={drawerOpen}
         onClick={() => setDrawerOpen(false)}
-        sx={{ zIndex: 9999 }}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer }}
       />
 
       <StyledDrawer
         variant='permanent'
         open={drawerOpen}
         PaperProps={{
-          style: {
-            backgroundColor: (isMain && !drawerOpen) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.9)',
+          sx: {
+            // Closed-on-main stays translucent over hero; open menu must be opaque
+            // so the page backdrop does not show through the panel.
+            backgroundColor: (isMain && !drawerOpen) ? 'rgba(0, 0, 0, 0.2)' : 'background.paper',
+            backgroundImage: 'none',
           },
         }}
         sx={{
           display: isMaxWidth600 && !drawerOpen ? 'none' : 'block',
-          zIndex: 10000
+          zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
         {drawerHeader}

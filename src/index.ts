@@ -58,7 +58,6 @@ export { Content } from './layouts/Content'
 export { Page } from './layouts/Page'
 
 // shell
-export { AppBar } from './shell/AppBar'
 export { createShellEndpoints } from './shell/createShellEndpoints'
 export { Drawer } from './shell/Drawer'
 export { DRAWER_WIDTH } from './shell/drawerWidth'
