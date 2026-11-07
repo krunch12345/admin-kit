@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
+import type { MouseEvent, SyntheticEvent } from 'react'
 import {
   Button,
   Dialog,
@@ -10,19 +11,18 @@ import {
   Typography,
 } from '@mui/material'
 import { Close } from '@mui/icons-material'
-import { ConfirmPopper } from '../ConfirmYesNo/ConfirmPopper.jsx'
-import { ModalData } from './ModalData.js'
-import { useAdminKitMessages } from '../../locale/useAdminKitMessages.js'
+import { ConfirmPopper } from '../ConfirmYesNo/ConfirmPopper'
+import { ModalData } from './ModalData'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
 
 /**
  * Modal component.
- * @returns {React.ReactElement} The Modal component.
  */
 export const Modal = () => {
   const messages = useAdminKitMessages()
   const { states } = useContext(ModalData)
   const { modalData } = states
-  const [closeConfirmAnchorEl, setCloseConfirmAnchorEl] = useState(null)
+  const [closeConfirmAnchorEl, setCloseConfirmAnchorEl] = useState<HTMLElement | null>(null)
   const [isCloseConfirmOpen, setIsCloseConfirmOpen] = useState(false)
   const isDialogOpen = Boolean(modalData?.open)
 
@@ -50,7 +50,7 @@ export const Modal = () => {
     headerExtra = null,
     ownerId: _ownerId,
     ...restModalData
-  } = modalData
+  } = modalData ?? {}
 
   const {
     sx,
@@ -66,7 +66,7 @@ export const Modal = () => {
     ...restPaperProps
   } = PaperProps || {}
 
-  const handleRequestClose = useCallback((event) => {
+  const handleRequestClose = useCallback((event?: MouseEvent<HTMLElement>) => {
     if (shouldConfirmClose) {
       setCloseConfirmAnchorEl(event?.currentTarget ?? null)
       setIsCloseConfirmOpen(true)
@@ -82,9 +82,9 @@ export const Modal = () => {
     onClose?.()
   }, [onClose])
 
-  const handleCancelCloseConfirm = useCallback((event) => {
-    event?.preventDefault?.()
-    event?.stopPropagation?.()
+  const handleCancelCloseConfirm = useCallback((event?: SyntheticEvent | Event) => {
+    event?.preventDefault()
+    event?.stopPropagation()
     setIsCloseConfirmOpen(false)
     setCloseConfirmAnchorEl(null)
   }, [])
@@ -95,6 +95,7 @@ export const Modal = () => {
         {...dialogProps}
         disableEscapeKeyDown={disableEscapeKeyDown}
         fullWidth={fullWidth}
+        open={isDialogOpen}
         onClose={(_e, reason) => {
           if (reason === 'backdropClick') {
             return

@@ -1,26 +1,31 @@
-import PropTypes from 'prop-types'
 import { Badge, Box, Tooltip } from '@mui/material'
 import { Check } from '@mui/icons-material'
-import { buildFilledFieldsTooltip } from '../ImageMetaFields/buildFilledFieldsTooltip.jsx'
+import type { ImageMeta } from '../ImageMetaFields/imageMetaFieldsConfig'
+import { buildFilledFieldsTooltip } from '../ImageMetaFields/buildFilledFieldsTooltip'
 
-/**
- * @typedef {object} SelectableImageThumbProps
- * @property {object} image
- * @property {boolean} selected
- * @property {function(): void} [onClick]
- * @property {boolean} [disableSelection]
- */
+export interface ThumbImage extends ImageMeta {
+  imageSrc?: string
+  url?: string
+  name?: string
+  fileName?: string
+}
+
+interface SelectableImageThumbProps {
+  image: ThumbImage
+  selected: boolean
+  onClick?: () => void
+  disableSelection?: boolean
+}
 
 /**
  * Selectable pending-image thumbnail with used-style badge and meta tooltip.
- * @type {React.FC<SelectableImageThumbProps>}
  */
 export const SelectableImageThumb = ({
   image,
   selected,
   onClick,
   disableSelection = false,
-}) => (
+}: SelectableImageThumbProps) => (
   <Tooltip title={buildFilledFieldsTooltip(image)} arrow>
     <Badge
       color='primary'
@@ -62,23 +67,3 @@ export const SelectableImageThumb = ({
     </Badge>
   </Tooltip>
 )
-
-SelectableImageThumb.propTypes = {
-  image: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    imageSrc: PropTypes.string,
-    url: PropTypes.string,
-    fileName: PropTypes.string,
-    name: PropTypes.string,
-    nameEN: PropTypes.string,
-    description: PropTypes.string,
-    descriptionEN: PropTypes.string,
-    source: PropTypes.string,
-    sourceEN: PropTypes.string,
-    comment: PropTypes.string,
-    commentEN: PropTypes.string,
-  }).isRequired,
-  selected: PropTypes.bool.isRequired,
-  onClick: PropTypes.func,
-  disableSelection: PropTypes.bool,
-}

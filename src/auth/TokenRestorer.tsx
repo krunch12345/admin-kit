@@ -1,21 +1,21 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import type { ThunkDispatch, UnknownAction } from '@reduxjs/toolkit'
 import { useNavigate } from 'react-router-dom'
-import { authChecked, loginSelector, tokenReceived } from './loginSlice.js'
-import { handleLogout } from './handleLogout.js'
-import { getAuthHooks } from './runtimeHooks.js'
-import { hasPersistedSession, isRememberMeSession } from './sessionFlags.js'
+import { authChecked, loginSelector, tokenReceived } from './loginSlice'
+import { handleLogout } from './handleLogout'
+import { hasPersistedSession, isRememberMeSession } from './sessionFlags'
+import { useAdminKitConfig, useAdminKitHooks } from '../config/useAdminKitRuntime'
 
 /**
  * Restores the admin session after a full reload using the httpOnly refresh cookie.
  * Renders nothing; mount it once inside the router and the redux Provider.
- * @type {React.FC}
- * @returns {null}
  */
-export const TokenRestorer = () => {
-  const { useGetCurrentUserQuery } = getAuthHooks()
+export const TokenRestorer = (): null => {
+  const { useGetCurrentUserQuery } = useAdminKitHooks()
+  const { routes } = useAdminKitConfig()
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<ThunkDispatch<unknown, unknown, UnknownAction>>()
   const navigate = useNavigate()
   const { accessToken: accessTokenFromStore } = useSelector(loginSelector)
 
@@ -52,7 +52,7 @@ export const TokenRestorer = () => {
       }
 
       dispatch(handleLogout())
-      navigate('/login')
+      navigate(routes.login)
       return
     }
 
@@ -81,6 +81,7 @@ export const TokenRestorer = () => {
     rememberMe,
     navigate,
     accessTokenFromStore,
+    routes.login,
   ])
 
   return null

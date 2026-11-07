@@ -1,15 +1,59 @@
 import { createSlice, isFulfilled } from '@reduxjs/toolkit'
-import { clearSessionFlags, persistSessionFlag } from './sessionFlags.js'
+import type { PayloadAction, UnknownAction } from '@reduxjs/toolkit'
+
+export interface LoginState {
+  email: string | null
+  nickname: string | null
+  avatar: string
+  is2FARequired: boolean
+  accessToken: string | null
+  rememberMe: boolean
+  id: string | null
+  isAuthChecked: boolean
+}
+
+export interface LoginRootState {
+  login: LoginState
+}
+
+export interface TokenReceivedPayload {
+  accessToken?: string | null
+  email?: string | null
+  nickname?: string | null
+  avatar?: string | null
+  id?: string | null
+  rememberMe?: boolean
+  is2FARequired?: boolean
+}
+
+export interface LoginAdminResponse {
+  email: string | null
+  nickname: string | null
+  avatar?: string | null
+  is2FARequired: boolean
+  id: string | null
+  accessToken: string | null
+}
+
+export type Verify2FAResponse = Partial<Omit<LoginAdminResponse, 'is2FARequired'>> | undefined
+
+type EndpointFulfilledAction<Payload> = PayloadAction<Payload, string, { arg: { endpointName: string } }>
+
+const getEndpointName = (action: UnknownAction): unknown => {
+  const { meta } = action as { meta?: { arg?: { endpointName?: unknown } } }
+  return meta?.arg?.endpointName
+}
 
 /**
  * Matches a fulfilled RTK Query action by endpoint name, independent of the app's api instance.
- * @param {string} endpointName
- * @returns {function(object): boolean}
  */
-const matchEndpointFulfilled = (endpointName) => (action) =>
-  isFulfilled(action) && action.meta?.arg?.endpointName === endpointName
+const matchEndpointFulfilled = <Payload>(endpointName: string) => (
+  action: UnknownAction,
+): action is EndpointFulfilledAction<Payload> => (
+  isFulfilled(action) && getEndpointName(action) === endpointName
+)
 
-const initialState = {
+const initialState: LoginState = {
   email: null,
   nickname: null,
   avatar: '',
@@ -35,16 +79,13 @@ export const loginSlice = createSlice({
       state.accessToken = null
       state.id = null
       state.isAuthChecked = true
-      localStorage.removeItem('user')
-      sessionStorage.removeItem('user')
-      clearSessionFlags()
     },
 
     doRememberMe: (state) => {
       state.rememberMe = true
     },
 
-    tokenReceived: (state, action) => {
+    tokenReceived: (state, action: PayloadAction<TokenReceivedPayload>) => {
       const {
         accessToken,
         email,
@@ -77,12 +118,6 @@ export const loginSlice = createSlice({
         state.is2FARequired = is2FARequired
       }
       state.isAuthChecked = true
-
-      if (state.accessToken) {
-        localStorage.removeItem('user')
-        sessionStorage.removeItem('user')
-        persistSessionFlag(Boolean(state.rememberMe))
-      }
     },
 
     authChecked: (state) => {
@@ -90,10 +125,10 @@ export const loginSlice = createSlice({
     },
   },
 
-  extraReducers(builder) {
+  extraReducers: (builder) => {
     builder
       .addMatcher(
-        matchEndpointFulfilled('loginAdmin'),
+        matchEndpointFulfilled<LoginAdminResponse>('loginAdmin'),
         (state, { payload }) => {
           state.email = payload.email
           state.nickname = payload.nickname
@@ -108,16 +143,10 @@ export const loginSlice = createSlice({
           }
 
           state.accessToken = payload.accessToken
-
-          if (payload.accessToken && typeof window !== 'undefined') {
-            localStorage.removeItem('user')
-            sessionStorage.removeItem('user')
-            persistSessionFlag(Boolean(state.rememberMe))
-          }
         },
       )
       .addMatcher(
-        matchEndpointFulfilled('verify2FA'),
+        matchEndpointFulfilled<Verify2FAResponse>('verify2FA'),
         (state, { payload }) => {
           state.is2FARequired = false
           state.isAuthChecked = true
@@ -140,12 +169,6 @@ export const loginSlice = createSlice({
           if (payload.id) {
             state.id = payload.id
           }
-
-          if (typeof window !== 'undefined') {
-            localStorage.removeItem('user')
-            sessionStorage.removeItem('user')
-            persistSessionFlag(Boolean(state.rememberMe))
-          }
         },
       )
   },
@@ -158,4 +181,4 @@ export const {
   authChecked,
 } = loginSlice.actions
 
-export const loginSelector = (state) => state.login
+export const loginSelector = (state: LoginRootState): LoginState => state.login

@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict'
-import { describe, it } from 'node:test'
-import { canCloseModal, canReplaceModal } from './modalOwnership.js'
+import { canCloseModal, canReplaceModal } from './modalOwnership'
 
 describe('canCloseModal', () => {
   it('allows force-close when no owner id is requested', () => {
