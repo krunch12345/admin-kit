@@ -1,31 +1,30 @@
 import { useContext } from 'react'
-import { AdminKitContext } from './AdminKitContext.js'
-import { getAdminKitMessages, getAdminKitLocale } from './runtime.js'
-import { toMuiLocaleText } from './toMuiLocaleText.js'
+import { AdminKitContext } from './AdminKitContext'
+import { getAdminKitMessages, getAdminKitLocale } from './runtime'
+import { toMuiLocaleText } from './toMuiLocaleText'
+import type { MuiPickersLocaleText } from './toMuiLocaleText'
+import type { AdminKitLocale, AdminKitMessages } from './types'
 
 /**
  * Active admin-kit messages (from provider, or silent English fallback).
- * @returns {import('./types.js').AdminKitMessages}
  */
-export const useAdminKitMessages = () => {
+export const useAdminKitMessages = (): AdminKitMessages => {
   const ctx = useContext(AdminKitContext)
   return ctx?.messages || getAdminKitMessages()
 }
 
 /**
  * Active locale code.
- * @returns {import('./types.js').AdminKitLocale}
  */
-export const useAdminKitLocale = () => {
+export const useAdminKitLocale = (): AdminKitLocale => {
   const ctx = useContext(AdminKitContext)
   return ctx?.locale || getAdminKitLocale()
 }
 
 /**
  * MUI X date/time picker `localeText` for the active locale.
- * @returns {object}
  */
-export const useAdminKitLocaleText = () => {
+export const useAdminKitLocaleText = (): MuiPickersLocaleText => {
   const messages = useAdminKitMessages()
   return toMuiLocaleText(messages.datePickers)
 }
