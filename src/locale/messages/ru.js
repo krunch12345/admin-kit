@@ -256,6 +256,8 @@ export const ruMessages = {
     clipboardPlaceholder: 'Вставить файл из буфера',
     preview: 'Предпросмотр:',
     confirmDeleteImage: 'Вы точно хотите удалить это изображение?',
+    unsupportedImageType: 'Допускаются только растровые изображения (SVG и подобные типы блокируются).',
+    skippedUnsafeImages: 'Пропущено неподдерживаемых файлов: ${count}. SVG и подобные типы блокируются.',
   },
 
   fileSize: {

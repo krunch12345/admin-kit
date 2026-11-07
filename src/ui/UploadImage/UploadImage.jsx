@@ -28,6 +28,7 @@ import {
   chunkFilesByCountAndBytes,
 } from '../../constants/imageBatch.js'
 import { getAddImagesErrorMessage } from '../../utils/getAddImagesErrorMessage.js'
+import { isAllowedImageFile } from '../../utils/isAllowedImageFile.js'
 import { optimizeImageForUpload as defaultOptimizeImageForUpload } from '../../utils/optimizeImageForUpload.js'
 import { PendingImageItem } from './PendingImageItem.jsx'
 import { GeneralSettingsPanel } from './GeneralSettingsPanel.jsx'
@@ -294,10 +295,30 @@ export const UploadImage = ({
   }, [emptyMeta, name, updatePendingImage])
 
   const addPendingFiles = useCallback((files) => {
-    const imageFiles = Array.from(files).filter((file) => file?.type?.startsWith('image/'))
+    const candidates = Array.from(files).filter(Boolean)
+    const imageFiles = candidates.filter(isAllowedImageFile)
+    const blockedUnsafeCount = candidates.filter((file) => {
+      const type = String(file.type || '').toLowerCase()
+      return type.startsWith('image/') && !isAllowedImageFile(file)
+    }).length
 
     if (!imageFiles.length) {
+      dispatch(showAlert({
+        isShowAlert: true,
+        severity: 'warning',
+        message: m.upload.unsupportedImageType,
+      }))
       return
+    }
+
+    if (blockedUnsafeCount > 0) {
+      dispatch(showAlert({
+        isShowAlert: true,
+        severity: 'warning',
+        message: formatMessage(m.upload.skippedUnsafeImages, {
+          count: blockedUnsafeCount,
+        }),
+      }))
     }
 
     if (!multiple) {
@@ -338,7 +359,16 @@ export const UploadImage = ({
 
     pendingCountRef.current += newItems.length
     setPendingImages((prev) => [...prev, ...newItems])
-  }, [createPendingItems, dispatch, m.upload.partialAddDueToLimit, m.upload.pendingLimitReached, multiple, pendingLimit])
+  }, [
+    createPendingItems,
+    dispatch,
+    m.upload.partialAddDueToLimit,
+    m.upload.pendingLimitReached,
+    m.upload.skippedUnsafeImages,
+    m.upload.unsupportedImageType,
+    multiple,
+    pendingLimit,
+  ])
 
   const addPendingFile = useCallback((file) => {
     addPendingFiles([file])

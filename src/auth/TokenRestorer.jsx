@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { authChecked, loginSelector, tokenReceived } from './loginSlice.js'
 import { handleLogout } from './handleLogout.js'
 import { getAuthHooks } from './runtimeHooks.js'
+import { hasPersistedSession, isRememberMeSession } from './sessionFlags.js'
 
 /**
  * Restores the admin session after a full reload using the httpOnly refresh cookie.
@@ -18,8 +19,8 @@ export const TokenRestorer = () => {
   const navigate = useNavigate()
   const { accessToken: accessTokenFromStore } = useSelector(loginSelector)
 
-  const hasLocalSession =
-    typeof window !== 'undefined' && localStorage.getItem('hasSession') === 'true'
+  const hasLocalSession = hasPersistedSession()
+  const rememberMe = isRememberMeSession()
   /**
    * Only call /auth/me when the browser marks a persisted session but Redux has no token yet
    * (full reload). If we already have an access token — e.g. just after login or 2FA — skip
@@ -64,7 +65,7 @@ export const TokenRestorer = () => {
           avatar: data.avatar || '',
           is2FARequired: data.is2FARequired,
           id: data.id,
-          rememberMe: hasLocalSession,
+          rememberMe,
         }),
       )
     } else {
@@ -77,7 +78,7 @@ export const TokenRestorer = () => {
     isLoading,
     dispatch,
     shouldRestoreSession,
-    hasLocalSession,
+    rememberMe,
     navigate,
     accessTokenFromStore,
   ])

@@ -22,6 +22,7 @@ export const IconLink = ({ title, color, href, icon }) => (
     <Link
       href={href}
       target='_blank'
+      rel='noopener noreferrer'
       sx={{
         color: theme => theme.palette.grey.A400,
         '&:hover': {

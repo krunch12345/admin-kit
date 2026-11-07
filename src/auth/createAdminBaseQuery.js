@@ -5,6 +5,7 @@ import { tokenReceived } from './loginSlice.js'
 import { handleLogout } from './handleLogout.js'
 import { deepTrimStrings } from './deepTrimStrings.js'
 import { extractMeta } from './extractMeta.js'
+import { isRememberMeSession } from './sessionFlags.js'
 import { getAdminKitMessages } from '../locale/runtime.js'
 
 /**
@@ -64,7 +65,6 @@ export const createAdminBaseQuery = ({ baseUrl = '/api' } = {}) => {
 
       if (refreshResult?.data?.accessToken) {
         const currentState = api.getState().login
-        const rememberMe = typeof window !== 'undefined' && localStorage.getItem('hasSession') === 'true'
 
         api.dispatch(
           tokenReceived({
@@ -74,7 +74,7 @@ export const createAdminBaseQuery = ({ baseUrl = '/api' } = {}) => {
             avatar: refreshResult.data.avatar || currentState.avatar || '',
             is2FARequired: refreshResult.data.is2FARequired ?? currentState.is2FARequired,
             id: refreshResult.data.id || currentState.id,
-            rememberMe,
+            rememberMe: isRememberMeSession() || Boolean(currentState.rememberMe),
           })
         )
         return true
@@ -157,9 +157,21 @@ export const createAdminBaseQuery = ({ baseUrl = '/api' } = {}) => {
     }
 
     /**
-     * @description Builds headers including Authorization and CSRF token
+     * @description Reads the double-submit CSRF value from the readable cookie.
+     * @returns {string|undefined}
      */
-    const getHeaders = () => {
+    const readCsrfCookie = () => {
+      const cookieVal = document.cookie
+        .split('; ')
+        .find((c) => c.startsWith('csrfToken='))
+      return cookieVal ? cookieVal.split('=').slice(1).join('=') : undefined
+    }
+
+    /**
+     * @description Builds headers including Authorization and CSRF token
+     * @param {string} [csrfOverride] - Prefer this token (e.g. fresh body from /csrfToken)
+     */
+    const getHeaders = (csrfOverride) => {
       const headers = {
         ...modifiedArgs.headers,
         Authorization: requiresAuth && api.getState().login.accessToken
@@ -169,17 +181,18 @@ export const createAdminBaseQuery = ({ baseUrl = '/api' } = {}) => {
       }
 
       if (isStateChanging) {
-        const cookieVal = document.cookie
-          .split('; ')
-          .find((c) => c.startsWith('csrfToken='))
-        const csrfToken = cookieVal ? cookieVal.split('=')[1] : undefined
+        const csrfToken = csrfOverride || readCsrfCookie()
         if (csrfToken) headers['csrf-token'] = csrfToken
       }
 
       return headers
     }
 
-    const authorizedQuery = () => baseQuery({ ...modifiedArgs, headers: getHeaders() }, api, extraOptions)
+    const authorizedQuery = (csrfOverride) => baseQuery(
+      { ...modifiedArgs, headers: getHeaders(csrfOverride) },
+      api,
+      extraOptions,
+    )
 
     const tokenAtRequestStart = api.getState().login.accessToken
     let result = await authorizedQuery()
@@ -212,7 +225,7 @@ export const createAdminBaseQuery = ({ baseUrl = '/api' } = {}) => {
     if (result?.error?.status === 403 && isStateChanging) {
       const newCsrf = await fetchCsrfToken(api, extraOptions)
       if (newCsrf) {
-        result = await authorizedQuery()
+        result = await authorizedQuery(newCsrf)
       } else {
         handleExpired()
         return result

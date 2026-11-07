@@ -1,4 +1,5 @@
 import { showAlert } from '../ui/Alert/showAlertSlice.js'
+import { sanitizeAppPath } from './sanitizeAppPath.js'
 
 /**
  * Displays alerts based on the success or error state of a query.
@@ -13,7 +14,7 @@ import { showAlert } from '../ui/Alert/showAlertSlice.js'
  */
 export const showQueryAlerts = (isSuccess, isError, data, error, navigate, dispatch, path) => {
   if (isSuccess) {
-    path && navigate(path)
+    path && navigate(sanitizeAppPath(path, '/'))
 
     dispatch(
       showAlert({

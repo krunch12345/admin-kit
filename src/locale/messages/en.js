@@ -256,6 +256,8 @@ export const enMessages = {
     clipboardPlaceholder: 'Paste file from clipboard',
     preview: 'Preview:',
     confirmDeleteImage: 'Are you sure you want to delete this image?',
+    unsupportedImageType: 'Only raster images are allowed (SVG and similar types are blocked).',
+    skippedUnsafeImages: 'Skipped ${count} unsupported image file(s). SVG and similar types are blocked.',
   },
 
   fileSize: {

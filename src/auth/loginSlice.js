@@ -1,4 +1,5 @@
 import { createSlice, isFulfilled } from '@reduxjs/toolkit'
+import { clearSessionFlags, persistSessionFlag } from './sessionFlags.js'
 
 /**
  * Matches a fulfilled RTK Query action by endpoint name, independent of the app's api instance.
@@ -36,8 +37,7 @@ export const loginSlice = createSlice({
       state.isAuthChecked = true
       localStorage.removeItem('user')
       sessionStorage.removeItem('user')
-      localStorage.removeItem('hasSession')
-      sessionStorage.removeItem('hasSession')
+      clearSessionFlags()
     },
 
     doRememberMe: (state) => {
@@ -81,13 +81,7 @@ export const loginSlice = createSlice({
       if (state.accessToken) {
         localStorage.removeItem('user')
         sessionStorage.removeItem('user')
-
-        localStorage.setItem('hasSession', 'true')
-        if (!rememberMe) {
-          sessionStorage.setItem('hasSession', 'true')
-        } else {
-          sessionStorage.removeItem('hasSession')
-        }
+        persistSessionFlag(Boolean(state.rememberMe))
       }
     },
 
@@ -118,7 +112,7 @@ export const loginSlice = createSlice({
           if (payload.accessToken && typeof window !== 'undefined') {
             localStorage.removeItem('user')
             sessionStorage.removeItem('user')
-            localStorage.setItem('hasSession', 'true')
+            persistSessionFlag(Boolean(state.rememberMe))
           }
         },
       )
@@ -150,7 +144,7 @@ export const loginSlice = createSlice({
           if (typeof window !== 'undefined') {
             localStorage.removeItem('user')
             sessionStorage.removeItem('user')
-            localStorage.setItem('hasSession', 'true')
+            persistSessionFlag(Boolean(state.rememberMe))
           }
         },
       )

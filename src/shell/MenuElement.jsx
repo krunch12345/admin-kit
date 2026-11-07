@@ -2,6 +2,7 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { ListItem, ListItemButton, ListItemText } from '@mui/material'
 import { Link, useLocation } from 'react-router-dom'
+import { sanitizeAppPath } from '../utils/sanitizeAppPath.js'
 
 /**
  * @typedef {object} IProps
@@ -19,8 +20,13 @@ export const MenuElement = ({ drawerOpen, element, setDrawerOpen }) => {
   const [hover, setHover] = useState(false)
 
   const { pathname } = useLocation()
+  const safePath = sanitizeAppPath(element.path, null)
 
-  const selected = pathname.includes(element.path)
+  if (!safePath) {
+    return null
+  }
+
+  const selected = pathname.includes(safePath)
 
   const handleClick = (e) => {
     if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
@@ -37,7 +43,7 @@ export const MenuElement = ({ drawerOpen, element, setDrawerOpen }) => {
     >
       <ListItemButton
         component={Link}
-        to={element.path}
+        to={safePath}
         sx={{
           minHeight: 48,
           justifyContent: drawerOpen ? 'initial' : 'center',

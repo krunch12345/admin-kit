@@ -17,6 +17,7 @@ import PropTypes from 'prop-types'
 import { loginSelector, tokenReceived, doRememberMe } from '../auth/loginSlice.js'
 import { handleLogout } from '../auth/handleLogout.js'
 import { getAuthHooks } from '../auth/runtimeHooks.js'
+import { sanitizeAppPath } from '../utils/sanitizeAppPath.js'
 import { useLoading } from '../hooks/useLoading.js'
 import { TextField } from '../ui/TextField/TextField.jsx'
 import { OtpCodeInputs } from '../ui/OtpCodeInputs/OtpCodeInputs.jsx'
@@ -53,6 +54,7 @@ export const Login = ({
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const safeRedirectPath = sanitizeAppPath(redirectPath, '/')
 
   const {
     email: emailStore,
@@ -94,7 +96,7 @@ export const Login = ({
 
   useEffect(() => {
     if (isErrorLogin) {
-      dispatch(handleLogout())
+      dispatch(handleLogout({ revokeServer: false }))
     }
   }, [dispatch, isErrorLogin])
 
@@ -155,7 +157,7 @@ export const Login = ({
         }),
       )
 
-      navigate(redirectPath, { replace: true })
+      navigate(safeRedirectPath, { replace: true })
     }
   }, [
     accessToken,
@@ -167,7 +169,7 @@ export const Login = ({
     m.login.authCodeRequired,
     m.login.loginSuccess,
     navigate,
-    redirectPath,
+    safeRedirectPath,
   ])
 
   useEffect(() => {
@@ -197,10 +199,10 @@ export const Login = ({
       autoSubmittedCodeRef.current = ''
       resetLoginAdmin()
       resetVerify2FA()
-      navigate(redirectPath, { replace: true })
+      navigate(safeRedirectPath, { replace: true })
     } else if (isErrorVerify2FA) {
       const message = errorVerify2FA?.data?.message || JSON.stringify(errorVerify2FA)
-      dispatch(handleLogout())
+      dispatch(handleLogout({ revokeServer: false }))
       dispatch(
         showAlert({
           isShowAlert: true,
@@ -226,16 +228,16 @@ export const Login = ({
     m.login.loginSuccess,
     nickname,
     navigate,
-    redirectPath,
+    safeRedirectPath,
     resetLoginAdmin,
     resetVerify2FA,
   ])
 
   useEffect(() => {
     if (accessToken && !is2FARequiredStore && !is2FARequired) {
-      navigate(redirectPath, { replace: true })
+      navigate(safeRedirectPath, { replace: true })
     }
-  }, [accessToken, is2FARequired, is2FARequiredStore, navigate, redirectPath])
+  }, [accessToken, is2FARequired, is2FARequiredStore, navigate, safeRedirectPath])
 
   useLoading(isLoadingLogin || isCheckingVerify2FA)
 
@@ -285,7 +287,7 @@ export const Login = ({
     autoSubmittedCodeRef.current = ''
     resetLoginAdmin()
     resetVerify2FA()
-    dispatch(handleLogout())
+    dispatch(handleLogout({ revokeServer: false }))
   }
 
   const handleOtpChange = (nextCode) => {

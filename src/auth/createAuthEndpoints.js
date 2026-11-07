@@ -66,4 +66,21 @@ export const createAuthEndpoints = (builder) => ({
       },
     }),
   }),
+
+  /**
+   * Revokes the server-side refresh session (httpOnly cookie) and ends the admin login.
+   * Uses the refresh cookie when the access token is already gone.
+   * @returns {Promise<Object>}
+   */
+  logoutAdmin: builder.mutation({
+    query: () => ({
+      url: '/auth/logout',
+      method: 'POST',
+      __meta: {
+        requiresAuth: false,
+        silentAuthFailure: true,
+        suppressGlobalError: true,
+      },
+    }),
+  }),
 })

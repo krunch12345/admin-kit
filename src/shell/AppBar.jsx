@@ -199,10 +199,10 @@ export const AppBar = ({
         </MenuItem>
 
         <MenuItem
-          onClick={() => {
-            dispatch(handleLogout())
-            navigate('/login')
+          onClick={async () => {
             handleCloseUserMenu()
+            await dispatch(handleLogout())
+            navigate('/login')
           }}
         >
           <Typography>

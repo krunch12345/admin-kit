@@ -34,6 +34,13 @@ export { handleLogout } from './auth/handleLogout.js'
 export { loginSlice, loginSelector, loggedOut, doRememberMe, tokenReceived, authChecked } from './auth/loginSlice.js'
 export { PrivateRoute } from './auth/PrivateRoute.jsx'
 export { initAdminKitAuth, getAuthHooks } from './auth/runtimeHooks.js'
+export {
+  SESSION_FLAG_KEY,
+  clearSessionFlags,
+  hasPersistedSession,
+  isRememberMeSession,
+  persistSessionFlag,
+} from './auth/sessionFlags.js'
 export { TokenRestorer } from './auth/TokenRestorer.jsx'
 
 // layouts
@@ -159,6 +166,8 @@ export {
   optimizeImageForUpload,
   shouldSkipOptimizeImage,
 } from './utils/optimizeImageForUpload.js'
+export { isAllowedImageFile } from './utils/isAllowedImageFile.js'
+export { isSafeAppPath, sanitizeAppPath } from './utils/sanitizeAppPath.js'
 export { showQueryAlerts } from './utils/showQueryAlerts.js'
 export { slugify } from './utils/slugify.js'
 export { trimText } from './utils/trimText.js'

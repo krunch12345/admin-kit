@@ -64,11 +64,14 @@ Rebuild the kit whenever its source changes (`yarn build` or `yarn dev` for watc
 | `POST` | `/auth/verify2FACode` | Verify 2FA code → access token |
 | `GET` | `/auth/me` | Restore session / current user |
 | `POST` | `/auth/refresh` | Refresh access token (httpOnly cookie) |
+| `POST` | `/auth/logout` | Revoke refresh session / clear auth cookies |
 | `GET` | `/csrfToken` | CSRF token for state-changing requests |
 | `GET` | `/adminMenu` | Header navigation menu |
 | `POST` | `/cacheInvalidate` | Invalidate server-side cache |
 
 Auth uses `credentials: 'include'`, Bearer access tokens, and a `csrf-token` header on mutating requests when a `csrfToken` cookie is present.
+
+Session restore uses `hasSession` in **localStorage** only when Remember me is checked; otherwise the flag lives in **sessionStorage** (cleared when the browser session ends). Wire `requestLogout` so Sign out also hits `POST /auth/logout` and clears the httpOnly refresh cookie.
 
 ## Assumptions
 
@@ -194,21 +197,10 @@ export const {
   useVerify2FAMutation,
   useEnable2FAMutation,
   useGetCurrentUserQuery,
+  useLogoutAdminMutation,
   useGetAdminMenuQuery,
   useInvalidateAllCacheMutation,
 } = api
-
-initAdminKitAuth({
-  useLoginAdminMutation,
-  useVerify2FAMutation,
-  useEnable2FAMutation,
-  useGetCurrentUserQuery,
-})
-
-initAdminKitShell({
-  useGetAdminMenuQuery,
-  useInvalidateAllCacheMutation,
-})
 
 const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
@@ -222,9 +214,25 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),
 })
+
+initAdminKitAuth({
+  useLoginAdminMutation,
+  useVerify2FAMutation,
+  useEnable2FAMutation,
+  useGetCurrentUserQuery,
+  // Recommended: revoke refresh cookie on Sign out / session expiry cleanup
+  requestLogout: () => store.dispatch(
+    api.endpoints.logoutAdmin.initiate(undefined, { track: false }),
+  ).unwrap(),
+})
+
+initAdminKitShell({
+  useGetAdminMenuQuery,
+  useInvalidateAllCacheMutation,
+})
 ```
 
-Getters throw if the kit is not initialized.
+Getters throw if the kit is not initialized. `requestLogout` is optional for backward compatibility; without it, logout only clears client state.
 
 ### 2. Layout, providers, and routes
 
@@ -337,7 +345,7 @@ Exports come from the package root. Names match `src/index.js`.
 
 ### Auth
 
-`createAdminBaseQuery`, `createAuthEndpoints`, `initAdminKitAuth`, `getAuthHooks`, `loginSlice`, `loginSelector`, `loggedOut`, `doRememberMe`, `tokenReceived`, `authChecked`, `PrivateRoute`, `TokenRestorer`, `handleLogout`, `deepTrimStrings`, `extractMeta`
+`createAdminBaseQuery`, `createAuthEndpoints`, `initAdminKitAuth`, `getAuthHooks`, `loginSlice`, `loginSelector`, `loggedOut`, `doRememberMe`, `tokenReceived`, `authChecked`, `PrivateRoute`, `TokenRestorer`, `handleLogout`, `deepTrimStrings`, `extractMeta`, session helpers (`clearSessionFlags`, `persistSessionFlag`, `hasPersistedSession`, `isRememberMeSession`, `SESSION_FLAG_KEY`)
 
 ### Shell / layout
 
@@ -357,7 +365,7 @@ Exports come from the package root. Names match `src/index.js`.
 
 ### Utils / constants
 
-`checkRequiredFields`, `copyImageToClipboard`, `getAddImagesErrorMessage`, `isAppFileTooLargePayload`, `formatStringISODate`, `getChangedFieldLabels`, `configureImageProxy`, `getProxiedImageFetchUrl`, `getImageFetchAttempts`, `clearImageByteSizeCache`, `formatFileSize`, `formatImageDimensions`, `formatImageSizeLabel`, `loadImageDimensions`, `fetchImageByteSize`, list-position helpers (`getListItemDomId`, `readListPosition`, `writeListPosition`, `clearListScrollTarget`, `getListNeighborId`, `rememberListOpen`, `prepareListReturnAfterCreate`, `prepareListReturnAfterDelete`), image optimize helpers (`optimizeImageForUpload`, …), `showQueryAlerts`, `slugify`, `trimText`, batch image constants (`BATCH_IMAGE_*`, `chunkArray`, …), `ADMIN_KIT_VERSION`
+`checkRequiredFields`, `copyImageToClipboard`, `getAddImagesErrorMessage`, `isAppFileTooLargePayload`, `formatStringISODate`, `getChangedFieldLabels`, `configureImageProxy`, `getProxiedImageFetchUrl`, `getImageFetchAttempts`, `clearImageByteSizeCache`, `formatFileSize`, `formatImageDimensions`, `formatImageSizeLabel`, `loadImageDimensions`, `fetchImageByteSize`, list-position helpers (`getListItemDomId`, `readListPosition`, `writeListPosition`, `clearListScrollTarget`, `getListNeighborId`, `rememberListOpen`, `prepareListReturnAfterCreate`, `prepareListReturnAfterDelete`), image optimize helpers (`optimizeImageForUpload`, …), `isAllowedImageFile`, `sanitizeAppPath`, `isSafeAppPath`, `showQueryAlerts`, `slugify`, `trimText`, batch image constants (`BATCH_IMAGE_*`, `chunkArray`, …), `ADMIN_KIT_VERSION`
 
 ## Notable helpers
 
