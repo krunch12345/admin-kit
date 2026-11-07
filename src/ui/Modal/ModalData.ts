@@ -21,6 +21,8 @@ export interface ModalContent {
   isRedSubmit?: boolean
   /** Text for submit button. */
   titleSubmit?: string
+  /** Optional icon for the submit button; defaults to Check / DeleteForever. */
+  submitStartIcon?: ReactNode
   disabledSubmit?: boolean
   notCloseAfterSubmit?: boolean
   shouldConfirmClose?: boolean

@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import { ArrowBack } from '@mui/icons-material'
+import { ArrowBack, Save, SelectAll } from '@mui/icons-material'
 import { IconButton } from '../IconButton/IconButton'
 import { isCopyableFieldFilled } from '../ImageMetaFields/imageMetaFieldsConfig'
 import type { ImageMetaTemplates } from '../ImageMetaFields/imageMetaFieldsConfig'
@@ -440,6 +440,7 @@ export const GeneralSettingsPanel = ({
                 <Button
                   size='small'
                   variant='outlined'
+                  startIcon={<SelectAll />}
                   onClick={handleSelectAllTargets}
                   disabled={!targetCandidates.length}
                 >
@@ -511,6 +512,7 @@ export const GeneralSettingsPanel = ({
                 <Button
                   size='small'
                   variant='outlined'
+                  startIcon={<SelectAll />}
                   onClick={handleSelectAllImages}
                   disabled={!images.length}
                 >
@@ -533,6 +535,7 @@ export const GeneralSettingsPanel = ({
           variant='contained'
           color='primary'
           disabled={!canSave}
+          startIcon={<Save />}
           onClick={handleSave}
           sx={{ alignSelf: 'flex-start' }}
         >

@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material'
 import type { Theme } from '@mui/material'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { Login, Visibility, VisibilityOff } from '@mui/icons-material'
 import { TextField } from '../../ui/TextField/TextField'
 import { formatMessage } from '../../locale/formatMessage'
 import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
@@ -123,6 +123,7 @@ export const CredentialsForm = ({
         type='submit'
         variant='contained'
         fullWidth
+        startIcon={<Login />}
         disabled={!email || !password}
       >
         {messages.login.submit}

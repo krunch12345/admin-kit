@@ -1,42 +1,65 @@
-import { Children, useState } from 'react'
+import { Children, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Stack, Step, StepButton, Stepper } from '@mui/material'
-import { STEPS } from './steps'
-import type { Step as StepData } from './steps'
+import type { StepByStepFormStep } from './steps'
+
+export type { StepByStepFormStep } from './steps'
 
 export interface StepByStepFormProps {
-  /** Locale-independent fields above the stepper. */
+  /** Optional fields shown above the stepper on every step. */
   sharedFields?: ReactNode
-  /** Russian-language fields. */
-  ruFields: ReactNode
-  /** English-language fields. */
-  enFields: ReactNode
+  /** Ordered steps; any length ≥ 1. */
+  steps: StepByStepFormStep[]
+  /** Initial active step id; defaults to the first step. */
+  initialStepId?: string
 }
 
 /**
- * Step by step form page component.
+ * Generic multi-step form shell with a non-linear MUI stepper.
  */
-export const StepByStepForm = ({ sharedFields, ruFields, enFields }: StepByStepFormProps) => {
-  const [activeStep, setActiveStep] = useState<StepData>(STEPS[0] as StepData)
+export const StepByStepForm = ({
+  sharedFields,
+  steps,
+  initialStepId,
+}: StepByStepFormProps) => {
+  const [activeStepId, setActiveStepId] = useState(
+    () => initialStepId ?? steps[0]?.id,
+  )
+
+  useEffect(() => {
+    if (!steps.some((step) => step.id === activeStepId)) {
+      setActiveStepId(steps[0]?.id)
+    }
+  }, [activeStepId, steps])
+
+  const activeIndex = steps.findIndex((step) => step.id === activeStepId)
+  const activeStep = steps[activeIndex] ?? steps[0]
+
+  if (!steps.length || !activeStep) {
+    return sharedFields ? <Stack spacing={4}>{sharedFields}</Stack> : null
+  }
 
   return (
     <Stack spacing={4}>
       {sharedFields}
 
-      <Stepper nonLinear activeStep={activeStep.index} sx={{ width: '95%', alignSelf: 'center' }}>
+      <Stepper
+        nonLinear
+        activeStep={Math.max(activeIndex, 0)}
+        sx={{ width: '95%', alignSelf: 'center' }}
+      >
         {Children.toArray(
-          STEPS.map(step => (
+          steps.map((step) => (
             <Step>
-              <StepButton onClick={() => setActiveStep(step)}>
+              <StepButton onClick={() => setActiveStepId(step.id)}>
                 {step.label}
               </StepButton>
             </Step>
-          ))
+          )),
         )}
       </Stepper>
 
-      {activeStep.id === 'ru' && ruFields}
-      {activeStep.id === 'en' && enFields}
+      {activeStep.content}
     </Stack>
   )
 }

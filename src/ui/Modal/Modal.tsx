@@ -10,7 +10,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material'
-import { Close } from '@mui/icons-material'
+import { Cancel, Check, Close, DeleteForever } from '@mui/icons-material'
 import { ConfirmPopper } from '../ConfirmYesNo/ConfirmPopper'
 import { ModalData } from './ModalData'
 import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
@@ -42,6 +42,7 @@ export const Modal = () => {
     onSubmit,
     isRedSubmit,
     titleSubmit,
+    submitStartIcon,
     disabledSubmit,
     notCloseAfterSubmit,
     shouldConfirmClose = false,
@@ -131,7 +132,7 @@ export const Modal = () => {
               alignItems='center'
               justifyContent={onClose ? 'space-between' : 'flex-start'}
             >
-              <Typography variant='h4'>
+              <Typography variant='h4' component='span'>
                 {title}
               </Typography>
 
@@ -153,6 +154,8 @@ export const Modal = () => {
         </DialogTitle>
 
         <DialogContent
+          // Scrollable regions need a tab stop for keyboard access (WCAG 2.1.1).
+          tabIndex={0}
           sx={fullHeight
             ? {
               flex: 1,
@@ -173,6 +176,7 @@ export const Modal = () => {
             {onCancel && (
               <Button
                 color='error'
+                startIcon={<Cancel />}
                 onClick={() => {
                   onCancel()
                   onClose && onClose()
@@ -186,6 +190,7 @@ export const Modal = () => {
               <Button
                 variant='contained'
                 color={isRedSubmit ? 'error' : 'primary'}
+                startIcon={submitStartIcon ?? (isRedSubmit ? <DeleteForever /> : <Check />)}
                 onClick={() => {
                   onSubmit()
                   !notCloseAfterSubmit && onClose && onClose()

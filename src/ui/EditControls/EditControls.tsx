@@ -1,5 +1,6 @@
 import { useContext, useId } from 'react'
 import { Button, Checkbox, FormControlLabel, Stack, Typography } from '@mui/material'
+import { Cancel, DeleteForever, Save } from '@mui/icons-material'
 import { ConfirmYesNoActions } from '../ConfirmYesNo/ConfirmYesNoActions'
 import { ModalData } from '../Modal/ModalData'
 import { UnsavedChangesConfirmBody } from './UnsavedChangesConfirmBody'
@@ -134,6 +135,7 @@ export const EditControls = ({
           onClick={() => onClick('cancel')}
           size='small'
           color='error'
+          startIcon={<Cancel />}
         >
           {messages.common.cancel}
         </Button>
@@ -158,6 +160,7 @@ export const EditControls = ({
               color='error'
               onClick={() => onClick('remove')}
               size='small'
+              startIcon={<DeleteForever />}
             >
               {messages.common.delete}
             </Button>
@@ -168,6 +171,7 @@ export const EditControls = ({
             color='success'
             onClick={() => onClick('save')}
             size='small'
+            startIcon={<Save />}
             sx={{ color: theme => theme.palette.grey.A100 }}
             disabled={disabledSave}
           >

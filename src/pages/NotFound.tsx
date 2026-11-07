@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect } from 'react'
 import { Box } from '@mui/material'
+import { Home } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { NotFoundModal } from './NotFoundModal'
 import { ModalData } from '../ui/Modal/ModalData'
@@ -29,6 +30,7 @@ export const NotFound = () => {
         title: messages.notFound.title,
         isActions: true,
         titleSubmit: messages.notFound.titleSubmit,
+        submitStartIcon: <Home />,
         onSubmit,
         maxWidth: 'sm',
         children: <NotFoundModal />,

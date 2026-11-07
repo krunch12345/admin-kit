@@ -108,20 +108,22 @@ export const FilterBar = <T extends FilterValues = FilterValues>({
       overflow={extended ? 'auto' : 'hidden'}
     >
       <Tooltip title={messages.filterBar.refreshData}>
-        <div>
+        <Box component='span' display='inline-flex'>
           <IconButton
+            aria-label={messages.filterBar.refreshData}
             onClick={refetch}
             color='primary'
             disabled={isDisabledRefetch}
           >
             <Refresh />
           </IconButton>
-        </div>
+        </Box>
       </Tooltip>
 
       {showExpandButton && (
         <Tooltip title={extended ? messages.filterBar.collapseFilters : messages.filterBar.showAllFilters}>
           <IconButton
+            aria-label={extended ? messages.filterBar.collapseFilters : messages.filterBar.showAllFilters}
             onClick={() => setExtended(!extended)}
             color='primary'
           >
@@ -132,9 +134,10 @@ export const FilterBar = <T extends FilterValues = FilterValues>({
 
       <Box pr={2}>
         <Tooltip title={messages.filterBar.clearFilters}>
-          <Badge color='error' badgeContent={countFilters}>
-            <div>
+          <Box component='span' display='inline-flex'>
+            <Badge color='error' badgeContent={countFilters}>
               <IconButton
+                aria-label={messages.filterBar.clearFilters}
                 size='small'
                 onClick={() => setFilters(initFilters)}
                 color='error'
@@ -142,8 +145,8 @@ export const FilterBar = <T extends FilterValues = FilterValues>({
               >
                 <FilterAltOff fontSize='medium' />
               </IconButton>
-            </div>
-          </Badge>
+            </Badge>
+          </Box>
         </Tooltip>
       </Box>
 

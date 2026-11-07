@@ -1,4 +1,5 @@
 import { Button, Stack, Typography } from '@mui/material'
+import { ArrowBack, Login } from '@mui/icons-material'
 import { OtpCodeInputs } from '../../ui/OtpCodeInputs/OtpCodeInputs'
 import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
 import { toLoginApiError } from './loginError'
@@ -54,6 +55,7 @@ export const TwoFactorStep = ({
           variant='outlined'
           color='error'
           fullWidth
+          startIcon={<ArrowBack />}
           onClick={onBack}
           disabled={isVerifying}
         >
@@ -63,6 +65,7 @@ export const TwoFactorStep = ({
         <Button
           variant='contained'
           fullWidth
+          startIcon={<Login />}
           disabled={!isCodeComplete || isVerifying}
           onClick={() => onSubmit()}
         >

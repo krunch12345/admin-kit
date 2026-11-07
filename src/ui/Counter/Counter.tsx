@@ -17,6 +17,7 @@ export const Counter = ({ showCounter = true, value, effectiveMaxLength, isOnCle
   const progress = showCounter
     ? Math.min((value.length / effectiveMaxLength) * 100, 100)
     : 0
+  const remaining = effectiveMaxLength - value.length
   const isLimit = showCounter && value.length >= effectiveMaxLength
 
   return (
@@ -34,12 +35,14 @@ export const Counter = ({ showCounter = true, value, effectiveMaxLength, isOnCle
         value={progress}
         size={32}
         thickness={4}
+        aria-label={`${remaining} characters remaining`}
         sx={{
           color: isLimit ? 'error.main' : 'primary.main',
         }}
       />
       <Typography
         variant='caption'
+        aria-hidden
         sx={{
           position: 'absolute',
           fontSize: '0.7rem',
@@ -47,7 +50,7 @@ export const Counter = ({ showCounter = true, value, effectiveMaxLength, isOnCle
           color: isLimit ? 'error.main' : 'text.primary',
         }}
       >
-        {effectiveMaxLength - value.length}
+        {remaining}
       </Typography>
     </Box>
   )

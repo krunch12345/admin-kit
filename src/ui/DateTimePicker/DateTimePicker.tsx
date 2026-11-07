@@ -4,6 +4,7 @@ import {
 import type { DateTimePickerProps as MuiDateTimePickerProps } from '@mui/x-date-pickers'
 import { IconButton, InputAdornment } from '@mui/material'
 import { Clear } from '@mui/icons-material'
+import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
 
 export type DateTimePickerProps = MuiDateTimePickerProps<Date> & {
   /** The clear date func. */
@@ -21,6 +22,8 @@ export const DateTimePicker = ({
   fullWidth,
   ...props
 }: DateTimePickerProps) => {
+  const { datePickers } = useAdminKitMessages()
+
   return (
     <MuiDateTimePicker
       ampm={false}
@@ -36,6 +39,7 @@ export const DateTimePicker = ({
             endAdornment: (
               <InputAdornment position='end'>
                 <IconButton
+                  aria-label={datePickers.clearButtonLabel}
                   onClick={e => {
                     e.stopPropagation()
                     clearDate()

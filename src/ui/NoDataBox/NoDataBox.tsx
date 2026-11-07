@@ -1,4 +1,5 @@
 import { Box, Button, Skeleton, Stack, Typography } from '@mui/material'
+import { Home } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { formatMessage } from '../../locale/formatMessage'
 import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
@@ -57,7 +58,11 @@ export const NoDataBox = ({
           </Stack>
 
           {!isListEmpty && (
-            <Button variant='contained' onClick={() => navigate('/')}>
+            <Button
+              variant='contained'
+              startIcon={<Home />}
+              onClick={() => navigate('/')}
+            >
               {messages.noDataBox.goHome}
             </Button>
           )}

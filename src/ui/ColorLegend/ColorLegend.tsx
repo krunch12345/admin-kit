@@ -26,7 +26,7 @@ export const ColorLegend = ({ warning, error, showUpdatedAt = true }: ColorLegen
 
   return (
     <Typography
-      color={theme => theme.palette.grey[600]}
+      color='textSecondary'
       fontSize={11}
       sx={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-start', width: '100%', flexWrap: 'wrap', gap: 1 }}
     >

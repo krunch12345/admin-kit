@@ -236,11 +236,15 @@ export const UploadImage = ({
 
   return (
     <Tooltip title={tooltipTitle}>
-      <div>
-        <IconButton onClick={handleOpen} disabled={isButtonDisabled}>
+      <span style={{ display: 'inline-flex' }}>
+        <IconButton
+          aria-label={tooltipTitle}
+          onClick={handleOpen}
+          disabled={isButtonDisabled}
+        >
           <BiSolidImageAdd />
         </IconButton>
-      </div>
+      </span>
     </Tooltip>
   )
 }

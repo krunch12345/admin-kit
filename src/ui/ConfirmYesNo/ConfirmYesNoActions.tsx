@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react'
 import { Button, Stack } from '@mui/material'
+import { Check, Close } from '@mui/icons-material'
 import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
 
 export interface ConfirmYesNoActionsProps {
@@ -26,13 +27,19 @@ export const ConfirmYesNoActions = ({
 
   return (
     <Stack direction='row' spacing={2} width='100%' justifyContent='flex-end' alignItems='center'>
-      <Button size={size} color='error' onClick={onNo}>
+      <Button
+        size={size}
+        color='error'
+        startIcon={<Close />}
+        onClick={onNo}
+      >
         {noLabel ?? messages.common.no}
       </Button>
       <Button
         size={size}
         variant='contained'
         disabled={yesDisabled}
+        startIcon={<Check />}
         onClick={onYes}
       >
         {yesLabel ?? messages.common.yes}

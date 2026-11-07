@@ -1,18 +1,10 @@
-export interface Step {
-  id: string
-  label: string
-  index: number
-}
+import type { ReactNode } from 'react'
 
-export const STEPS: Step[] = [
-  {
-    id: 'ru',
-    label: 'RU',
-    index: 0,
-  },
-  {
-    id: 'en',
-    label: 'EN',
-    index: 1,
-  },
-]
+export interface StepByStepFormStep {
+  /** Stable step id used for active-step state. */
+  id: string
+  /** Label shown in the stepper. */
+  label: string
+  /** Body rendered when this step is active. */
+  content: ReactNode
+}
