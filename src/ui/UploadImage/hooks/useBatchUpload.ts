@@ -168,10 +168,11 @@ export const useBatchUpload = ({
     }
 
     if (!failed.length) {
+      // Close before success notify so toast/redux updates cannot re-open the modal.
+      onAllUploaded()
       notify('success', totalCount === 1
         ? messages.upload.singleUploadSuccess
         : formatMessage(messages.upload.multiUploadSuccess, { totalCount }))
-      onAllUploaded()
       return
     }
 

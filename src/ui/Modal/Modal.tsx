@@ -192,8 +192,17 @@ export const Modal = () => {
                 color={isRedSubmit ? 'error' : 'primary'}
                 startIcon={submitStartIcon ?? (isRedSubmit ? <DeleteForever /> : <Check />)}
                 onClick={() => {
-                  onSubmit()
-                  !notCloseAfterSubmit && onClose && onClose()
+                  void (async () => {
+                    try {
+                      await onSubmit()
+
+                      if (!notCloseAfterSubmit) {
+                        onClose?.()
+                      }
+                    } catch {
+                      // Keep the modal open when submit rejects.
+                    }
+                  })()
                 }}
                 disabled={disabledSubmit}
               >

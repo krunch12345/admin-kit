@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useId, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { BiSolidImageAdd } from 'react-icons/bi'
 import { IconButton, Tooltip } from '@mui/material'
 import { ModalData } from '../Modal/ModalData'
@@ -79,6 +79,7 @@ export const UploadImage = ({
   const messages = useAdminKitMessages()
   const modalOwnerId = useId()
   const { setModalData, closeModal } = useContext(ModalData)
+  const settledRef = useRef(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [uploadKey, setUploadKey] = useState(0)
   const generalSettings = useGeneralSettingsState()
@@ -112,12 +113,18 @@ export const UploadImage = ({
   }, [clearPendingImages, closeGeneralSettings])
 
   const handleClose = useCallback(() => {
+    if (settledRef.current) {
+      return
+    }
+
+    settledRef.current = true
     resetForm()
     setIsModalOpen(false)
     closeModal(modalOwnerId)
   }, [closeModal, modalOwnerId, resetForm])
 
   const handleOpen = useCallback(() => {
+    settledRef.current = false
     resetForm()
     setIsModalOpen(true)
   }, [resetForm])
@@ -154,7 +161,9 @@ export const UploadImage = ({
   const hasPendingImages = pendingImages.length > 0
 
   useEffect(() => {
-    if (!isModalOpen) return
+    if (!isModalOpen || settledRef.current) {
+      return
+    }
 
     setModalData({
       open: true,
