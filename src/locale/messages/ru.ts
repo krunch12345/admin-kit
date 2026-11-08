@@ -138,6 +138,7 @@ export const ruMessages: AdminKitMessages = {
   dialogRemove: {
     label: 'Удалить',
     confirmMessage: 'Вы уверены, что хотите удалить ${nameObject} ${name}?',
+    confirmDeleteImages: 'Вы уверены, что хотите удалить изображения: ${count} шт.?',
     title: 'Удалить ${nameObject} ${name}',
   },
 

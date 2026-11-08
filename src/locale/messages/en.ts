@@ -136,6 +136,7 @@ export const enMessages = {
   dialogRemove: {
     label: 'Delete',
     confirmMessage: 'Are you sure you want to delete ${nameObject} ${name}?',
+    confirmDeleteImages: 'Are you sure you want to delete images: ${count}?',
     title: 'Delete ${nameObject} ${name}',
   },
 

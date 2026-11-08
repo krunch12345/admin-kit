@@ -25,6 +25,18 @@ export const ConfirmYesNoActions = ({
 }: ConfirmYesNoActionsProps) => {
   const messages = useAdminKitMessages()
 
+  const buttonSx = {
+    lineHeight: 1,
+    alignItems: 'center',
+    '& .MuiButton-startIcon': {
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 0,
+      marginBottom: 0,
+    },
+  }
+
   return (
     <Stack direction='row' spacing={2} width='100%' justifyContent='flex-end' alignItems='center'>
       <Button
@@ -32,6 +44,7 @@ export const ConfirmYesNoActions = ({
         color='error'
         startIcon={<Close />}
         onClick={onNo}
+        sx={buttonSx}
       >
         {noLabel ?? messages.common.no}
       </Button>
@@ -41,6 +54,7 @@ export const ConfirmYesNoActions = ({
         disabled={yesDisabled}
         startIcon={<Check />}
         onClick={onYes}
+        sx={buttonSx}
       >
         {yesLabel ?? messages.common.yes}
       </Button>
