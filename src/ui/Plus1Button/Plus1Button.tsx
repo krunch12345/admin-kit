@@ -36,8 +36,9 @@ export const Plus1Button = ({ isFab, onClick, disabled }: Plus1ButtonProps) => {
       sx={{ position: 'absolute', right: 25, top: 34 }}
       disabled={disabled}
       title={messages.plus1.title}
+      onClick={onClick}
     >
-      <MdExposurePlus1 size={25} onClick={onClick} />
+      <MdExposurePlus1 size={25} />
     </Fab>
   )
 }
