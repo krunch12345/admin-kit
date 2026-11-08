@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-08
+
+### Fixed
+
+- UploadImage closes after a successful submit without re-opening or asking to cancel the upload
+- Modal awaits async `onSubmit` and only then closes when `notCloseAfterSubmit` is unset
+- Plus1Button FAB registers clicks on the whole button, not only the inner icon
+- ConfirmYesNoActions vertically centers icon and label
+- `dialogRemove.confirmDeleteImages` message for localized batch image delete confirms
+
 ### Added
 
 - Published npm package name: `@krunch12345/admin-kit` (unscoped `admin-kit` is blocked as too similar to `adminkit`)
