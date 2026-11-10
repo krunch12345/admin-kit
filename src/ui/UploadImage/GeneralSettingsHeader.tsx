@@ -1,5 +1,5 @@
 import { Button, Stack } from '@mui/material'
-import SettingsIcon from '@mui/icons-material/Settings'
+import { Settings as SettingsIcon } from '@mui/icons-material'
 import { DialogRemoveButton } from '../DialogRemoveButton/DialogRemoveButton'
 import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
 import type { GeneralSettingsState } from './types'

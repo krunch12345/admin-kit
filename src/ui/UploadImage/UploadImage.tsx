@@ -202,6 +202,7 @@ export const UploadImage = ({
       titleSubmit: messages.upload.modalTitleSubmit,
       notCloseAfterSubmit: true,
       disabledSubmit,
+      // `submit` is referentially stable and reads the latest queue/setUrl via refs.
       onSubmit: submit,
     })
   }, [

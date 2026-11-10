@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { chunkFilesByCountAndBytes } from '../../../constants/imageBatch'
 import { useLoading } from '../../../hooks/useLoading'
 import { useNotify } from '../../../hooks/useNotify'
@@ -53,6 +53,9 @@ export interface UseBatchUploadOptions {
 
 /**
  * Uploads pending images in chunks and reports the outcome.
+ *
+ * `submit` is referentially stable. Latest queue / callbacks are read from refs so the
+ * Modal's stored `onSubmit` snapshot cannot call a stale `setUrl` or empty queue.
  */
 export const useBatchUpload = ({
   pendingImages,
@@ -70,23 +73,58 @@ export const useBatchUpload = ({
   const { notify } = useNotify()
   const [isUploading, setIsUploading] = useState(false)
 
-  const { hardLimit, maxBytes } = limits
-  const { type, folder, createUniqueName } = context
-  const { withMeta, multiple, emptyMeta } = metaOptions
+  const pendingImagesRef = useRef(pendingImages)
+  const uploadFnRef = useRef(uploadFn)
+  const setUrlRef = useRef(setUrl)
+  const optimizeRef = useRef(optimizeImageForUpload)
+  const onAllUploadedRef = useRef(onAllUploaded)
+  const onSomeFailedRef = useRef(onSomeFailed)
+  const compressionRef = useRef(compression)
+  const limitsRef = useRef(limits)
+  const contextRef = useRef(context)
+  const metaOptionsRef = useRef(metaOptions)
+  const messagesRef = useRef(messages)
+  const notifyRef = useRef(notify)
+  const isUploadingRef = useRef(false)
+
+  pendingImagesRef.current = pendingImages
+  uploadFnRef.current = uploadFn
+  setUrlRef.current = setUrl
+  optimizeRef.current = optimizeImageForUpload
+  onAllUploadedRef.current = onAllUploaded
+  onSomeFailedRef.current = onSomeFailed
+  compressionRef.current = compression
+  limitsRef.current = limits
+  contextRef.current = context
+  metaOptionsRef.current = metaOptions
+  messagesRef.current = messages
+  notifyRef.current = notify
 
   useLoading(isUploading)
 
   const submit = useCallback(async () => {
-    if (!pendingImages.length || isUploading) return
+    const images = pendingImagesRef.current
 
+    if (!images.length || isUploadingRef.current) {
+      return
+    }
+
+    isUploadingRef.current = true
     setIsUploading(true)
+
     const failed: PendingImage[] = []
     let successCount = 0
-    const totalCount = pendingImages.length
+    const totalCount = images.length
+    const { hardLimit, maxBytes } = limitsRef.current
+    const { type, folder, createUniqueName } = contextRef.current
+    const { withMeta, multiple, emptyMeta } = metaOptionsRef.current
+    const compressionMode = compressionRef.current
+    const currentMessages = messagesRef.current
+    const currentNotify = notifyRef.current
 
     const reportUploaded = (succeededItems: UploadedImage[]) => {
       for (const succeeded of succeededItems) {
-        setUrl(toUploadedImagePayload(succeeded))
+        setUrlRef.current(toUploadedImagePayload(succeeded))
         successCount += 1
       }
     }
@@ -96,12 +134,12 @@ export const useBatchUpload = ({
         withMeta,
         createUniqueName,
         multiple,
-        compression,
+        compression: compressionMode,
         emptyMeta,
       }))
 
       try {
-        const result = normalizeUploadResult(await uploadFn({
+        const result = normalizeUploadResult(await uploadFnRef.current({
           files: chunk.map((item) => item.file),
           metas,
           context: { type, folder, createUniqueName },
@@ -112,7 +150,7 @@ export const useBatchUpload = ({
 
         for (const failedItem of result.failed) {
           if (failedItem?.message) {
-            notify('error', failedItem.message)
+            currentNotify('error', failedItem.message)
           }
         }
       } catch (err) {
@@ -126,16 +164,16 @@ export const useBatchUpload = ({
           failed.push(...chunk)
         }
 
-        notify('error', getAddImagesErrorMessage(err))
+        currentNotify('error', getAddImagesErrorMessage(err))
       }
     }
 
     try {
       const prepared: PendingImage[] = []
 
-      for (const item of pendingImages) {
-        const file = compression === COMPRESSION_CLIENT
-          ? await optimizeImageForUpload(item.file, { skipCompression: item.skipCompression })
+      for (const item of images) {
+        const file = compressionMode === COMPRESSION_CLIENT
+          ? await optimizeRef.current(item.file, { skipCompression: item.skipCompression })
           : item.file
 
         prepared.push({ ...item, file })
@@ -149,7 +187,7 @@ export const useBatchUpload = ({
 
       for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex += 1) {
         if (chunks.length > 1) {
-          notify('info', formatMessage(messages.upload.chunkUploadProgress, {
+          currentNotify('info', formatMessage(currentMessages.upload.chunkUploadProgress, {
             chunkIndex: chunkIndex + 1,
             chunkTotal: chunks.length,
           }))
@@ -159,54 +197,40 @@ export const useBatchUpload = ({
       }
     } catch (err) {
       if (!failed.length) {
-        failed.push(...pendingImages)
+        failed.push(...images)
       }
 
-      notify('error', getAddImagesErrorMessage(err))
+      currentNotify('error', getAddImagesErrorMessage(err))
     } finally {
+      isUploadingRef.current = false
       setIsUploading(false)
     }
 
-    if (!failed.length) {
+    if (!failed.length && successCount > 0) {
       // Close before success notify so toast/redux updates cannot re-open the modal.
-      onAllUploaded()
-      notify('success', totalCount === 1
-        ? messages.upload.singleUploadSuccess
-        : formatMessage(messages.upload.multiUploadSuccess, { totalCount }))
+      onAllUploadedRef.current()
+      currentNotify('success', totalCount === 1
+        ? currentMessages.upload.singleUploadSuccess
+        : formatMessage(currentMessages.upload.multiUploadSuccess, { totalCount }))
       return
     }
 
-    onSomeFailed(failed)
+    if (failed.length) {
+      onSomeFailedRef.current(failed)
+    }
 
     if (successCount > 0) {
-      notify('warning', formatMessage(messages.upload.partialUploadSuccess, {
+      currentNotify('warning', formatMessage(currentMessages.upload.partialUploadSuccess, {
         successCount,
         totalCount,
       }))
+      return
     }
-  }, [
-    compression,
-    createUniqueName,
-    emptyMeta,
-    folder,
-    hardLimit,
-    isUploading,
-    maxBytes,
-    messages.upload.chunkUploadProgress,
-    messages.upload.multiUploadSuccess,
-    messages.upload.partialUploadSuccess,
-    messages.upload.singleUploadSuccess,
-    multiple,
-    notify,
-    onAllUploaded,
-    onSomeFailed,
-    optimizeImageForUpload,
-    pendingImages,
-    setUrl,
-    type,
-    uploadFn,
-    withMeta,
-  ])
+
+    if (!failed.length) {
+      currentNotify('error', getAddImagesErrorMessage(undefined))
+    }
+  }, [])
 
   return { isUploading, submit }
 }

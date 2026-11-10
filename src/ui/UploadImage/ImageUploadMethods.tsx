@@ -6,7 +6,7 @@ import {
   Typography,
   styled,
 } from '@mui/material'
-import FileUploadIcon from '@mui/icons-material/FileUpload'
+import { FileUpload as FileUploadIcon } from '@mui/icons-material'
 import UploadDropZone from '@rpldy/upload-drop-zone'
 import withPasteUpload from '@rpldy/upload-paste'
 import UploadButton from '@rpldy/upload-button'

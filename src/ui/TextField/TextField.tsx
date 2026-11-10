@@ -16,9 +16,11 @@ export const TextField = ({
   onChange,
   debounceMs = 0,
   onClear,
+  InputProps,
   ...props
 }: AdminKitTextFieldProps) => {
   const messages = useAdminKitMessages()
+  const isDebounced = Boolean(debounceMs)
   const [localValue, setLocalValue] = useState(value ?? '')
   const onChangeRef = useRef(onChange)
 
@@ -27,11 +29,15 @@ export const TextField = ({
   }, [onChange])
 
   useEffect(() => {
+    if (!isDebounced) {
+      return
+    }
+
     setLocalValue(value ?? '')
-  }, [value])
+  }, [isDebounced, value])
 
   const debouncedOnChange = useMemo((): ((newValue: string) => void) | DebouncedFunc<(newValue: string) => void> => {
-    if (!debounceMs) {
+    if (!isDebounced) {
       return (newValue: string) => {
         onChangeRef.current(newValue)
       }
@@ -40,7 +46,7 @@ export const TextField = ({
     return debounce((newValue: string) => {
       onChangeRef.current(newValue)
     }, debounceMs)
-  }, [debounceMs])
+  }, [debounceMs, isDebounced])
 
   useEffect(() => () => {
     if ('cancel' in debouncedOnChange) {
@@ -48,37 +54,48 @@ export const TextField = ({
     }
   }, [debouncedOnChange])
 
+  const displayValue = isDebounced ? localValue : (value ?? '')
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
-    setLocalValue(newValue)
+
+    if (isDebounced) {
+      setLocalValue(newValue)
+    }
+
     debouncedOnChange(newValue)
   }
 
   return (
     <MuiTextField
-      size='small'
-      value={localValue}
+      {...props}
+      size={props.size ?? 'small'}
+      value={displayValue}
       onChange={handleChange}
       InputProps={{
-        endAdornment: !!onClear && localValue && (
-          <InputAdornment position='end'>
-            <IconButton
-              aria-label={messages.common.clear}
-              sx={{ maxHeight: 30, maxWidth: 30 }}
-              onClick={() => {
-                if ('cancel' in debouncedOnChange) {
-                  debouncedOnChange.cancel()
-                }
-                onClear()
-                setLocalValue('')
-              }}
-            >
-              <Clear fontSize='small' />
-            </IconButton>
-          </InputAdornment>
+        ...InputProps,
+        endAdornment: InputProps?.endAdornment ?? (
+          !!onClear && displayValue ? (
+            <InputAdornment position='end'>
+              <IconButton
+                aria-label={messages.common.clear}
+                sx={{ maxHeight: 30, maxWidth: 30 }}
+                onClick={() => {
+                  if ('cancel' in debouncedOnChange) {
+                    debouncedOnChange.cancel()
+                  }
+                  onClear()
+                  if (isDebounced) {
+                    setLocalValue('')
+                  }
+                }}
+              >
+                <Clear fontSize='small' />
+              </IconButton>
+            </InputAdornment>
+          ) : null
         ),
       }}
-      {...props}
     />
   )
 }

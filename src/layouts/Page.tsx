@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { Stack, Typography } from '@mui/material'
 import { useLocation } from 'react-router-dom'
-import scroll from 'react-scroll'
+import { scroller } from 'react-scroll'
 
 export interface PageProps {
   /** The page content. */
@@ -24,7 +24,7 @@ export const Page = ({ children, title }: PageProps) => {
     }
 
     const timeoutId = setTimeout(() => {
-      scroll.scroller.scrollTo(id, { smooth: true, offset: -80 })
+      scroller.scrollTo(id, { smooth: true, offset: -80 })
     }, 500)
 
     return () => clearTimeout(timeoutId)

@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-11-10
+
+### Fixed
+
+- UploadImage `submit` is stable and reads the latest queue / `setUrl` via refs so a Modal `onSubmit` snapshot cannot drop successful upload URLs
+- Upload success toast and modal close only run when at least one image was reported to `setUrl`
+- TextField is fully controlled when `debounceMs` is 0 so parent-driven value updates (e.g. uploaded image URLs) show immediately
+- Upload UI uses named barrel imports for MUI icons (path defaults hit raw CJS under Vite and break app boot)
+- Page imports `{ scroller }` from `react-scroll` instead of the CJS default export that breaks under Vite when the kit is not prebundled
+- `useRouteId` reads params via `react-router-dom` (same package as the app Router) so entity pages get `:id` under Vite when admin-kit is not prebundled
+
 ## [1.0.1] - 2026-11-08
 
 ### Fixed
