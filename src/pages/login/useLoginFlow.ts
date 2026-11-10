@@ -49,7 +49,6 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
     email: emailStore,
     nickname,
     id,
-    is2FARequired: is2FARequiredStore,
     accessToken,
   } = useSelector(loginSelector)
 
@@ -64,16 +63,17 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
   const [loginError, setLoginError] = useState<unknown>(null)
   const [verifyError, setVerifyError] = useState<unknown>(null)
   const lastSubmittedCodeRef = useRef('')
+  const isSubmittingCredentialsRef = useRef(false)
 
   const isOtpStep = step === STEP_OTP
 
   useLoading(isLoggingIn || isVerifying)
 
   useEffect(() => {
-    if (accessToken && !is2FARequiredStore && !isOtpStep) {
+    if (accessToken && !isOtpStep) {
       navigate(safeRedirectPath, { replace: true })
     }
-  }, [accessToken, isOtpStep, is2FARequiredStore, navigate, safeRedirectPath])
+  }, [accessToken, isOtpStep, navigate, safeRedirectPath])
 
   const resetOtp = useCallback(() => {
     setCode('')
@@ -89,11 +89,8 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
 
   const handleLoginResult = useCallback((data: LoginAdminResponse) => {
     if (data.is2FARequired) {
-      if (accessToken) {
-        return
-      }
-
       dispatch(tokenReceived({
+        accessToken: null,
         email: data.email,
         nickname: data.nickname,
         avatar: data.avatar || '',
@@ -102,12 +99,10 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
         rememberMe,
       }))
 
-      if (!isOtpStep) {
-        notify('info', messages.login.authCodeRequired)
-        resetOtp()
-        setPassword('')
-        setStep(STEP_OTP)
-      }
+      notify('info', messages.login.authCodeRequired)
+      resetOtp()
+      setPassword('')
+      setStep(STEP_OTP)
       return
     }
 
@@ -120,10 +115,16 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
         id: data.id,
       })
     }
-  }, [accessToken, completeLogin, dispatch, isOtpStep, messages.login.authCodeRequired, notify, rememberMe, resetOtp])
+  }, [completeLogin, dispatch, messages.login.authCodeRequired, notify, rememberMe, resetOtp])
 
   const submitCredentials = useCallback(async (event: FormEvent) => {
     event.preventDefault()
+
+    if (isLoggingIn || isSubmittingCredentialsRef.current) {
+      return
+    }
+
+    isSubmittingCredentialsRef.current = true
 
     if (rememberMe) {
       dispatch(doRememberMe())
@@ -136,8 +137,10 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
     } catch (error) {
       setLoginError(error)
       dispatch(handleLogout({ revokeServer: false }))
+    } finally {
+      isSubmittingCredentialsRef.current = false
     }
-  }, [dispatch, email, handleLoginResult, loginAdmin, password, rememberMe])
+  }, [dispatch, email, handleLoginResult, isLoggingIn, loginAdmin, password, rememberMe])
 
   const submitCode = useCallback(async (rawCode = code) => {
     const token = digitsOnly(rawCode)
@@ -219,6 +222,7 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
     code,
     loginError,
     verifyError,
+    isLoggingIn,
     isVerifying,
     isCodeComplete: digitsOnly(code).length >= otpLength,
     submitCredentials,

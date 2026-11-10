@@ -63,6 +63,7 @@ export const Login = ({
             password={flow.password}
             rememberMe={flow.rememberMe}
             error={flow.loginError}
+            isSubmitting={flow.isLoggingIn}
             onEmailChange={flow.setEmail}
             onPasswordChange={flow.setPassword}
             onRememberMeChange={flow.setRememberMe}

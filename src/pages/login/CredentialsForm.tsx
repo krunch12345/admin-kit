@@ -23,6 +23,7 @@ export interface CredentialsFormProps {
   password: string
   rememberMe: boolean
   error?: unknown
+  isSubmitting?: boolean
   onEmailChange: (value: string) => void
   onPasswordChange: (value: string) => void
   onRememberMeChange: (checked: boolean) => void
@@ -37,6 +38,7 @@ export const CredentialsForm = ({
   password,
   rememberMe,
   error: rawError,
+  isSubmitting = false,
   onEmailChange,
   onPasswordChange,
   onRememberMeChange,
@@ -57,7 +59,6 @@ export const CredentialsForm = ({
       spacing={4}
     >
       <TextField
-        autoFocus
         fullWidth
         type='email'
         placeholder={messages.login.emailPlaceholder}
@@ -124,7 +125,7 @@ export const CredentialsForm = ({
         variant='contained'
         fullWidth
         startIcon={<Login />}
-        disabled={!email || !password}
+        disabled={!email || !password || isSubmitting}
       >
         {messages.login.submit}
       </Button>
