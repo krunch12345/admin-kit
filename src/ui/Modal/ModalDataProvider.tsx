@@ -1,7 +1,7 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { ModalData } from './ModalData'
-import type { ModalDataState, ModalDataUpdater, ModalOwnerId } from './ModalData'
+import type { ModalDataContextValue, ModalDataState, ModalDataUpdater, ModalOwnerId } from './ModalData'
 import { canCloseModal, canReplaceModal } from './modalOwnership'
 
 interface ModalDataProviderProps {
@@ -64,16 +64,16 @@ export const ModalDataProvider = ({ children }: ModalDataProviderProps) => {
     })
   }, [])
 
+  const value = useMemo<ModalDataContextValue>(() => ({
+    states: {
+      modalData,
+    },
+    setModalData,
+    closeModal,
+  }), [modalData, setModalData, closeModal])
+
   return (
-    <ModalData.Provider
-      value={{
-        states: {
-          modalData,
-        },
-        setModalData,
-        closeModal,
-      }}
-    >
+    <ModalData.Provider value={value}>
       {children}
     </ModalData.Provider>
   )

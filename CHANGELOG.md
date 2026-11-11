@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-11-11
+
+### Fixed
+
+- `ModalDataProvider` memos the context `value` so subscribers do not re-render when `modalData` is unchanged
+
 ## [1.0.2] - 2026-11-10
 
 ### Fixed
