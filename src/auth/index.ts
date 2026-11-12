@@ -2,6 +2,7 @@ export { createAdminBaseQuery } from './createAdminBaseQuery'
 export { createAuthEndpoints } from './createAuthEndpoints'
 export { createAuthListenerMiddleware } from './authListeners'
 export { deepTrimStrings } from './deepTrimStrings'
+export { buildRateLimitErrorData, parseRetryAfterSeconds } from './rateLimitError'
 export { handleLogout } from './handleLogout'
 export {
   loginSlice,
@@ -23,6 +24,7 @@ export {
 export { TokenRestorer } from './TokenRestorer'
 export type { AdminBaseQueryFn, AdminBaseQueryOptions, AdminKitExtraOptions } from './createAdminBaseQuery'
 export type { DeepTrimOptions } from './deepTrimStrings'
+export type { RateLimitErrorData } from './rateLimitError'
 export type { HandleLogoutOptions, HandleLogoutThunk } from './handleLogout'
 export type {
   LoginAdminResponse,

@@ -53,6 +53,7 @@ export const ruMessages: AdminKitMessages = {
     errorLoginFallback: 'Ошибка при попытке авторизации',
     attemptsRemaining: 'Осталось попыток: ${remainingAttempts}',
     userBlocked: 'Пользователь заблокирован',
+    retryAfter: 'Повторите через ${retryAfter} с',
     submit: 'Войти',
     totpPrompt: 'Введите код из приложения',
     errorVerify2FAFallback: 'Неверный код аутентификации',

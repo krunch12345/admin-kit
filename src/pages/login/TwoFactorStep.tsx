@@ -1,8 +1,12 @@
 import { Button, Stack, Typography } from '@mui/material'
+import type { Theme } from '@mui/material'
 import { ArrowBack, Login } from '@mui/icons-material'
 import { OtpCodeInputs } from '../../ui/OtpCodeInputs/OtpCodeInputs'
+import { formatMessage } from '../../locale/formatMessage'
 import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
 import { toLoginApiError } from './loginError'
+
+const getErrorColor = (theme: Theme) => theme.palette.error.main
 
 export interface TwoFactorStepProps {
   code: string
@@ -30,6 +34,7 @@ export const TwoFactorStep = ({
 }: TwoFactorStepProps) => {
   const messages = useAdminKitMessages()
   const error = toLoginApiError(rawError)
+  const retryAfter = error?.data?.retryAfter
 
   return (
     <Stack width='100%' spacing={3} alignItems='center'>
@@ -45,9 +50,17 @@ export const TwoFactorStep = ({
       />
 
       {error && (
-        <Typography color={(theme) => theme.palette.error.main} alignSelf='stretch'>
-          {error?.data?.message || messages.login.errorVerify2FAFallback}
-        </Typography>
+        <Stack alignSelf='stretch' spacing={0.5}>
+          <Typography color={getErrorColor}>
+            {error?.data?.message || messages.login.errorVerify2FAFallback}
+          </Typography>
+
+          {retryAfter !== undefined && (
+            <Typography color={getErrorColor}>
+              {formatMessage(messages.login.retryAfter, { retryAfter })}
+            </Typography>
+          )}
+        </Stack>
       )}
 
       <Stack direction='row' spacing={2} width='100%'>

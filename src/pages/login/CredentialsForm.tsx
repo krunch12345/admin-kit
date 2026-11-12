@@ -48,6 +48,7 @@ export const CredentialsForm = ({
   const [showPassword, setShowPassword] = useState(false)
   const error = toLoginApiError(rawError)
   const remainingAttempts = error?.data?.remainingAttempts
+  const retryAfter = error?.data?.retryAfter
 
   return (
     <Stack
@@ -115,6 +116,12 @@ export const CredentialsForm = ({
               {remainingAttempts > 0
                 ? formatMessage(messages.login.attemptsRemaining, { remainingAttempts })
                 : messages.login.userBlocked}
+            </Typography>
+          )}
+
+          {retryAfter !== undefined && (
+            <Typography color={getErrorColor}>
+              {formatMessage(messages.login.retryAfter, { retryAfter })}
             </Typography>
           )}
         </Stack>

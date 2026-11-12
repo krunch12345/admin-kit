@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-12
+
+### Added
+
+- `createAdminBaseQuery` normalizes HTTP 429 responses with `message` and `retryAfter` (from JSON body or `Retry-After` header) so login/OTP UI can show them
+- Optional `rememberMe` on `LoginAdminParams` / `Verify2FAParams`; login and verify2FA mutations send the checkbox value to the API
+- Login credentials and OTP steps render `retryAfter` when present
+
+### Notes
+
+- CSRF handling in `createAdminBaseQuery` is unchanged (still required for state-changing requests such as image upload)
+- Kit does not expose `disable2FA`; no Account 2FA setup page added (pending 2FA enable/verify remains consumer-specific)
+
 ## [1.0.3] - 2026-11-11
 
 ### Fixed

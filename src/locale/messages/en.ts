@@ -51,6 +51,7 @@ export const enMessages = {
     errorLoginFallback: 'Sign-in failed',
     attemptsRemaining: 'Attempts remaining: ${remainingAttempts}',
     userBlocked: 'User is locked',
+    retryAfter: 'Try again in ${retryAfter} s',
     submit: 'Sign in',
     totpPrompt: 'Enter the code from your authenticator app',
     errorVerify2FAFallback: 'Invalid authentication code',

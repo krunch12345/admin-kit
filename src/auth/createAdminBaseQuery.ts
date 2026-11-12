@@ -13,6 +13,7 @@ import type { LoginRootState, LoginState } from './loginSlice'
 import { handleLogout } from './handleLogout'
 import { deepTrimStrings } from './deepTrimStrings'
 import { isRememberMeSession } from './sessionFlags'
+import { buildRateLimitErrorData } from './rateLimitError'
 import { getAdminKitMessages } from '../locale/runtime'
 
 const AUTH_NO_REFRESH_PATHS = new Set([
@@ -281,6 +282,19 @@ export const createAdminBaseQuery = ({ baseUrl = '/api' }: AdminBaseQueryOptions
           handleExpired()
           return result
         }
+      }
+    }
+
+    if (result.error?.status === 429) {
+      const retryAfterHeader = result.meta?.response?.headers?.get('Retry-After')
+      const rateLimitData = buildRateLimitErrorData(result.error.data, retryAfterHeader)
+
+      result = {
+        error: {
+          ...result.error,
+          data: rateLimitData,
+        },
+        meta: result.meta,
       }
     }
 

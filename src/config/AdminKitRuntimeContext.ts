@@ -8,11 +8,15 @@ import type { AdminKitConfig } from './defaults'
 export interface LoginAdminParams {
   email: string
   password: string
+  /** When false, refresh cookie is session-scoped; true/omitted → persistent (7d). */
+  rememberMe?: boolean
 }
 
 export interface Verify2FAParams {
   email: string
   token: string
+  /** When false, refresh cookie is session-scoped; true/omitted → persistent (7d). */
+  rememberMe?: boolean
 }
 
 export interface AdminKitCurrentUser {

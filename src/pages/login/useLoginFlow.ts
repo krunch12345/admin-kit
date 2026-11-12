@@ -133,7 +133,7 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
     setLoginError(null)
 
     try {
-      handleLoginResult(await loginAdmin({ email, password }).unwrap())
+      handleLoginResult(await loginAdmin({ email, password, rememberMe }).unwrap())
     } catch (error) {
       setLoginError(error)
       dispatch(handleLogout({ revokeServer: false }))
@@ -152,7 +152,11 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
     setVerifyError(null)
 
     try {
-      const data = await verify2FA({ email: emailStore || email, token }).unwrap()
+      const data = await verify2FA({
+        email: emailStore || email,
+        token,
+        rememberMe,
+      }).unwrap()
 
       if (!data?.accessToken) {
         return
@@ -184,6 +188,7 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
     nickname,
     notify,
     otpLength,
+    rememberMe,
     resetOtp,
     verify2FA,
   ])

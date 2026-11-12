@@ -31,10 +31,10 @@ export const createAuthEndpoints = <TagTypes extends string, ReducerPath extends
 
     /** Method for verifying 2FA code and receiving access token. */
     verify2FA: builder.mutation<Verify2FAResponse, Verify2FAParams>({
-      query: ({ email, token }) => ({
+      query: ({ email, token, rememberMe }) => ({
         url: '/auth/verify2FACode',
         method: 'POST',
-        body: { email, token },
+        body: { email, token, rememberMe },
       }),
       extraOptions: {
         requiresAuth: false,
