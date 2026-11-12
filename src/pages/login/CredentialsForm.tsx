@@ -48,6 +48,7 @@ export const CredentialsForm = ({
   const [showPassword, setShowPassword] = useState(false)
   const error = toLoginApiError(rawError)
   const remainingAttempts = error?.data?.remainingAttempts
+  const showRemainingAttempts = typeof remainingAttempts === 'number'
   const retryAfter = error?.data?.retryAfter
 
   return (
@@ -111,7 +112,7 @@ export const CredentialsForm = ({
             {error?.data?.message || messages.login.errorLoginFallback}
           </Typography>
 
-          {remainingAttempts !== undefined && (
+          {showRemainingAttempts && (
             <Typography color={getErrorColor}>
               {remainingAttempts > 0
                 ? formatMessage(messages.login.attemptsRemaining, { remainingAttempts })

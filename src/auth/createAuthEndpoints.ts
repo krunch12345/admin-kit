@@ -15,6 +15,7 @@ export const createAuthEndpoints = <TagTypes extends string, ReducerPath extends
       }),
       extraOptions: {
         requiresAuth: false,
+        suppressGlobalError: true,
       },
     }),
 
@@ -38,6 +39,7 @@ export const createAuthEndpoints = <TagTypes extends string, ReducerPath extends
       }),
       extraOptions: {
         requiresAuth: false,
+        suppressGlobalError: true,
       },
     }),
 

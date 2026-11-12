@@ -2,7 +2,8 @@ export interface LoginApiError {
   status?: number | string
   data?: {
     message?: string
-    remainingAttempts?: number
+    code?: string
+    remainingAttempts?: number | null
     /** Seconds until the client may retry (from 429 body or Retry-After). */
     retryAfter?: number
   }
