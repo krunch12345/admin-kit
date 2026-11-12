@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-11-13
+
+### Fixed
+
+- `loginAdmin` and `verify2FA` set `suppressGlobalError` so login/OTP failures are not duplicated by the global alert snackbar
+- Credentials form shows remaining attempts only when `remainingAttempts` is a number (ignores `null`)
+- `LoginApiError` typing accepts optional `code` and nullable `remainingAttempts`
+
 ## [1.1.0] - 2026-11-12
 
 ### Added
