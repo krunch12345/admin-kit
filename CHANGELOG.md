@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Upload compression mode labels (en/ru) reflect higher quality presets: gentle, aggressive
+
 ## [1.2.0] - 2026-11-13
 
 ### Added

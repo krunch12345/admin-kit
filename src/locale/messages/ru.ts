@@ -247,8 +247,8 @@ export const ruMessages: AdminKitMessages = {
   },
 
   upload: {
-    compressionGentle: 'Мягкое (до 2560px, качество 80)',
-    compressionAggressive: 'Жёсткое (до 1920px, качество 65)',
+    compressionGentle: 'Мягкое',
+    compressionAggressive: 'Жёсткое',
     pendingLimitReached: 'Достигнут лимит в ${pendingLimit} изображений. Удалите часть или загрузите текущие.',
     partialAddDueToLimit: 'Добавлено ${acceptedCount} из ${totalSelected}. Лимит — ${pendingLimit} изображений. Остальные не добавлены.',
     chunkUploadProgress: 'Загрузка чанка ${chunkIndex}/${chunkTotal}…',

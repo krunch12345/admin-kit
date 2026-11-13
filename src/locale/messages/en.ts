@@ -245,8 +245,8 @@ export const enMessages = {
   },
 
   upload: {
-    compressionGentle: 'Gentle (up to 2560px, quality 80)',
-    compressionAggressive: 'Aggressive (up to 1920px, quality 65)',
+    compressionGentle: 'Gentle',
+    compressionAggressive: 'Aggressive',
     pendingLimitReached: 'Pending limit of ${pendingLimit} images reached. Remove some or upload the current ones.',
     partialAddDueToLimit: 'Added ${acceptedCount} of ${totalSelected}. Limit is ${pendingLimit} images. The rest were not added.',
     chunkUploadProgress: 'Uploading chunk ${chunkIndex}/${chunkTotal}…',
