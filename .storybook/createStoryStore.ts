@@ -51,6 +51,7 @@ export const createStoryStore = (
           nickname: loginState.nickname,
           avatar: loginState.avatar,
           id: loginState.id,
+          role: loginState.role,
           rememberMe: loginState.rememberMe,
           is2FARequired: false,
         }),

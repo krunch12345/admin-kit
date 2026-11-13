@@ -1,6 +1,6 @@
 {
   "name": "@krunch12345/admin-kit",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "type": "module",
   "description": "Shared admin panel UI kit for React apps (auth, shell, MUI UI, locale)",
   "author": "Konstantin Chukreev <krunch12345@gmail.com>",

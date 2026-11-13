@@ -32,6 +32,8 @@ interface LoginSessionPayload {
   nickname?: string | null
   avatar?: string | null
   id?: string | null
+  role?: string | null
+  is2FARequired?: boolean
 }
 
 /**
@@ -83,7 +85,11 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
 
   const completeLogin = useCallback((payload: LoginSessionPayload) => {
     notify('success', messages.login.loginSuccess)
-    dispatch(tokenReceived({ ...payload, is2FARequired: false, rememberMe }))
+    dispatch(tokenReceived({
+      ...payload,
+      is2FARequired: payload.is2FARequired ?? false,
+      rememberMe,
+    }))
     navigate(safeRedirectPath, { replace: true })
   }, [dispatch, messages.login.loginSuccess, navigate, notify, rememberMe, safeRedirectPath])
 
@@ -95,6 +101,7 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
         nickname: data.nickname,
         avatar: data.avatar || '',
         id: data.id,
+        role: data.role,
         is2FARequired: true,
         rememberMe,
       }))
@@ -113,6 +120,8 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
         nickname: data.nickname,
         avatar: data.avatar || '',
         id: data.id,
+        role: data.role,
+        is2FARequired: false,
       })
     }
   }, [completeLogin, dispatch, messages.login.authCodeRequired, notify, rememberMe, resetOtp])
@@ -168,6 +177,8 @@ export const useLoginFlow = ({ redirectPath, otpLength }: UseLoginFlowOptions) =
         nickname: data.nickname ?? nickname,
         avatar: data.avatar || '',
         id: data.id ?? id,
+        role: data.role,
+        is2FARequired: true,
       })
       resetOtp()
       setStep(STEP_CREDENTIALS)

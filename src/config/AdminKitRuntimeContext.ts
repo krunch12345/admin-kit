@@ -19,6 +19,14 @@ export interface Verify2FAParams {
   rememberMe?: boolean
 }
 
+export interface Disable2FAParams {
+  password: string
+}
+
+export interface Enable2FAResponse {
+  qrCodeImageUrl?: string
+}
+
 export interface AdminKitCurrentUser {
   accessToken?: string
   email?: string | null
@@ -26,6 +34,7 @@ export interface AdminKitCurrentUser {
   avatar?: string | null
   is2FARequired?: boolean
   id?: string | null
+  role?: string | null
 }
 
 /** RTK Query generated mutation hook bound to the admin-kit base query. */
@@ -37,7 +46,8 @@ export type AdminKitQueryHook<Result = unknown, Arg = void> = TypedUseQuery<Resu
 export interface AdminKitApiHooks {
   useLoginAdminMutation: AdminKitMutationHook<LoginAdminResponse, LoginAdminParams>
   useVerify2FAMutation: AdminKitMutationHook<Verify2FAResponse, Verify2FAParams>
-  useEnable2FAMutation: AdminKitMutationHook
+  useEnable2FAMutation: AdminKitMutationHook<Enable2FAResponse, void>
+  useDisable2FAMutation: AdminKitMutationHook<{ message?: string }, Disable2FAParams>
   useGetCurrentUserQuery: AdminKitQueryHook<AdminKitCurrentUser>
   useGetAdminMenuQuery: AdminKitQueryHook
   useInvalidateAllCacheMutation: AdminKitMutationHook

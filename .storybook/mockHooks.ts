@@ -1,4 +1,9 @@
-import type { AdminKitApiHooks, AdminKitCurrentUser } from '../src/config/AdminKitRuntimeContext'
+import type {
+  AdminKitApiHooks,
+  AdminKitCurrentUser,
+  Disable2FAParams,
+  Enable2FAResponse,
+} from '../src/config/AdminKitRuntimeContext'
 import type { LoginAdminResponse, Verify2FAResponse } from '../src/auth/loginSlice'
 import type { AdminKitMenuItem } from '../src/shell/MenuElement'
 
@@ -15,6 +20,7 @@ const DEMO_USER: AdminKitCurrentUser = {
   avatar: null,
   is2FARequired: false,
   id: 'user-1',
+  role: 'admin',
 }
 
 const idleMutationResult = {
@@ -74,6 +80,7 @@ export const createStorybookHooks = (options?: {
           avatar: null,
           is2FARequired: require2FA,
           id: 'user-1',
+          role: 'admin',
           accessToken: require2FA ? null : 'storybook-token',
         },
       }),
@@ -85,11 +92,19 @@ export const createStorybookHooks = (options?: {
           nickname: 'Admin',
           avatar: null,
           id: 'user-1',
+          role: 'admin',
           accessToken: 'storybook-token',
         },
       }),
     ),
-    useEnable2FAMutation: createMockMutation(async () => ({ data: { otpauthUrl: 'otpauth://totp/admin-kit' } })),
+    useEnable2FAMutation: createMockMutation<Enable2FAResponse, void>(async () => ({
+      data: {
+        qrCodeImageUrl: 'data:image/png;base64,storybook-qr',
+      },
+    })),
+    useDisable2FAMutation: createMockMutation<{ message?: string }, Disable2FAParams>(async () => ({
+      data: { message: '2FA disabled' },
+    })),
     useGetCurrentUserQuery: createMockQuery(DEMO_USER),
     useGetAdminMenuQuery: createMockQuery(menu) as AdminKitApiHooks['useGetAdminMenuQuery'],
     useInvalidateAllCacheMutation: createMockMutation(async () => ({ data: { ok: true } })),

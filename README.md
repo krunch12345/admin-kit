@@ -70,6 +70,7 @@ import { TextField } from '@krunch12345/admin-kit/ui'
 | `POST` | `/auth/loginAdmin` | Credentials login |
 | `POST` | `/auth/enable2FA` | Start 2FA setup (auth required) |
 | `POST` | `/auth/verify2FACode` | Verify 2FA code → access token |
+| `POST` | `/auth/disable2FA` | Disable 2FA (`{ password }`, auth required) |
 | `GET` | `/auth/me` | Restore session / current user |
 | `POST` | `/auth/refresh` | Refresh access token (httpOnly cookie) |
 | `POST` | `/auth/logout` | Revoke refresh session / clear auth cookies |
@@ -322,8 +323,8 @@ Footer is omitted when `footerProps` is not passed.
 
 | Component | Props | Notes |
 | --- | --- | --- |
-| `Login` | `title?`, `redirectPath?`, `otpLength?` | Credentials + optional 2FA |
-| `Account` | `title?` | Read-only profile |
+| `Login` | `title?`, `redirectPath?`, `otpLength?` | Credentials + optional 2FA; return-to via `state.from` |
+| `Account` | `title?` | Profile + 2FA enable/disable |
 | `Main` | `logo`, `SearchComponent` | `logo`: node or image URL; `SearchComponent`: element type or element |
 | `NotFound` | — | Full-page 404 |
 | `NotFoundModal` | — | 404 inside the shared modal |
@@ -342,7 +343,7 @@ Exports come from the package root. Names match `src/index.js`.
 
 ### Auth
 
-`createAdminBaseQuery`, `createAuthEndpoints`, `initAdminKitAuth`, `getAuthHooks`, `loginSlice`, `loginSelector`, `loggedOut`, `doRememberMe`, `tokenReceived`, `authChecked`, `PrivateRoute`, `TokenRestorer`, `handleLogout`, `deepTrimStrings`, `extractMeta`, session helpers (`clearSessionFlags`, `persistSessionFlag`, `hasPersistedSession`, `isRememberMeSession`, `SESSION_FLAG_KEY`)
+`createAdminBaseQuery`, `createAuthEndpoints`, `loginSlice`, `loginSelector`, `loggedOut`, `doRememberMe`, `tokenReceived`, `authChecked`, `PrivateRoute`, `RequireAdmin`, `TokenRestorer`, `handleLogout`, `deepTrimStrings`, session helpers (`clearSessionFlags`, `persistSessionFlag`, `hasPersistedSession`, `isRememberMeSession`, `SESSION_FLAG_KEY`)
 
 ### Shell / layout
 

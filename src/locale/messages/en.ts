@@ -37,6 +37,19 @@ export const enMessages = {
   account: {
     pageTitle: 'Account',
     nicknameLabel: 'Nickname',
+    twoFaLabel: 'Two-factor authentication',
+    twoFaGenerateQr: 'Generate QR code',
+    twoFaSetupHint: 'Scan the QR code in your authenticator app, then enter the confirmation code. 2FA becomes active only after a successful check.',
+    twoFaQrAlt: 'QR code for 2FA',
+    twoFaQrGenerated: 'QR code generated. Confirm the code from your app to activate 2FA.',
+    twoFaCodeLabel: 'Confirmation code',
+    twoFaCodePlaceholder: 'Enter the code from the app',
+    twoFaConfirmActivate: 'Confirm and activate',
+    twoFaEnabled: 'Two-factor authentication activated successfully.',
+    twoFaDisableTitle: 'Disable two-factor authentication',
+    twoFaDisablePrompt: 'To disable two-factor authentication, enter your current password:',
+    twoFaDisableAction: 'Disable',
+    twoFaDisabled: 'Two-factor authentication disabled successfully.',
   },
 
   login: {

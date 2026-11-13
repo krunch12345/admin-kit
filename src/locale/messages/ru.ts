@@ -39,6 +39,19 @@ export const ruMessages: AdminKitMessages = {
   account: {
     pageTitle: 'Аккаунт',
     nicknameLabel: 'Никнейм',
+    twoFaLabel: 'Двухфакторная аутентификация',
+    twoFaGenerateQr: 'Сгенерировать QR-код',
+    twoFaSetupHint: 'Отсканируйте QR-код в приложении-аутентификаторе, затем введите код подтверждения. 2FA станет активной только после успешной проверки.',
+    twoFaQrAlt: 'QR-код для 2FA',
+    twoFaQrGenerated: 'QR-код сгенерирован. Подтвердите код из приложения, чтобы активировать 2FA.',
+    twoFaCodeLabel: 'Код подтверждения',
+    twoFaCodePlaceholder: 'Введите код из приложения',
+    twoFaConfirmActivate: 'Подтвердить и активировать',
+    twoFaEnabled: 'Двухфакторная аутентификация успешно активирована.',
+    twoFaDisableTitle: 'Отключить двухфакторную аутентификацию',
+    twoFaDisablePrompt: 'Для отключения двухфакторной аутентификации введите текущий пароль:',
+    twoFaDisableAction: 'Отключить',
+    twoFaDisabled: 'Двухфакторная аутентификация успешно отключена.',
   },
 
   login: {

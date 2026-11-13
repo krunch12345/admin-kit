@@ -9,6 +9,7 @@ export interface LoginState {
   accessToken: string | null
   rememberMe: boolean
   id: string | null
+  role: string | null
   isAuthChecked: boolean
 }
 
@@ -22,6 +23,7 @@ export interface TokenReceivedPayload {
   nickname?: string | null
   avatar?: string | null
   id?: string | null
+  role?: string | null
   rememberMe?: boolean
   is2FARequired?: boolean
 }
@@ -33,6 +35,7 @@ export interface LoginAdminResponse {
   is2FARequired: boolean
   id: string | null
   accessToken: string | null
+  role?: string | null
 }
 
 export type Verify2FAResponse = Partial<Omit<LoginAdminResponse, 'is2FARequired'>> | undefined
@@ -61,6 +64,7 @@ const initialState: LoginState = {
   accessToken: null,
   rememberMe: false,
   id: null,
+  role: null,
   isAuthChecked: false,
 }
 
@@ -78,6 +82,7 @@ export const loginSlice = createSlice({
       state.is2FARequired = false
       state.accessToken = null
       state.id = null
+      state.role = null
       state.isAuthChecked = true
     },
 
@@ -92,6 +97,7 @@ export const loginSlice = createSlice({
         nickname,
         avatar,
         id,
+        role,
         rememberMe,
         is2FARequired,
       } = action.payload
@@ -110,6 +116,9 @@ export const loginSlice = createSlice({
       }
       if (id !== undefined) {
         state.id = id
+      }
+      if (role !== undefined) {
+        state.role = role
       }
       if (rememberMe !== undefined) {
         state.rememberMe = rememberMe
@@ -137,6 +146,10 @@ export const loginSlice = createSlice({
           state.id = payload.id
           state.isAuthChecked = true
 
+          if (payload.role !== undefined) {
+            state.role = payload.role
+          }
+
           if (payload.is2FARequired) {
             state.accessToken = null
             return
@@ -148,8 +161,9 @@ export const loginSlice = createSlice({
       .addMatcher(
         matchEndpointFulfilled<Verify2FAResponse>('verify2FA'),
         (state, { payload }) => {
-          state.is2FARequired = false
           state.isAuthChecked = true
+          // Successful verify means 2FA is active (login challenge or pending setup).
+          state.is2FARequired = true
 
           if (!payload?.accessToken) {
             return
@@ -169,6 +183,15 @@ export const loginSlice = createSlice({
           if (payload.id) {
             state.id = payload.id
           }
+          if (payload.role !== undefined) {
+            state.role = payload.role
+          }
+        },
+      )
+      .addMatcher(
+        matchEndpointFulfilled<unknown>('disable2FA'),
+        (state) => {
+          state.is2FARequired = false
         },
       )
   },

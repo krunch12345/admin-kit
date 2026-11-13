@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-13
+
+### Added
+
+- Login honors `location.state.from` (pathname + search) via `sanitizeAppPath`, falling back to `routes.home`
+- `loginSlice.role` populated from `loginAdmin` / `verify2FA` / `getCurrentUser` (`tokenReceived`) when present
+- `disable2FA` mutation in `createAuthEndpoints` (`POST /auth/disable2FA` with `{ password }`); hook via `AdminKitProvider`
+- Account page 2FA UI: enable (QR) → verify code; disable with password (en/ru locale strings)
+- `RequireAdmin` — redirects to `routes.home` when Redux `role !== 'admin'`
+
+### Changed
+
+- Successful `verify2FA` sets `is2FARequired` to `true` (login challenge and Account setup); `disable2FA` fulfilled clears it
+
 ## [1.1.1] - 2026-11-13
 
 ### Fixed
@@ -26,8 +40,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Notes
 
 - CSRF handling in `createAdminBaseQuery` is unchanged (still required for state-changing requests such as image upload)
-- Kit does not expose `disable2FA`; no Account 2FA setup page added (pending 2FA enable/verify remains consumer-specific)
-
 ## [1.0.3] - 2026-11-11
 
 ### Fixed

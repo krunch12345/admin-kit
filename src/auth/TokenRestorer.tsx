@@ -65,6 +65,7 @@ export const TokenRestorer = (): null => {
           avatar: data.avatar || '',
           is2FARequired: data.is2FARequired,
           id: data.id,
+          role: data.role,
           rememberMe,
         }),
       )

@@ -44,6 +44,7 @@ export {
   authChecked,
 } from './auth/loginSlice'
 export { PrivateRoute } from './auth/PrivateRoute'
+export { RequireAdmin } from './auth/RequireAdmin'
 export {
   SESSION_FLAG_KEY,
   clearSessionFlags,

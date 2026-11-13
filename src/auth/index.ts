@@ -13,6 +13,7 @@ export {
   authChecked,
 } from './loginSlice'
 export { PrivateRoute } from './PrivateRoute'
+export { RequireAdmin } from './RequireAdmin'
 export {
   SESSION_FLAG_KEY,
   clearSessionFlags,
@@ -34,3 +35,4 @@ export type {
   Verify2FAResponse,
 } from './loginSlice'
 export type { PrivateRouteProps } from './PrivateRoute'
+export type { RequireAdminProps } from './RequireAdmin'

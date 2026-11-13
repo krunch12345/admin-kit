@@ -1,6 +1,12 @@
 import type { EndpointBuilder } from '@reduxjs/toolkit/query/react'
 import type { AdminBaseQueryFn } from './createAdminBaseQuery'
-import type { AdminKitCurrentUser, LoginAdminParams, Verify2FAParams } from '../config/AdminKitRuntimeContext'
+import type {
+  AdminKitCurrentUser,
+  Disable2FAParams,
+  Enable2FAResponse,
+  LoginAdminParams,
+  Verify2FAParams,
+} from '../config/AdminKitRuntimeContext'
 import type { LoginAdminResponse, Verify2FAResponse } from './loginSlice'
 
 export const createAuthEndpoints = <TagTypes extends string, ReducerPath extends string>(
@@ -19,8 +25,8 @@ export const createAuthEndpoints = <TagTypes extends string, ReducerPath extends
       },
     }),
 
-    /** Method for activate 2FA. */
-    enable2FA: builder.mutation<unknown, void>({
+    /** Method for activate 2FA (stores pending secret; active after verify). */
+    enable2FA: builder.mutation<Enable2FAResponse, void>({
       query: () => ({
         url: '/auth/enable2FA',
         method: 'POST',
@@ -40,6 +46,18 @@ export const createAuthEndpoints = <TagTypes extends string, ReducerPath extends
       extraOptions: {
         requiresAuth: false,
         suppressGlobalError: true,
+      },
+    }),
+
+    /** Disables 2FA after password confirmation. */
+    disable2FA: builder.mutation<{ message?: string }, Disable2FAParams>({
+      query: ({ password }) => ({
+        url: '/auth/disable2FA',
+        method: 'POST',
+        body: { password },
+      }),
+      extraOptions: {
+        requiresAuth: true,
       },
     }),
 

@@ -3,6 +3,7 @@ import { Stack, Typography } from '@mui/material'
 import { loginSelector } from '../auth/loginSlice'
 import { Page } from '../layouts/Page'
 import { useAdminKitMessages } from '../locale/useAdminKitMessages'
+import { TwoFA } from './account/TwoFA'
 
 export interface AccountProps {
   /** The page title. */
@@ -10,7 +11,7 @@ export interface AccountProps {
 }
 
 /**
- * Account page: read-only profile info.
+ * Account page: profile info and 2FA management.
  */
 export const Account = ({ title }: AccountProps) => {
   const messages = useAdminKitMessages()
@@ -30,9 +31,13 @@ export const Account = ({ title }: AccountProps) => {
 
   return (
     <Page title={title ?? messages.account.pageTitle}>
-      <Stack>
-        {renderAttribute(messages.account.nicknameLabel, nickname)}
-        {renderAttribute(messages.login.emailLabel, email)}
+      <Stack spacing={3}>
+        <Stack>
+          {renderAttribute(messages.account.nicknameLabel, nickname)}
+          {renderAttribute(messages.login.emailLabel, email)}
+        </Stack>
+
+        <TwoFA />
       </Stack>
     </Page>
   )

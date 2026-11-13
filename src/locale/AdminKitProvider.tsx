@@ -12,6 +12,8 @@ import type {
   AdminKitMutationHook,
   AdminKitQueryHook,
   AdminKitRuntimeValue,
+  Disable2FAParams,
+  Enable2FAResponse,
   LoginAdminParams,
   Verify2FAParams,
 } from '../config/AdminKitRuntimeContext'
@@ -26,6 +28,7 @@ const REQUIRED_ENDPOINTS = [
   'loginAdmin',
   'verify2FA',
   'enable2FA',
+  'disable2FA',
   'getCurrentUser',
   'getAdminMenu',
   'invalidateAllCache',
@@ -76,7 +79,8 @@ const hooksFromApi = (api: AdminKitApi): AdminKitApiHooks => {
   return {
     useLoginAdminMutation: getMutationHook<LoginAdminResponse, LoginAdminParams>(api, 'loginAdmin'),
     useVerify2FAMutation: getMutationHook<Verify2FAResponse, Verify2FAParams>(api, 'verify2FA'),
-    useEnable2FAMutation: getMutationHook(api, 'enable2FA'),
+    useEnable2FAMutation: getMutationHook<Enable2FAResponse, void>(api, 'enable2FA'),
+    useDisable2FAMutation: getMutationHook<{ message?: string }, Disable2FAParams>(api, 'disable2FA'),
     useGetCurrentUserQuery: getQueryHook<AdminKitCurrentUser>(api, 'getCurrentUser'),
     useGetAdminMenuQuery: getQueryHook(api, 'getAdminMenu'),
     useInvalidateAllCacheMutation: getMutationHook(api, 'invalidateAllCache'),
