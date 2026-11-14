@@ -218,6 +218,12 @@ export const ruMessages: AdminKitMessages = {
     all: 'Все',
   },
 
+  slugField: {
+    label: 'Slug',
+    placeholder: 'url-slug',
+    regenerateTitle: 'Сгенерировать slug из названия',
+  },
+
   accordion: {
     total: 'всего: ${count}',
   },

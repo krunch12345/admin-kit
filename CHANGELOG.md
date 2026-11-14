@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 - Upload compression mode labels (en/ru) reflect higher quality presets: gentle, aggressive
 
+## [1.3.0] - 2026-11-14
+
+### Added
+
+- `SlugField` — controlled slug input with auto-fill from `sourceName` via `slugify`, manual-edit lock, clear, and regenerate (en/ru locale strings)
+
 ## [1.2.0] - 2026-11-13
 
 ### Added

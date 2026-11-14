@@ -216,6 +216,12 @@ export const enMessages = {
     all: 'All',
   },
 
+  slugField: {
+    label: 'Slug',
+    placeholder: 'url-slug',
+    regenerateTitle: 'Generate slug from name',
+  },
+
   accordion: {
     total: 'total: ${count}',
   },
