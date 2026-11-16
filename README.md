@@ -8,33 +8,41 @@ Built for apps that use React Router, Redux Toolkit / RTK Query, and Material UI
 
 Ships as built ESM (`dist/admin-kit.js`) with TypeScript declarations and optional subpath exports (`@krunch12345/admin-kit/auth`, `@krunch12345/admin-kit/ui`, …). See [CHANGELOG.md](./CHANGELOG.md) for notable changes.
 
+**Agents / contributors maintaining this repo:** start at [AGENTS.md](./AGENTS.md) and the task map in [docs/README.md](./docs/README.md). This README stays the consumer-facing install and wiring guide.
+
 Component catalog (Storybook): https://krunch12345.github.io/admin-kit/
 
 ## Requirements
 
 ### Peer dependencies
 
-Install the same major ranges as in `package.json`:
+Install the same major ranges as in `package.json`. Full table also lives in [docs/integrations/peer-dependencies.md](./docs/integrations/peer-dependencies.md).
+
+**Required (typical admin app):**
 
 | Package | Notes |
 | --- | --- |
 | `react`, `react-dom` | ^18.2 |
 | `react-router`, `react-router-dom` | ^6.22 |
 | `react-redux`, `@reduxjs/toolkit` | store + RTK Query |
-| `@mui/material`, `@mui/icons-material`, `@mui/x-date-pickers` | UI |
+| `@mui/material`, `@mui/icons-material` | UI |
 | `@emotion/react`, `@emotion/styled` | MUI styling |
-| `date-fns` | date pickers |
-| `lodash-es`, `prop-types`, `react-icons`, `react-scroll` | utilities / icons |
+| `lodash-es`, `react-icons` | utilities / icons |
+
+**Optional** (`peerDependenciesMeta` — install when you use the feature):
+
+| Package | Feature |
+| --- | --- |
+| `@mui/x-date-pickers`, `date-fns` | date pickers |
 | `@rpldy/uploady`, `@rpldy/upload-button`, `@rpldy/upload-drop-zone`, `@rpldy/upload-paste`, `@rpldy/upload-preview` | image upload |
 | `react-image-crop` | crop controls |
+| `react-scroll` | `Page` hash scrolling |
+
+`prop-types` is not a kit peer.
 
 ### Regular dependency
 
 `async-mutex` is a normal dependency (externalized in the build; consumers resolve it from `node_modules`).
-
-### Optional peers
-
-Upload (`@rpldy/*`, `react-image-crop`), date pickers (`@mui/x-date-pickers`, `date-fns`), and `react-scroll` are marked optional via `peerDependenciesMeta`. Install them when you use those features.
 
 ## Install
 
@@ -335,7 +343,11 @@ Footer is omitted when `footerProps` is not passed.
 
 ## Public API (by area)
 
-Exports come from the package root. Names match `src/index.js`.
+Exports come from the package root and subpaths (`/auth`, `/shell`, `/ui`, `/locale`, `/hooks`, `/utils`). Names match current barrels (`src/index.ts` and subpath entries). Prefer those barrels or [docs/architecture/public-api.md](./docs/architecture/public-api.md) if this overview and source disagree.
+
+### Version / config
+
+`ADMIN_KIT_VERSION`, `DEFAULT_ROUTES`, `DEFAULT_STORAGE_KEYS`, `resolveAdminKitConfig`, `useAdminKitConfig`, `useAdminKitHooks`, `useAdminKitRuntime`
 
 ### Locale
 
@@ -343,11 +355,11 @@ Exports come from the package root. Names match `src/index.js`.
 
 ### Auth
 
-`createAdminBaseQuery`, `createAuthEndpoints`, `loginSlice`, `loginSelector`, `loggedOut`, `doRememberMe`, `tokenReceived`, `authChecked`, `PrivateRoute`, `RequireAdmin`, `TokenRestorer`, `handleLogout`, `deepTrimStrings`, session helpers (`clearSessionFlags`, `persistSessionFlag`, `hasPersistedSession`, `isRememberMeSession`, `SESSION_FLAG_KEY`)
+`createAdminBaseQuery`, `createAuthEndpoints`, `createAuthListenerMiddleware`, `loginSlice`, `loginSelector`, `loggedOut`, `doRememberMe`, `tokenReceived`, `authChecked`, `PrivateRoute`, `RequireAdmin`, `TokenRestorer`, `handleLogout`, `deepTrimStrings`, session helpers (`clearSessionFlags`, `persistSessionFlag`, `hasPersistedSession`, `isRememberMeSession`, `SESSION_FLAG_KEY`)
 
 ### Shell / layout
 
-`createShellEndpoints`, `initAdminKitShell`, `getShellHooks`, `Content`, `Page`, `Header`, `Drawer`, `Footer`, `MenuElement`, `DRAWER_WIDTH`
+`createShellEndpoints`, `Content`, `Page`, `Header`, `Drawer`, `Footer`, `MenuElement`, `DRAWER_WIDTH`
 
 ### Pages
 
@@ -359,11 +371,11 @@ Exports come from the package root. Names match `src/index.js`.
 
 ### Hooks
 
-`useFields`, `useId`, `useImageSizeInfo`, `useListPosition`, `useListPositionSync`, `useLoading`, `useNameDouble`, `usePersistedFilters`, `useScreen`
+`useFields`, `useFormDraft`, `useRouteId`, `useImageSizeInfo`, `useLeavePageConfirm`, `useListPosition`, `useListPositionSync`, `useLoading`, `useNameDouble`, `useNotify`, `usePersistedFilters`, `useScreen`
 
 ### Utils / constants
 
-`checkRequiredFields`, `copyImageToClipboard`, `getAddImagesErrorMessage`, `isAppFileTooLargePayload`, `formatStringISODate`, `getChangedFieldLabels`, `configureImageProxy`, `getProxiedImageFetchUrl`, `getImageFetchAttempts`, `clearImageByteSizeCache`, `formatFileSize`, `formatImageDimensions`, `formatImageSizeLabel`, `loadImageDimensions`, `fetchImageByteSize`, list-position helpers (`getListItemDomId`, `readListPosition`, `writeListPosition`, `clearListScrollTarget`, `getListNeighborId`, `rememberListOpen`, `prepareListReturnAfterCreate`, `prepareListReturnAfterDelete`), image optimize helpers (`optimizeImageForUpload`, …), `isAllowedImageFile`, `sanitizeAppPath`, `isSafeAppPath`, `showQueryAlerts`, `slugify`, `trimText`, batch image constants (`BATCH_IMAGE_*`, `chunkArray`, …), `ADMIN_KIT_VERSION`
+`checkRequiredFields`, `copyImageToClipboard`, `getAddImagesErrorMessage`, `isAppFileTooLargePayload`, `formatStringISODate`, `getChangedFieldLabels`, `configureImageProxy`, `getProxiedImageFetchUrl`, `getImageFetchAttempts`, `clearImageByteSizeCache`, `formatFileSize`, `formatImageDimensions`, `formatImageSizeLabel`, `loadImageDimensions`, `fetchImageByteSize`, list-position helpers (`getListItemDomId`, `readListPosition`, `writeListPosition`, `clearListScrollTarget`, `getListNeighborId`, `rememberListOpen`, `prepareListReturnAfterCreate`, `prepareListReturnAfterDelete`), image optimize helpers (`optimizeImageForUpload`, …), `isAllowedImageFile`, `sanitizeAppPath`, `isSafeAppPath`, `showQueryAlerts`, `slugify`, `trimText`, batch image constants (`BATCH_IMAGE_*`, `chunkArray`, …)
 
 ## Notable helpers
 

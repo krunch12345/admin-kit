@@ -26,7 +26,8 @@ Run lint, typecheck, test, and build before opening a PR. Add or update stories 
 - Import React hooks directly (`import { useState } from 'react'`)
 - Prefer MUI component props over `sx` when a prop exists
 - User-facing strings go through `useAdminKitMessages` / `formatMessage`
-- Breaking API changes must update `CHANGELOG.md`
+- Commit subjects use [Conventional Commits](https://www.conventionalcommits.org/) (for example `feat(ui):`, `fix(auth):`, `chore(build):`)
+- Keep a Changelog / SemVer in `CHANGELOG.md`; breaking API changes must update it before release
 
 ## Support policy
 
