@@ -1,6 +1,6 @@
 # Locale module
 
-Source: `src/locale/`. Subpath entry: `src/locale/public.ts` → `@krunch12345/admin-kit/locale`.
+Source: `src/locale/`. Subpath entry: `src/locale/public.ts` → `@krunch12345/admin-kit/locale`. The public locale entry omits `AdminKitContext` and `deepMerge`, which remain on the internal `src/locale/index.ts` barrel (see [public API](../architecture/public-api.md)).
 
 ## Dictionaries
 

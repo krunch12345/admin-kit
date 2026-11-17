@@ -61,7 +61,7 @@ export const Content = ({
     isFetching: isFetchingFetchedMenu,
   } = useGetAdminMenuQuery(undefined, { skip: !hasChrome || hasMenuOverride })
 
-  const menu = hasMenuOverride ? menuOverride : ((fetchedMenu as AdminKitMenuItem[] | undefined) ?? [])
+  const menu = hasMenuOverride ? menuOverride : (fetchedMenu ?? [])
   const isFetchingMenu = hasMenuOverride ? Boolean(isFetchingMenuOverride) : isFetchingFetchedMenu
 
   useLayoutEffect(() => {

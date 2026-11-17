@@ -106,8 +106,8 @@ export const createStorybookHooks = (options?: {
       data: { message: '2FA disabled' },
     })),
     useGetCurrentUserQuery: createMockQuery(DEMO_USER),
-    useGetAdminMenuQuery: createMockQuery(menu) as AdminKitApiHooks['useGetAdminMenuQuery'],
-    useInvalidateAllCacheMutation: createMockMutation(async () => ({ data: { ok: true } })),
+    useGetAdminMenuQuery: createMockQuery(menu),
+    useInvalidateAllCacheMutation: createMockMutation<void, void>(async () => ({ data: undefined })),
     requestLogout: async () => undefined,
     resetApiState: () => undefined,
   }

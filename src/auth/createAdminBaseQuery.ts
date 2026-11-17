@@ -274,11 +274,11 @@ export const createAdminBaseQuery = ({ baseUrl = '/api' }: AdminBaseQueryOptions
         || errorCode === 'csrf'
         || /csrf/i.test(String(errorData.message || ''))
 
-      if (looksLikeCsrf || errorCode == null) {
+      if (looksLikeCsrf) {
         const newCsrf = await fetchCsrfToken(api, extraOptions)
         if (newCsrf) {
           result = await authorizedQuery(newCsrf)
-        } else if (looksLikeCsrf) {
+        } else {
           handleExpired()
           return result
         }

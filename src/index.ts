@@ -65,6 +65,7 @@ export { DRAWER_WIDTH } from './shell/drawerWidth'
 export { Footer } from './shell/Footer'
 export { Header } from './shell/Header'
 export { MenuElement } from './shell/MenuElement'
+export type { AdminKitMenuItem } from './shell/MenuElement'
 
 // pages
 export { Account } from './pages/Account'

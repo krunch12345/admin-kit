@@ -31,7 +31,7 @@ On 401 for authenticated requests (except login/verify/logout/refresh URLs): mut
 
 ## CSRF recovery
 
-State-changing request returns 403 that looks like CSRF (or missing `code`): `GET /csrfToken` with Bearer, then retry with new `csrf-token` header. Persistent CSRF failure can expire the session.
+State-changing authenticated request returns 403 that looks like CSRF (`code` `EBADCSRFTOKEN` / `csrf`, or a message matching `/csrf/i`): `GET /csrfToken` with Bearer, then retry with new `csrf-token` header. A 403 with a missing or null `code` and a non-CSRF message does **not** trigger CSRF refresh. Persistent CSRF failure (refresh token fetch fails after a CSRF-looking 403) can expire the session.
 
 ## Logout
 

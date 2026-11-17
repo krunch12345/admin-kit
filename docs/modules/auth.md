@@ -18,7 +18,7 @@ Default `baseUrl`: `/api`. Always `credentials: 'include'`.
 | --- | --- |
 | Auth header | `Authorization: Bearer <accessToken>` when `requiresAuth !== false` and token present |
 | Body trim | `deepTrimStrings` on JSON bodies (not `FormData`) |
-| CSRF | For POST/PUT/PATCH/DELETE, sends `csrf-token` from `csrfToken` cookie when present; on 403 may `GET /csrfToken` and retry |
+| CSRF | For POST/PUT/PATCH/DELETE, sends `csrf-token` from `csrfToken` cookie when present; on CSRF-looking 403 (`EBADCSRFTOKEN` / `csrf` / message matching `/csrf/i`) fetches `GET /csrfToken` and retries. Null/missing `code` alone is not enough |
 | Refresh | On 401, `POST /auth/refresh` under mutex; updates token via `tokenReceived`; skips refresh for login/verify/logout/refresh paths |
 | Pre-check | If auth required, `isAuthChecked`, and no token → synthetic 401 |
 | 429 | Normalizes `message` + `retryAfter` via `buildRateLimitErrorData` |

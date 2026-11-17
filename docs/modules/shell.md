@@ -6,8 +6,8 @@ Source: `src/shell/`. Subpath: `@krunch12345/admin-kit/shell`. Layout compositio
 
 | Endpoint | Method / path | Notes |
 | --- | --- | --- |
-| `getAdminMenu` | `GET /adminMenu` | Auth required; result typed `unknown` in factory |
-| `invalidateAllCache` | `POST /cacheInvalidate` | Auth required |
+| `getAdminMenu` | `GET /adminMenu` | Auth required; result typed `AdminKitMenuItem[]` |
+| `invalidateAllCache` | `POST /cacheInvalidate` | Auth required; result typed `void` (success = non-error response) |
 
 Spread into the consumer `createApi` endpoints alongside auth endpoints. `AdminKitProvider` requires both shell endpoint names to exist when `api` is passed.
 
@@ -21,7 +21,7 @@ Spread into the consumer `createApi` endpoints alongside auth endpoints. `AdminK
 | `Footer` | Developer line, copyright year range, optional kit version |
 | `DRAWER_WIDTH` | Shared drawer width constant |
 
-Menu item shape used by UI: `{ name: string, path: string }` (`AdminKitMenuItem`). Unsafe paths render as null.
+Menu item shape used by UI: `{ name: string, path: string }` (`AdminKitMenuItem`, exported from shell / root). Unsafe paths render as null.
 
 ## Wiring note
 

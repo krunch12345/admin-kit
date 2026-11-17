@@ -4,7 +4,7 @@
 
 For each task, open [docs/README.md](docs/README.md), use its [Task navigation](docs/README.md#task-navigation) table, and read only the documents indicated for the task. Follow additional references only when needed. Use them as a navigation guide, verify important details against current source, and avoid exploring unrelated areas. Source code takes precedence; identify discrepancies and clearly mark consumer-app or backend behavior that cannot be verified in this package. When changes affect architecture, public API, workflows, or integrations, update only the relevant documentation and index; preserve unrelated documents and instructions.
 
-Before trusting consumer README lists for exports or peers, or when reconciling docs drift, skim [docs/audit-findings.md](docs/audit-findings.md). For export / subpath / peer questions, prefer [docs/architecture/public-api.md](docs/architecture/public-api.md), [docs/integrations/peer-dependencies.md](docs/integrations/peer-dependencies.md), and current barrels (`src/index.ts`, subpath entries) over README overview lists.
+For export / subpath / peer questions, or when reconciling docs drift, prefer [docs/architecture/public-api.md](docs/architecture/public-api.md), [docs/integrations/peer-dependencies.md](docs/integrations/peer-dependencies.md), and current barrels (`src/index.ts`, subpath entries) over README overview lists.
 
 Consumer-facing install and wiring guides live in [README.md](README.md). Contribution scripts and support policy live in [CONTRIBUTING.md](CONTRIBUTING.md). Release notes live in [CHANGELOG.md](CHANGELOG.md). Do not replace those files with this knowledge base; link to them instead.
 

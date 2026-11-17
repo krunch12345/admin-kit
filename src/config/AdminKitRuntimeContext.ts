@@ -2,6 +2,7 @@ import { createContext } from 'react'
 import type { TypedUseMutation, TypedUseQuery } from '@reduxjs/toolkit/query/react'
 import type { AdminBaseQueryFn } from '../auth/createAdminBaseQuery'
 import type { LoginAdminResponse, Verify2FAResponse } from '../auth/loginSlice'
+import type { AdminKitMenuItem } from '../shell/MenuElement'
 import { resolveAdminKitConfig } from './defaults'
 import type { AdminKitConfig } from './defaults'
 
@@ -49,8 +50,8 @@ export interface AdminKitApiHooks {
   useEnable2FAMutation: AdminKitMutationHook<Enable2FAResponse, void>
   useDisable2FAMutation: AdminKitMutationHook<{ message?: string }, Disable2FAParams>
   useGetCurrentUserQuery: AdminKitQueryHook<AdminKitCurrentUser>
-  useGetAdminMenuQuery: AdminKitQueryHook
-  useInvalidateAllCacheMutation: AdminKitMutationHook
+  useGetAdminMenuQuery: AdminKitQueryHook<AdminKitMenuItem[]>
+  useInvalidateAllCacheMutation: AdminKitMutationHook<void>
   requestLogout?: () => Promise<unknown>
   resetApiState?: () => void
 }

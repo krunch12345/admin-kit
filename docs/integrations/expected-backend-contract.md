@@ -22,7 +22,7 @@ Transport assumptions in `createAdminBaseQuery`:
 - `credentials: 'include'`
 - Bearer access token in `Authorization`
 - Mutating requests send header `csrf-token` when cookie `csrfToken` is present
-- CSRF failure signals may use codes such as `EBADCSRFTOKEN` / `csrf` or CSRF-like messages
+- CSRF recovery runs only when failure signals look like CSRF: codes `EBADCSRFTOKEN` / `csrf`, or a message matching `/csrf/i` (missing/`null` `code` alone does not trigger refresh)
 - HTTP 429 may include `message` / `retryAfter` (or `Retry-After` header)
 
 Session markers in the browser are kit-owned flags only; refresh cookies are expected to be httpOnly and server-managed.
@@ -31,10 +31,8 @@ Session markers in the browser are kit-owned flags only; refresh cookies are exp
 
 | Method | Path | Kit usage |
 | --- | --- | --- |
-| `GET` | `/adminMenu` | Header/drawer navigation; UI expects items shaped like `{ name, path }` |
-| `POST` | `/cacheInvalidate` | Header cache flush action |
-
-Response TypeScript types in the shell factory are largely `unknown`; runtime shape is a consumer/backend agreement.
+| `GET` | `/adminMenu` | Header/drawer navigation; typed as `AdminKitMenuItem[]` (`{ name, path }`) |
+| `POST` | `/cacheInvalidate` | Header cache flush action; mutation result typed `void` (UI ignores body) |
 
 ## Upload
 

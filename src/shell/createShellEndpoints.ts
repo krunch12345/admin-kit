@@ -1,5 +1,6 @@
 import type { EndpointBuilder } from '@reduxjs/toolkit/query/react'
 import type { AdminBaseQueryFn } from '../auth/createAdminBaseQuery'
+import type { AdminKitMenuItem } from './MenuElement'
 
 /**
  * Endpoints required by Header / Content shell: admin menu and cache invalidation.
@@ -9,9 +10,9 @@ export const createShellEndpoints = <TagTypes extends string, ReducerPath extend
   builder: EndpointBuilder<AdminBaseQueryFn, TagTypes, ReducerPath>,
 ) => ({
   /**
-   * Retrieves admin menu.
+   * Retrieves admin menu items shaped as `{ name, path }`.
    */
-    getAdminMenu: builder.query<unknown, void>({
+    getAdminMenu: builder.query<AdminKitMenuItem[], void>({
       query: () => ({
         url: '/adminMenu',
         method: 'GET',
@@ -23,8 +24,9 @@ export const createShellEndpoints = <TagTypes extends string, ReducerPath extend
 
     /**
    * Invalidates server-side cache. Used to force data refresh.
+   * Response body is unused by shell UI; success is inferred from a non-error status.
    */
-    invalidateAllCache: builder.mutation<unknown, void>({
+    invalidateAllCache: builder.mutation<void, void>({
       query: () => ({
         url: '/cacheInvalidate',
         method: 'POST',

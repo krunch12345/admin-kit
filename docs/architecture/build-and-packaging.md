@@ -31,7 +31,7 @@ Audit date: 2026-11-17.
 - npm scope: `@krunch12345/admin-kit`, `publishConfig.access: public`
 - `files`: `dist`, `LICENSE`, `README.md`, `CHANGELOG.md` (source under `src/` is not published)
 - GitHub Release → `.github/workflows/publish.yml` → `npm publish --access public` (needs `NPM_TOKEN`)
-- Storybook static → GitHub Pages via `storybook.yml` (`STORYBOOK_BASE_PATH=/admin-kit/`)
+- Storybook static → GitHub Pages via `storybook.yml` (`STORYBOOK_BASE_PATH=/admin-kit/`). Pages deploy publishes a **public** artifact (not npm); treat push to `main`/`master` that triggers it as release-adjacent and obtain approval ([AGENTS.md](../../AGENTS.md)).
 
 Do not publish or create releases without explicit user approval ([AGENTS.md](../../AGENTS.md)).
 

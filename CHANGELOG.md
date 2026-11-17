@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Changed
 
 - Upload compression mode labels (en/ru) reflect higher quality presets: gentle, aggressive
+- `createAdminBaseQuery` CSRF recovery retries only when the 403 looks like CSRF (`EBADCSRFTOKEN` / `csrf` / message matching `/csrf/i`); a null or missing `code` alone no longer triggers CSRF refresh
+- `createShellEndpoints`: `getAdminMenu` typed as `AdminKitMenuItem[]`; `invalidateAllCache` typed as `void`; `AdminKitMenuItem` exported from shell and root barrels
 
 ## [1.3.1] - 2026-11-14
 

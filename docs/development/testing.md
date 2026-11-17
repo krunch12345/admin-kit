@@ -23,7 +23,7 @@ Colocate tests next to source (`*.test.ts` / `*.test.tsx`).
 
 | Area | Examples |
 | --- | --- |
-| Auth | `sessionFlags.test.ts`, `loginSlice.test.ts`, `RequireAdmin.test.tsx`, `rateLimitError.test.ts`, `deepTrimStrings.test.ts` |
+| Auth | `sessionFlags.test.ts`, `loginSlice.test.ts`, `RequireAdmin.test.tsx`, `rateLimitError.test.ts`, `deepTrimStrings.test.ts`, `createAdminBaseQuery.test.ts` (CSRF recovery heuristics) |
 | Locale | `runtime.test.ts`, `messages.parity.test.ts` (en/ru key parity) |
 | Pages | `Login.redirect.test.ts` (`resolveLoginRedirectPath`) |
 | UI | `SlugField.test.tsx`, `ModalDataProvider.test.tsx`, `modalOwnership.test.ts`, `countNonEmptyFilters.test.ts`, `uploadHelpers.test.ts` |

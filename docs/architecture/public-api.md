@@ -1,6 +1,6 @@
 # Public API
 
-Audit date: 2026-11-17. Prefer current barrels over README lists when they disagree ([audit-findings](../audit-findings.md)).
+Prefer current barrels over README lists when they disagree. Package version: **1.3.1** (`package.json`).
 
 ## Package exports (`package.json`)
 
@@ -32,7 +32,7 @@ Audit date: 2026-11-17. Prefer current barrels over README lists when they disag
 
 ### Layouts / shell / pages
 
-`Content`, `Page`, `createShellEndpoints`, `Drawer`, `DRAWER_WIDTH`, `Footer`, `Header`, `MenuElement`, `Account`, `Login`, `Main`, `NotFound`, `NotFoundModal`
+`Content`, `Page`, `createShellEndpoints`, `Drawer`, `DRAWER_WIDTH`, `Footer`, `Header`, `MenuElement`, type `AdminKitMenuItem`, `Account`, `Login`, `Main`, `NotFound`, `NotFoundModal`
 
 ### UI
 
@@ -52,7 +52,7 @@ Re-export of `src/utils/index.ts` plus batch helpers (`BATCH_IMAGE_*`, `chunkArr
 | --- | --- |
 | `./auth` | Also exports `configureSessionStorageKeys`, `buildRateLimitErrorData`, `parseRetryAfterSeconds`, and auth-related types |
 | `./locale` | Built from `public.ts` (no `AdminKitContext` / `deepMerge`); includes locale types |
-| `./shell` | Shell-only (no layouts/pages) |
+| `./shell` | Shell-only (no layouts/pages); includes type `AdminKitMenuItem` |
 | `./ui` | UI-only (recommended for TextField, Modal, …) |
 | `./hooks` / `./utils` | Match their barrels; utils includes crop/optimize helpers and types |
 
