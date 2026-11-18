@@ -7,12 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-### Changed
-
-- Upload compression mode labels (en/ru) reflect higher quality presets: gentle, aggressive
-- `createAdminBaseQuery` CSRF recovery retries only when the 403 looks like CSRF (`EBADCSRFTOKEN` / `csrf` / message matching `/csrf/i`); a null or missing `code` alone no longer triggers CSRF refresh
-- `createShellEndpoints`: `getAdminMenu` typed as `AdminKitMenuItem[]`; `invalidateAllCache` typed as `void`; `AdminKitMenuItem` exported from shell and root barrels
-
 ## [1.3.2] - 2026-11-18
 
 ### Fixed
@@ -25,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Debounced `TextField` flushes pending value on blur
 - Upload `canCut`: compact thumbnail per pending image; `CropControls` mounts only when the user opens the crop editor for that row (en/ru `crop.openEditor` / `crop.closeEditor`)
 - Pending upload preview: rotate image 90° clockwise / counter-clockwise (JPEG via canvas) without opening the crop editor
+- Upload compression mode labels (en/ru) reflect higher quality presets: gentle, aggressive
+- `createAdminBaseQuery` CSRF recovery retries only when the 403 looks like CSRF (`EBADCSRFTOKEN` / `csrf` / message matching `/csrf/i`); a null or missing `code` alone no longer triggers CSRF refresh
+- `createShellEndpoints`: `getAdminMenu` typed as `AdminKitMenuItem[]`; `invalidateAllCache` typed as `void`; `AdminKitMenuItem` exported from shell and root barrels
 
 ## [1.3.1] - 2026-11-14
 
