@@ -25,6 +25,7 @@ export { ImageMetaFields } from './ImageMetaFields/ImageMetaFields'
 export {
   COPYABLE_META_FIELDS,
   DEFAULT_EMPTY_IMAGE_META,
+  META_INPUT_DEBOUNCE_MS,
   IMAGE_META_FIELDS,
   isCopyableFieldFilled,
   isMetaValueFilled,

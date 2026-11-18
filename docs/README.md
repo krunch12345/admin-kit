@@ -4,7 +4,7 @@ This is a source-grounded navigation map for coding agents. Start with the relev
 
 Root [AGENTS.md](../AGENTS.md) defines agent policy. Root [README.md](../README.md) is the consumer-facing entry (install, wiring, overview). Export and peer **sources of truth** are barrels + [public API](architecture/public-api.md) + [peer dependencies](integrations/peer-dependencies.md); prefer those over README overview lists. [CONTRIBUTING.md](../CONTRIBUTING.md) and [CHANGELOG.md](../CHANGELOG.md) remain the contribution and release sources of truth. This index is the detailed task-navigation entry under `docs/`.
 
-Package version: **1.3.1** (`package.json`). Prefer **1.3.1+** on npm; `1.3.0` published without a tarball (see [CHANGELOG](../CHANGELOG.md)).
+Package version: **1.3.2** (`package.json`). Prefer **1.3.2+** on npm; `1.3.0` published without a tarball (see [CHANGELOG](../CHANGELOG.md)).
 
 ## Task navigation
 

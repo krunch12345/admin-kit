@@ -1,9 +1,10 @@
-import { Children } from 'react'
+import { Children, memo } from 'react'
 import { Checkbox, FormControlLabel, MenuItem, Stack } from '@mui/material'
 import { TextField } from '../TextField/TextField'
 import { Select } from '../Select/Select'
 import { ImageSizeLabel } from '../ImageSizeLabel/ImageSizeLabel'
 import { ImageMetaFields } from '../ImageMetaFields/ImageMetaFields'
+import { META_INPUT_DEBOUNCE_MS } from '../ImageMetaFields/imageMetaFieldsConfig'
 import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
 import type { ImageMetaTemplates } from '../ImageMetaFields/imageMetaFieldsConfig'
 import { PendingImageItem } from './PendingImageItem'
@@ -31,7 +32,7 @@ export interface PendingImageRowProps {
 /**
  * One pending image in the upload dialog: preview, compression options, file name and meta.
  */
-export const PendingImageRow = ({
+export const PendingImageRow = memo(({
   item,
   index,
   canCut,
@@ -108,6 +109,7 @@ export const PendingImageRow = ({
           value={item.fileName || ''}
           onChange={(fileName) => onUpdate(item.id, { fileName })}
           onClear={() => onUpdate(item.id, { fileName: '' })}
+          debounceMs={META_INPUT_DEBOUNCE_MS}
         />
       )}
 
@@ -120,4 +122,6 @@ export const PendingImageRow = ({
       )}
     </Stack>
   )
-}
+})
+
+PendingImageRow.displayName = 'PendingImageRow'

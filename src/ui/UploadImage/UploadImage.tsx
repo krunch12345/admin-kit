@@ -4,10 +4,14 @@ import { IconButton, Tooltip } from '@mui/material'
 import { ModalData } from '../Modal/ModalData'
 import { DEFAULT_EMPTY_IMAGE_META } from '../ImageMetaFields/imageMetaFieldsConfig'
 import { optimizeImageForUpload as defaultOptimizeImageForUpload } from '../../utils/optimizeImageForUpload'
+import { createSubscriptionStore } from '../../utils/createSubscriptionStore'
 import { formatMessage } from '../../locale/formatMessage'
 import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
-import { UploadDialogContent } from './UploadDialogContent'
-import { GeneralSettingsHeader } from './GeneralSettingsHeader'
+import {
+  GeneralSettingsHeaderHost,
+  UploadDialogContentHost,
+  type UploadDialogStoreState,
+} from './UploadDialogContentHost'
 import { useUploadQueue } from './hooks/useUploadQueue'
 import { useBatchUpload } from './hooks/useBatchUpload'
 import { useGeneralSettingsState } from './hooks/useGeneralSettingsState'
@@ -83,6 +87,39 @@ export const UploadImage = ({
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [uploadKey, setUploadKey] = useState(0)
   const generalSettings = useGeneralSettingsState()
+  const dialogStoreRef = useRef<ReturnType<typeof createSubscriptionStore<UploadDialogStoreState>> | null>(null)
+
+  if (!dialogStoreRef.current) {
+    dialogStoreRef.current = createSubscriptionStore<UploadDialogStoreState>({
+      uploadKey: 0,
+      multiple: false,
+      compression: COMPRESSION_CLIENT,
+      pendingImages: [],
+      pendingLimit: 1,
+      metaTemplates: undefined,
+      canCut: undefined,
+      withMeta: false,
+      showFileNameField: false,
+      generalSettings: {
+        isOpen: false,
+        isDirty: false,
+        session: 0,
+        open: () => {},
+        close: () => {},
+        setIsDirty: () => {},
+      },
+      onFileAdded: () => {},
+      onFilesAdded: () => {},
+      onUpdateImage: () => {},
+      onRemoveImage: () => {},
+      onImageFileChange: () => {},
+      onApplyBulkUpdate: () => {},
+      onCopyFields: () => {},
+      showHeader: false,
+    })
+  }
+
+  const dialogStore = dialogStoreRef.current
 
   const { softLimit, hardLimit, maxBytes } = useMemo(
     () => ({ ...DEFAULT_LIMITS, ...limits }),
@@ -160,6 +197,63 @@ export const UploadImage = ({
     || (!createUniqueName && pendingImages.length === 1)
   const hasPendingImages = pendingImages.length > 0
 
+  const dialogBody = useMemo(
+    () => <UploadDialogContentHost store={dialogStore} />,
+    [dialogStore],
+  )
+  const headerExtra = useMemo(
+    () => (multiple ? <GeneralSettingsHeaderHost store={dialogStore} /> : null),
+    [dialogStore, multiple],
+  )
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      return
+    }
+
+    dialogStore.setState({
+      uploadKey,
+      multiple,
+      compression,
+      pendingImages,
+      pendingLimit,
+      metaTemplates,
+      canCut,
+      withMeta,
+      showFileNameField,
+      generalSettings,
+      onFileAdded: addPendingFile,
+      onFilesAdded: addPendingFiles,
+      onUpdateImage: updatePendingImage,
+      onRemoveImage: removePendingImage,
+      onImageFileChange: replacePendingImageFile,
+      onApplyBulkUpdate: applyBulkUpdate,
+      onCopyFields: copyFields,
+      showHeader: multiple && hasPendingImages,
+    })
+  }, [
+    addPendingFile,
+    addPendingFiles,
+    applyBulkUpdate,
+    canCut,
+    compression,
+    copyFields,
+    dialogStore,
+    generalSettings,
+    hasPendingImages,
+    isModalOpen,
+    metaTemplates,
+    multiple,
+    pendingImages,
+    pendingLimit,
+    removePendingImage,
+    replacePendingImageFile,
+    showFileNameField,
+    updatePendingImage,
+    uploadKey,
+    withMeta,
+  ])
+
   useEffect(() => {
     if (!isModalOpen || settledRef.current) {
       return
@@ -171,30 +265,8 @@ export const UploadImage = ({
       title,
       maxWidth: 'xl',
       fullHeight: true,
-      headerExtra: multiple && hasPendingImages
-        ? <GeneralSettingsHeader generalSettings={generalSettings} />
-        : null,
-      children: (
-        <UploadDialogContent
-          uploadKey={uploadKey}
-          multiple={multiple}
-          compression={compression}
-          pendingImages={pendingImages}
-          pendingLimit={pendingLimit}
-          metaTemplates={metaTemplates}
-          canCut={canCut}
-          withMeta={withMeta}
-          showFileNameField={showFileNameField}
-          generalSettings={generalSettings}
-          onFileAdded={addPendingFile}
-          onFilesAdded={addPendingFiles}
-          onUpdateImage={updatePendingImage}
-          onRemoveImage={removePendingImage}
-          onImageFileChange={replacePendingImageFile}
-          onApplyBulkUpdate={applyBulkUpdate}
-          onCopyFields={copyFields}
-        />
-      ),
+      headerExtra,
+      children: dialogBody,
       onClose: handleClose,
       shouldConfirmClose: hasPendingImages,
       closeConfirmMessage: messages.upload.modalCloseConfirm,
@@ -206,33 +278,18 @@ export const UploadImage = ({
       onSubmit: submit,
     })
   }, [
-    addPendingFile,
-    addPendingFiles,
-    applyBulkUpdate,
-    canCut,
-    compression,
-    copyFields,
+    dialogBody,
     disabledSubmit,
-    generalSettings,
     handleClose,
     hasPendingImages,
+    headerExtra,
     isModalOpen,
     messages.upload.modalCloseConfirm,
     messages.upload.modalTitleSubmit,
-    metaTemplates,
     modalOwnerId,
-    multiple,
-    pendingImages,
-    pendingLimit,
-    removePendingImage,
-    replacePendingImageFile,
     setModalData,
-    showFileNameField,
     submit,
     title,
-    updatePendingImage,
-    uploadKey,
-    withMeta,
   ])
 
   useEffect(() => () => {

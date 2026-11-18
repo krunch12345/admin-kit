@@ -13,6 +13,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `createAdminBaseQuery` CSRF recovery retries only when the 403 looks like CSRF (`EBADCSRFTOKEN` / `csrf` / message matching `/csrf/i`); a null or missing `code` alone no longer triggers CSRF refresh
 - `createShellEndpoints`: `getAdminMenu` typed as `AdminKitMenuItem[]`; `invalidateAllCache` typed as `void`; `AdminKitMenuItem` exported from shell and root barrels
 
+## [1.3.2] - 2026-11-18
+
+### Fixed
+
+- Upload / image-meta typing lag with many pending images: `UploadImage` no longer rebuilds `ModalData` children on every keystroke; queue body uses a subscription store, `PendingImageRow` is memoized, and meta/fileName inputs debounce (~200ms) with blur flush (`META_INPUT_DEBOUNCE_MS`)
+
+### Changed
+
+- `ImageMetaFields` defaults `debounceMs` to `META_INPUT_DEBOUNCE_MS` (pass `0` for immediate commits)
+- Debounced `TextField` flushes pending value on blur
+
 ## [1.3.1] - 2026-11-14
 
 ### Fixed

@@ -3,7 +3,7 @@ import { Chip, Stack } from '@mui/material'
 import { TextField } from '../TextField/TextField'
 import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
 import { fieldSx } from '../fieldSx'
-import type { ImageMetaTemplates } from './imageMetaFieldsConfig'
+import { META_INPUT_DEBOUNCE_MS, type ImageMetaTemplates } from './imageMetaFieldsConfig'
 
 export type ImageMetaValues = {
   name?: string
@@ -21,6 +21,8 @@ export type ImageMetaFieldsProps = {
   onChange: (patch: Partial<ImageMetaValues>) => void
   disabled?: boolean
   templates?: ImageMetaTemplates
+  /** Debounce parent commits; defaults to upload meta debounce. Pass 0 to disable. */
+  debounceMs?: number
 }
 
 export const ImageMetaFields = ({
@@ -28,6 +30,7 @@ export const ImageMetaFields = ({
   onChange,
   disabled = false,
   templates = {},
+  debounceMs = META_INPUT_DEBOUNCE_MS,
 }: ImageMetaFieldsProps) => {
   const messages = useAdminKitMessages()
 
@@ -42,6 +45,7 @@ export const ImageMetaFields = ({
           onChange={(name) => onChange({ name })}
           onClear={() => onChange({ name: '' })}
           disabled={disabled}
+          debounceMs={debounceMs}
         />
         <TextField
           sx={fieldSx}
@@ -51,6 +55,7 @@ export const ImageMetaFields = ({
           onChange={(nameEN) => onChange({ nameEN })}
           onClear={() => onChange({ nameEN: '' })}
           disabled={disabled}
+          debounceMs={debounceMs}
         />
       </Stack>
 
@@ -63,6 +68,7 @@ export const ImageMetaFields = ({
             onChange={(description) => onChange({ description })}
             onClear={() => onChange({ description: '' })}
             disabled={disabled}
+            debounceMs={debounceMs}
             multiline
             minRows={4}
           />
@@ -89,6 +95,7 @@ export const ImageMetaFields = ({
           onChange={(descriptionEN) => onChange({ descriptionEN })}
           onClear={() => onChange({ descriptionEN: '' })}
           disabled={disabled}
+          debounceMs={debounceMs}
           multiline
           minRows={4}
         />
@@ -103,6 +110,7 @@ export const ImageMetaFields = ({
             onChange={(source) => onChange({ source })}
             onClear={() => onChange({ source: '' })}
             disabled={disabled}
+            debounceMs={debounceMs}
           />
           <Stack direction='row' spacing={1} flexWrap='wrap' useFlexGap>
             {Children.toArray(
@@ -127,6 +135,7 @@ export const ImageMetaFields = ({
           onChange={(sourceEN) => onChange({ sourceEN })}
           onClear={() => onChange({ sourceEN: '' })}
           disabled={disabled}
+          debounceMs={debounceMs}
         />
       </Stack>
 
@@ -139,6 +148,7 @@ export const ImageMetaFields = ({
           onChange={(comment) => onChange({ comment })}
           onClear={() => onChange({ comment: '' })}
           disabled={disabled}
+          debounceMs={debounceMs}
           multiline
           minRows={4}
         />
@@ -150,6 +160,7 @@ export const ImageMetaFields = ({
           onChange={(commentEN) => onChange({ commentEN })}
           onClear={() => onChange({ commentEN: '' })}
           disabled={disabled}
+          debounceMs={debounceMs}
           multiline
           minRows={4}
         />

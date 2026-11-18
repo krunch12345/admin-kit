@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type FocusEvent } from 'react'
 import { IconButton, InputAdornment, TextField as MuiTextField, type TextFieldProps } from '@mui/material'
 import { debounce, type DebouncedFunc } from 'lodash-es'
 import { Clear } from '@mui/icons-material'
@@ -17,6 +17,7 @@ export const TextField = ({
   debounceMs = 0,
   onClear,
   InputProps,
+  onBlur,
   ...props
 }: AdminKitTextFieldProps) => {
   const messages = useAdminKitMessages()
@@ -66,12 +67,21 @@ export const TextField = ({
     debouncedOnChange(newValue)
   }
 
+  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+    if (isDebounced && 'flush' in debouncedOnChange) {
+      debouncedOnChange.flush()
+    }
+
+    onBlur?.(e)
+  }
+
   return (
     <MuiTextField
       {...props}
       size={props.size ?? 'small'}
       value={displayValue}
       onChange={handleChange}
+      onBlur={handleBlur}
       InputProps={{
         ...InputProps,
         endAdornment: InputProps?.endAdornment ?? (

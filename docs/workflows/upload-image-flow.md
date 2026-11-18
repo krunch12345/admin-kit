@@ -22,6 +22,10 @@ There is **no** fixed kit upload path. Backend upload routes are outside this pa
 6. Result normalized to `{ succeeded, failed? }` or an array of images; each success invokes `setUrl`
 7. Success toast / modal close only when at least one image was reported (stable `submit` via refs — see CHANGELOG 1.0.2)
 
+## Modal performance notes
+
+`UploadImage` keeps a **stable** `children` / `headerExtra` element in `ModalData` and pushes live queue props through an internal subscription store (`useSyncExternalStore`). Meta and fileName inputs debounce parent commits (`META_INPUT_DEBOUNCE_MS`, default 200) and flush on blur, so typing does not rebuild the modal shell on every keystroke.
+
 ## Important props
 
 `title`, `type`, `folder?`, `name?`, `setUrl`, `uploadFn`, `canCut?`, `isOnlyType?`, `createUniqueName?`, `multiple?`, `withMeta?`, `metaTemplates?`, `emptyMeta?`, `compression?`, `limits?`, `optimizeImageForUpload?`

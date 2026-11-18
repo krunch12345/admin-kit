@@ -1,3 +1,6 @@
+/** Debounce for image meta text inputs so parent state is not updated on every keystroke. */
+export const META_INPUT_DEBOUNCE_MS = 200
+
 export type ImageMetaFieldKey = 'name' | 'description' | 'source' | 'comment'
 
 export interface ImageMetaFieldDefinition {
