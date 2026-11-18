@@ -120,6 +120,8 @@ export const enMessages = {
     aspectRatio: 'Aspect ratio',
     free: 'Free',
     applyCrop: 'Apply crop',
+    openEditor: 'Crop image',
+    closeEditor: 'Back to preview',
     confirmDeleteImage: 'Are you sure you want to delete this image?',
   },
 

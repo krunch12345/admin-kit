@@ -122,6 +122,8 @@ export const ruMessages: AdminKitMessages = {
     aspectRatio: 'Соотношение сторон',
     free: 'Свободное',
     applyCrop: 'Обрезать',
+    openEditor: 'Обрезать изображение',
+    closeEditor: 'К превью',
     confirmDeleteImage: 'Вы точно хотите удалить это изображение?',
   },
 

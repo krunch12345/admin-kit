@@ -15,7 +15,7 @@ There is **no** fixed kit upload path. Backend upload routes are outside this pa
 ## Typical sequence
 
 1. User opens upload modal (`ModalData` + ownership id)
-2. Files added via drop zone, paste, or button; optional crop (`canCut`) and meta (`withMeta`)
+2. Files added via drop zone, paste, or button; optional crop (`canCut`, lazy per-row editor) and meta (`withMeta`)
 3. Compression mode: `client` (default, `optimizeImageForUpload`), `server` (meta `mode` gentle/aggressive), or `none`
 4. On submit, `useBatchUpload` chunks by hard count/bytes (`BATCH_IMAGE_*` defaults: soft 150 pending, hard 25 per request, ~18 MiB)
 5. Each chunk calls `uploadFn({ files, metas, context: { type, folder?, createUniqueName } })`
@@ -25,6 +25,8 @@ There is **no** fixed kit upload path. Backend upload routes are outside this pa
 ## Modal performance notes
 
 `UploadImage` keeps a **stable** `children` / `headerExtra` element in `ModalData` and pushes live queue props through an internal subscription store (`useSyncExternalStore`). Meta and fileName inputs debounce parent commits (`META_INPUT_DEBOUNCE_MS`, default 200) and flush on blur, so typing does not rebuild the modal shell on every keystroke.
+
+When `canCut` is enabled, each pending row shows a compact thumbnail until the user opens the crop editor; `CropControls` / `ReactCrop` mount only for that row.
 
 ## Important props
 
