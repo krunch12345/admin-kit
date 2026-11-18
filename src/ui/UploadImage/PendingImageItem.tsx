@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Box, Button, Divider, Stack } from '@mui/material'
+import { RotateLeft, RotateRight } from '@mui/icons-material'
 import { FaCropAlt } from 'react-icons/fa'
 import { DialogRemoveButton } from '../DialogRemoveButton/DialogRemoveButton'
 import { CropControls } from '../CropControls/CropControls'
+import { IconButton } from '../IconButton/IconButton'
 import { useAdminKitMessages } from '../../locale/useAdminKitMessages'
+import { rotateImage90, type RotateDirection } from '../../utils/rotateImage'
 import type { PendingImage } from './types'
 
 const PENDING_THUMB_MAX_HEIGHT = 200
@@ -34,6 +37,7 @@ export const PendingImageItem = ({
 }: PendingImageItemProps) => {
   const messages = useAdminKitMessages()
   const [isCropEditorOpen, setIsCropEditorOpen] = useState(false)
+  const [isRotating, setIsRotating] = useState(false)
 
   useEffect(() => {
     setIsCropEditorOpen(false)
@@ -47,6 +51,27 @@ export const PendingImageItem = ({
   const handleRemove = useCallback(() => {
     onRemove(item.id)
   }, [item.id, onRemove])
+
+  const handleRotate = useCallback(async (direction: RotateDirection) => {
+    if (!item.imageSrc || isRotating) {
+      return
+    }
+
+    setIsRotating(true)
+
+    try {
+      const { blob } = await rotateImage90(item.imageSrc, direction)
+      const file = new File(
+        [blob],
+        item.fileName || 'image.jpg',
+        { type: 'image/jpeg' },
+      )
+
+      onFileChange(item.id, file)
+    } finally {
+      setIsRotating(false)
+    }
+  }, [isRotating, item.fileName, item.id, item.imageSrc, onFileChange])
 
   return (
     <>
@@ -91,13 +116,27 @@ export const PendingImageItem = ({
                     color='primary'
                     startIcon={<FaCropAlt />}
                     onClick={() => setIsCropEditorOpen(true)}
+                    disabled={isRotating}
                   >
                     {messages.crop.openEditor}
                   </Button>
+                  <IconButton
+                    title={messages.crop.rotateCounterClockwise}
+                    icon={<RotateLeft />}
+                    onClick={() => void handleRotate('counterClockwise')}
+                    disabled={isRotating}
+                  />
+                  <IconButton
+                    title={messages.crop.rotateClockwise}
+                    icon={<RotateRight />}
+                    onClick={() => void handleRotate('clockwise')}
+                    disabled={isRotating}
+                  />
                   <DialogRemoveButton
                     variant='text'
                     confirmMessage={messages.upload.confirmDeleteImage}
                     onRemove={handleRemove}
+                    disabled={isRotating}
                   />
                 </Stack>
               </Stack>

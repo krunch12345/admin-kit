@@ -27,7 +27,7 @@ Colocate tests next to source (`*.test.ts` / `*.test.tsx`).
 | Locale | `runtime.test.ts`, `messages.parity.test.ts` (en/ru key parity) |
 | Pages | `Login.redirect.test.ts` (`resolveLoginRedirectPath`) |
 | UI | `SlugField.test.tsx`, `ModalDataProvider.test.tsx`, `modalOwnership.test.ts`, `countNonEmptyFilters.test.ts`, `uploadHelpers.test.ts` |
-| Utils / constants | `sanitizeAppPath`, `optimizeImageForUpload`, `isAllowedImageFile`, `checkRequiredFields`, `formDraftStorage`, `imageBatch`, `createSubscriptionStore`, … |
+| Utils / constants | `sanitizeAppPath`, `optimizeImageForUpload`, `isAllowedImageFile`, `checkRequiredFields`, `formDraftStorage`, `imageBatch`, `createSubscriptionStore`, `rotateImage`, … |
 
 ## Storybook
 

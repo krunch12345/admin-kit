@@ -124,6 +124,8 @@ export const ruMessages: AdminKitMessages = {
     applyCrop: 'Обрезать',
     openEditor: 'Обрезать изображение',
     closeEditor: 'К превью',
+    rotateClockwise: 'Повернуть на 90° по часовой',
+    rotateCounterClockwise: 'Повернуть на 90° против часовой',
     confirmDeleteImage: 'Вы точно хотите удалить это изображение?',
   },
 

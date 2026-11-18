@@ -122,6 +122,8 @@ export const enMessages = {
     applyCrop: 'Apply crop',
     openEditor: 'Crop image',
     closeEditor: 'Back to preview',
+    rotateClockwise: 'Rotate 90° clockwise',
+    rotateCounterClockwise: 'Rotate 90° counter-clockwise',
     confirmDeleteImage: 'Are you sure you want to delete this image?',
   },
 

@@ -26,7 +26,7 @@ There is **no** fixed kit upload path. Backend upload routes are outside this pa
 
 `UploadImage` keeps a **stable** `children` / `headerExtra` element in `ModalData` and pushes live queue props through an internal subscription store (`useSyncExternalStore`). Meta and fileName inputs debounce parent commits (`META_INPUT_DEBOUNCE_MS`, default 200) and flush on blur, so typing does not rebuild the modal shell on every keystroke.
 
-When `canCut` is enabled, each pending row shows a compact thumbnail until the user opens the crop editor; `CropControls` / `ReactCrop` mount only for that row.
+When `canCut` is enabled, each pending row shows a compact thumbnail until the user opens the crop editor; `CropControls` / `ReactCrop` mount only for that row. The same compact toolbar can rotate the image 90° clockwise or counter-clockwise.
 
 ## Important props
 
