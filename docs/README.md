@@ -20,6 +20,7 @@ Package version: **1.3.2** (`package.json`). Prefer **1.3.2+** on npm; `1.3.0` p
 | Wire a consumer app | [Consumer integration](workflows/consumer-integration.md) | [Peer dependencies](integrations/peer-dependencies.md), root README |
 | Peers / optional features | [Peer dependencies](integrations/peer-dependencies.md) | [Build and packaging](architecture/build-and-packaging.md) |
 | Setup / commands / tests / style | [Setup](development/setup.md), [testing](development/testing.md), [conventions](development/conventions.md) | Root AGENTS.md, CONTRIBUTING.md |
+| Significant change / OpenSpec Change | [OpenSpec](development/openspec.md) | Root AGENTS.md, workspace Skill `rocklip-workspace`, agent `rl-coordinator` |
 
 ## Document inventory
 
@@ -35,6 +36,7 @@ docs/
     setup.md
     testing.md
     conventions.md
+    openspec.md
   modules/
     auth.md
     shell.md

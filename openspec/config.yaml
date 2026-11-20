@@ -1,0 +1,31 @@
+schema: spec-driven
+
+# ROCKLIP shared admin kit (package: @krunch12345/admin-kit). Dual-mode: OpenSpec for significant changes only.
+context: |
+  Package: @krunch12345/admin-kit — shared admin auth/shell/UI library used by rocklip-admin-panel.
+  Sibling repos: rocklip-admin-panel (consumer), rocklip-backend-node, gorod-kutezha.
+  Dual-mode: ordinary local fixes skip OpenSpec; significant public API / auth shell / export /
+  peer / multi-repo work uses an OpenSpec Change. Do not auto-create a Change for every task.
+  Size ≠ impact. Coding starts only after the user agrees proposal/design/tasks. This repo is the
+  primary owning repo for kit surface Changes; plan consumer bump in rocklip-admin-panel.
+  Do not publish/npm without explicit permission. Prefer AGENTS.md + docs/ Task navigation
+  (especially public-api.md and peer-dependencies.md) for repo facts.
+
+rules:
+  proposal:
+    - State Mode 2 rationale (why OpenSpec, not an ordinary fix)
+    - List affected ROCKLIP repos; kit Changes usually require admin-panel consumer follow-up
+    - Always state what is out of scope
+  tasks:
+    - Separate planning-only vs implementation tasks
+    - Note which specialist owns each chunk (kit / admin / backend)
+
+operations:
+  apply:
+    guidance:
+      - "Do not start apply until the user explicitly agrees the Change artifacts"
+      - "Respect dual-mode; if the work shrank to an ordinary fix, confirm dropping OpenSpec with the user"
+      - "Coordinate version bump / consumer update only when the user asked to publish or bump"
+  archive:
+    guidance:
+      - "Archive only after DoD; sync main specs when capabilities changed"

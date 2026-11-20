@@ -8,6 +8,10 @@ For export / subpath / peer questions, or when reconciling docs drift, prefer [d
 
 Consumer-facing install and wiring guides live in [README.md](README.md). Contribution scripts and support policy live in [CONTRIBUTING.md](CONTRIBUTING.md). Release notes live in [CHANGELOG.md](CHANGELOG.md). Do not replace those files with this knowledge base; link to them instead.
 
+## OpenSpec (significant changes only)
+
+Do not create an OpenSpec Change for every task. Ordinary local fixes use the normal workflow; significant public API, auth shell, peer, architecture, or multi-repo work uses OpenSpec. Classification is owned by `rl-coordinator` (see workspace Skill `rocklip-workspace`). Per-repo pointer: [OpenSpec](docs/development/openspec.md).
+
 ## Scope and Sources of Truth
 
 These guidelines apply only to this library checkout (`admin-kit`, package name `@krunch12345/admin-kit`). Its agent knowledge base is [docs/](docs/README.md). Consumer apps (for example `rocklip-admin-panel`) and backend repositories have their own instructions and contracts; their implementations do not redefine this package’s public API unless verified here.
